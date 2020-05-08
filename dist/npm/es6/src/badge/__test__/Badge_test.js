@@ -1,17 +1,34 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
+'use strict';
 
-import Badge from '../';
-import { Button, Dropdown } from '../../';
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enzyme = require('enzyme');
+
+var _sinon = require('sinon');
+
+var _sinon2 = _interopRequireDefault(_sinon);
+
+var _ = require('../');
+
+var _2 = _interopRequireDefault(_);
+
+var _3 = require('../../');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 describe('Badge Test', function () {
   it('Basic usage', function () {
-    var w = mount(React.createElement(
-      Badge,
+    var w = (0, _enzyme.mount)(_react2.default.createElement(
+      _2.default,
       { value: 12 },
-      React.createElement(
-        Button,
+      _react2.default.createElement(
+        _3.Button,
         { size: 'small' },
         'TEST'
       )
@@ -21,38 +38,38 @@ describe('Badge Test', function () {
   });
 
   it('with Dropdown', function () {
-    var w = mount(React.createElement(
-      Dropdown,
-      { trigger: 'click', menu: React.createElement(
-          Dropdown.Menu,
+    var w = (0, _enzyme.mount)(_react2.default.createElement(
+      _3.Dropdown,
+      { trigger: 'click', menu: _react2.default.createElement(
+          _3.Dropdown.Menu,
           null,
-          React.createElement(
-            Dropdown.Item,
+          _react2.default.createElement(
+            _3.Dropdown.Item,
             { className: 'clearfix' },
-            React.createElement(
+            _react2.default.createElement(
               'span',
               null,
               '\u8BC4\u8BBA'
             ),
-            React.createElement(Badge, { className: 'mark', value: 12 })
+            _react2.default.createElement(_2.default, { className: 'mark', value: 12 })
           ),
-          React.createElement(
-            Dropdown.Item,
+          _react2.default.createElement(
+            _3.Dropdown.Item,
             { className: 'clearfix' },
-            React.createElement(
+            _react2.default.createElement(
               'span',
               null,
               '\u56DE\u590D'
             ),
-            React.createElement(Badge, { className: 'mark', value: 3 })
+            _react2.default.createElement(_2.default, { className: 'mark', value: 3 })
           )
         )
       },
-      React.createElement(
+      _react2.default.createElement(
         'span',
         { className: 'el-dropdown-link' },
         '\u70B9\u6211\u67E5\u770B',
-        React.createElement('i', { className: 'el-icon-caret-bottom el-icon--right' })
+        _react2.default.createElement('i', { className: 'el-icon-caret-bottom el-icon--right' })
       )
     ));
     expect(w.find('.el-dropdown-menu').childAt(0).find('div.el-badge').hasClass('mark')).toBeTruthy();
@@ -62,29 +79,29 @@ describe('Badge Test', function () {
   });
 
   it('Max value', function () {
-    var w1 = shallow(React.createElement(
-      Badge,
+    var w1 = (0, _enzyme.shallow)(_react2.default.createElement(
+      _2.default,
       { value: 200, max: 99 },
-      React.createElement(
-        Button,
+      _react2.default.createElement(
+        _3.Button,
         { size: 'small' },
         'TEST'
       )
     ));
-    var w2 = shallow(React.createElement(
-      Badge,
+    var w2 = (0, _enzyme.shallow)(_react2.default.createElement(
+      _2.default,
       { value: 99, max: 99 },
-      React.createElement(
-        Button,
+      _react2.default.createElement(
+        _3.Button,
         { size: 'small' },
         'TEST'
       )
     ));
-    var w3 = shallow(React.createElement(
-      Badge,
+    var w3 = (0, _enzyme.shallow)(_react2.default.createElement(
+      _2.default,
       { value: 1, max: 99 },
-      React.createElement(
-        Button,
+      _react2.default.createElement(
+        _3.Button,
         { size: 'small' },
         'TEST'
       )
@@ -95,20 +112,20 @@ describe('Badge Test', function () {
   });
 
   it('Custom content', function () {
-    var w1 = shallow(React.createElement(
-      Badge,
+    var w1 = (0, _enzyme.shallow)(_react2.default.createElement(
+      _2.default,
       { value: 'new' },
-      React.createElement(
-        Button,
+      _react2.default.createElement(
+        _3.Button,
         { size: 'small' },
         'TEST'
       )
     ));
-    var w2 = shallow(React.createElement(
-      Badge,
+    var w2 = (0, _enzyme.shallow)(_react2.default.createElement(
+      _2.default,
       { value: 'hot' },
-      React.createElement(
-        Button,
+      _react2.default.createElement(
+        _3.Button,
         { size: 'small' },
         'TEST'
       )
@@ -118,10 +135,10 @@ describe('Badge Test', function () {
   });
 
   it('Dot', function () {
-    var w1 = shallow(React.createElement(
-      Badge,
+    var w1 = (0, _enzyme.shallow)(_react2.default.createElement(
+      _2.default,
       { isDot: true },
-      React.createElement(Button, { className: 'share-button', icon: 'share', type: 'primary' })
+      _react2.default.createElement(_3.Button, { className: 'share-button', icon: 'share', type: 'primary' })
     ));
     expect(w1.find('.el-badge sup.el-badge__content').hasClass('is-dot')).toBeTruthy();
   });

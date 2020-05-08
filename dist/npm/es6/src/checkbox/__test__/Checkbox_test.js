@@ -1,11 +1,24 @@
-import React from 'react';
-import { mount } from 'enzyme';
+'use strict';
 
-import Checkbox from '../';
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enzyme = require('enzyme');
+
+var _ = require('../');
+
+var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 test('isChecked should work', function () {
-  var wrapper = mount(React.createElement(
-    Checkbox,
+  var wrapper = (0, _enzyme.mount)(_react2.default.createElement(
+    _2.default,
     { checked: true },
     '\u5907\u9009\u9879'
   ));
@@ -13,8 +26,8 @@ test('isChecked should work', function () {
 });
 
 test('Turning an unchecked item to checked', function () {
-  var wrapper = mount(React.createElement(
-    Checkbox,
+  var wrapper = (0, _enzyme.mount)(_react2.default.createElement(
+    _2.default,
     null,
     '\u5907\u9009\u9879'
   ));
@@ -28,8 +41,8 @@ test('Turning an unchecked item to checked', function () {
 });
 
 test('isDisabled should work', function () {
-  var wrapper = mount(React.createElement(
-    Checkbox,
+  var wrapper = (0, _enzyme.mount)(_react2.default.createElement(
+    _2.default,
     { disabled: true },
     '\u5907\u9009\u9879'
   ));
@@ -38,14 +51,14 @@ test('isDisabled should work', function () {
 
 test('should render checked checkbox if checkboxGroup value contains the same label', function () {
   var checkList = ['复选框 A', '选中且禁用'];
-  var wrapper = mount(React.createElement(
-    Checkbox.Group,
+  var wrapper = (0, _enzyme.mount)(_react2.default.createElement(
+    _2.default.Group,
     { value: checkList },
-    React.createElement(Checkbox, { label: '\u590D\u9009\u6846 A' }),
-    React.createElement(Checkbox, { label: '\u590D\u9009\u6846 B' }),
-    React.createElement(Checkbox, { label: '\u590D\u9009\u6846 C' }),
-    React.createElement(Checkbox, { label: '\u7981\u7528', disabled: true }),
-    React.createElement(Checkbox, { label: '\u9009\u4E2D\u4E14\u7981\u7528', disabled: true })
+    _react2.default.createElement(_2.default, { label: '\u590D\u9009\u6846 A' }),
+    _react2.default.createElement(_2.default, { label: '\u590D\u9009\u6846 B' }),
+    _react2.default.createElement(_2.default, { label: '\u590D\u9009\u6846 C' }),
+    _react2.default.createElement(_2.default, { label: '\u7981\u7528', disabled: true }),
+    _react2.default.createElement(_2.default, { label: '\u9009\u4E2D\u4E14\u7981\u7528', disabled: true })
   ));
 
   wrapper.find('.el-checkbox').forEach(function (e) {
@@ -56,7 +69,7 @@ test('should render checked checkbox if checkboxGroup value contains the same la
 });
 
 test('should display indeterminate mark when checkbox is an indeterminate state', function () {
-  var wrapper = mount(React.createElement(Checkbox, {
+  var wrapper = (0, _enzyme.mount)(_react2.default.createElement(_2.default, {
     indeterminate: true }));
   expect(wrapper.find('.el-checkbox__input').hasClass('is-indeterminate')).toEqual(true);
 });
@@ -64,14 +77,14 @@ test('should display indeterminate mark when checkbox is an indeterminate state'
 test('should limited to max and min value', function () {
   var cities = ['上海', '北京', '广州', '深圳'];
   var checkedCity = ['上海', '北京'];
-  var wrapper = mount(React.createElement(
-    Checkbox.Group,
+  var wrapper = (0, _enzyme.mount)(_react2.default.createElement(
+    _2.default.Group,
     {
       min: '1',
       max: '2',
       value: checkedCity },
     cities.map(function (city, index) {
-      return React.createElement(Checkbox, { key: index, label: city });
+      return _react2.default.createElement(_2.default, { key: index, label: city });
     })
   ));
 

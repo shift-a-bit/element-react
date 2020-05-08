@@ -1,13 +1,29 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
+'use strict';
 
-import Tag from '../';
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enzyme = require('enzyme');
+
+var _sinon = require('sinon');
+
+var _sinon2 = _interopRequireDefault(_sinon);
+
+var _ = require('../');
+
+var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 describe('Tag test', function () {
   it('type', function () {
-    var w = mount(React.createElement(
-      Tag,
+    var w = (0, _enzyme.mount)(_react2.default.createElement(
+      _2.default,
       { type: 'primary' },
       'TEST'
     ));
@@ -16,8 +32,8 @@ describe('Tag test', function () {
   });
 
   it('closable', function () {
-    var w = shallow(React.createElement(
-      Tag,
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(
+      _2.default,
       { type: 'primary', closable: true },
       'TEST'
     ));
@@ -32,8 +48,8 @@ describe('Tag test', function () {
   // });
 
   it('hit', function () {
-    var w = mount(React.createElement(
-      Tag,
+    var w = (0, _enzyme.mount)(_react2.default.createElement(
+      _2.default,
       { hit: true },
       'TEST'
     ));
@@ -41,9 +57,9 @@ describe('Tag test', function () {
   });
 
   it('onClose', function () {
-    var onClose = sinon.spy();
-    var w = shallow(React.createElement(
-      Tag,
+    var onClose = _sinon2.default.spy();
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(
+      _2.default,
       { type: 'primary', closable: true, onClose: onClose },
       'TEST'
     ));

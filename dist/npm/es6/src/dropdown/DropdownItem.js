@@ -1,53 +1,115 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import { Component, PropTypes } from '../../libs';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _libs = require('../../libs');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var DropdownItem = function (_Component) {
-  _inherits(DropdownItem, _Component);
+  (0, _inherits3.default)(DropdownItem, _Component);
 
   function DropdownItem() {
-    _classCallCheck(this, DropdownItem);
-
-    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    (0, _classCallCheck3.default)(this, DropdownItem);
+    return (0, _possibleConstructorReturn3.default)(this, (DropdownItem.__proto__ || Object.getPrototypeOf(DropdownItem)).apply(this, arguments));
   }
 
-  DropdownItem.prototype.handleClick = function handleClick() {
-    this.context.component.handleMenuItemClick(this.props.command, this);
-  };
+  (0, _createClass3.default)(DropdownItem, [{
+    key: 'handleClick',
+    value: function handleClick() {
+      this.context.component.handleMenuItemClick(this.props.command, this);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          disabled = _props.disabled,
+          divided = _props.divided;
 
-  DropdownItem.prototype.render = function render() {
-    var _props = this.props,
-        disabled = _props.disabled,
-        divided = _props.divided;
 
-
-    return React.createElement(
-      'li',
-      {
-        style: this.style(),
-        className: this.className('el-dropdown-menu__item', {
-          'is-disabled': disabled,
-          'el-dropdown-menu__item--divided': divided
-        }), onClick: this.handleClick.bind(this)
-      },
-      this.props.children
-    );
-  };
-
+      return _react2.default.createElement(
+        'li',
+        {
+          style: this.style(),
+          className: this.className('el-dropdown-menu__item', {
+            'is-disabled': disabled,
+            'el-dropdown-menu__item--divided': divided
+          }), onClick: this.handleClick.bind(this)
+        },
+        this.props.children
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return DropdownItem;
-}(Component);
+}(_libs.Component);
 
-export default DropdownItem;
+var _default = DropdownItem;
+exports.default = _default;
 
 
 DropdownItem.contextTypes = {
-  component: PropTypes.any
+  component: _libs.PropTypes.any
 };
 
 DropdownItem.propTypes = {
-  command: PropTypes.string,
-  disabled: PropTypes.bool,
-  divided: PropTypes.bool
+  command: _libs.PropTypes.string,
+  disabled: _libs.PropTypes.bool,
+  divided: _libs.PropTypes.bool
 };
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(DropdownItem, 'DropdownItem', 'src/dropdown/DropdownItem.jsx');
+  reactHotLoader.register(_default, 'default', 'src/dropdown/DropdownItem.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

@@ -1,7 +1,18 @@
-import React from 'react';
-import { mount } from 'enzyme';
+'use strict';
 
-import { Rate } from '../../../src';
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enzyme = require('enzyme');
+
+var _src = require('../../../src');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 test('Basic usage', function () {
   var state1 = {
@@ -11,7 +22,7 @@ test('Basic usage', function () {
   var testCallBack = function testCallBack(value) {
     state1.value = value;
   };
-  var component1 = mount(React.createElement(Rate, { onChange: testCallBack }));
+  var component1 = (0, _enzyme.mount)(_react2.default.createElement(_src.Rate, { onChange: testCallBack }));
 
   // 模拟component1的第二个星 mouseenter事件
   var rate1 = component1.find('.el-rate .el-rate__item').at(1);
@@ -28,7 +39,7 @@ test('Basic usage', function () {
     expect(state1.value).toEqual(3);
   }, 1000);
 
-  var component2 = mount(React.createElement(Rate, { colors: ['#99A9BF', '#F7BA2A', '#FF9900'] }));
+  var component2 = (0, _enzyme.mount)(_react2.default.createElement(_src.Rate, { colors: ['#99A9BF', '#F7BA2A', '#FF9900'] }));
 
   // 模拟component2的第四个星 click事件
   var rate3 = component2.find('.el-rate .el-rate__item').at(3);
@@ -39,7 +50,7 @@ test('Basic usage', function () {
 });
 
 test('With text', function () {
-  var component = mount(React.createElement(Rate, {
+  var component = (0, _enzyme.mount)(_react2.default.createElement(_src.Rate, {
     showText: true,
     texts: ['oops', 'disappointed', 'normal', 'good', 'great']
   }));
@@ -51,7 +62,7 @@ test('With text', function () {
 });
 
 test('Read-only', function () {
-  var component = mount(React.createElement(Rate, { disabled: true, value: 3.9, showText: true }));
+  var component = (0, _enzyme.mount)(_react2.default.createElement(_src.Rate, { disabled: true, value: 3.9, showText: true }));
 
   expect(component.find('.el-rate__text').at(0).text()).toEqual('3.9');
 

@@ -1,23 +1,56 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _libs = require('../../libs');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var Tabs = function (_Component) {
-  _inherits(Tabs, _Component);
+  (0, _inherits3.default)(Tabs, _Component);
 
   function Tabs(props) {
-    _classCallCheck(this, Tabs);
+    (0, _classCallCheck3.default)(this, Tabs);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Tabs.__proto__ || Object.getPrototypeOf(Tabs)).call(this, props));
 
     var children = props.children,
         activeName = props.activeName,
         value = props.value;
 
 
-    children = React.Children.toArray(children);
+    children = _react2.default.Children.toArray(children);
 
     _this.state = {
       children: children,
@@ -33,378 +66,401 @@ var Tabs = function (_Component) {
     return _this;
   }
 
-  Tabs.prototype.componentDidMount = function componentDidMount() {
-    this.calcBarStyle(true);
-    this.update();
-  };
-
-  Tabs.prototype.componentDidUpdate = function componentDidUpdate(prevProps, prevState) {
-    if (prevState.scrollable !== this.state.scrollable) {
-      this.scrollToActiveTab();
+  (0, _createClass3.default)(Tabs, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.calcBarStyle(true);
+      this.update();
     }
-  };
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevState.scrollable !== this.state.scrollable) {
+        this.scrollToActiveTab();
+      }
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      var _this2 = this;
 
-  Tabs.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-    var _this2 = this;
+      if (nextProps.activeName !== this.props.activeName) {
+        this.setState({
+          currentName: nextProps.activeName
+        }, function () {
+          return _this2.calcBarStyle();
+        });
+      }
 
-    if (nextProps.activeName !== this.props.activeName) {
+      if (nextProps.value !== this.props.value) {
+        this.setState({
+          currentName: nextProps.value
+        }, function () {
+          return _this2.calcBarStyle();
+        });
+      }
+
+      if (nextProps.children !== this.props.children) {
+        this.setState({
+          children: _react2.default.Children.toArray(nextProps.children)
+        }, function () {
+          _this2.update();
+          _this2.calcBarStyle();
+        });
+      }
+    }
+  }, {
+    key: 'handleTabAdd',
+    value: function handleTabAdd() {
+      var _props = this.props,
+          onTabAdd = _props.onTabAdd,
+          onTabEdit = _props.onTabEdit;
+
+
+      onTabEdit && onTabEdit('add');
+      onTabAdd && onTabAdd();
+    }
+  }, {
+    key: 'handleTabRemove',
+    value: function handleTabRemove(tab, index, e) {
+      var _state = this.state,
+          children = _state.children,
+          currentName = _state.currentName;
+      var _props2 = this.props,
+          onTabRemove = _props2.onTabRemove,
+          onTabEdit = _props2.onTabEdit;
+
+
+      e.stopPropagation();
+
+      if (children[index].props.name === currentName) {
+        var nextChild = children[index + 1];
+        var prevChild = children[index - 1];
+
+        this.setState({
+          currentName: nextChild ? nextChild.props.name : prevChild ? prevChild.props.name : '-1'
+        });
+      }
+
+      children.splice(index, 1);
+
       this.setState({
-        currentName: nextProps.activeName
+        children: children
       }, function () {
-        return _this2.calcBarStyle();
+        onTabEdit && onTabEdit('remove', tab);
+        onTabRemove && onTabRemove(tab, e);
       });
     }
+  }, {
+    key: 'handleTabClick',
+    value: function handleTabClick(tab, e) {
+      var _this3 = this;
 
-    if (nextProps.value !== this.props.value) {
-      this.setState({
-        currentName: nextProps.value
-      }, function () {
-        return _this2.calcBarStyle();
-      });
-    }
-
-    if (nextProps.children !== this.props.children) {
-      this.setState({
-        children: React.Children.toArray(nextProps.children)
-      }, function () {
-        _this2.update();
-        _this2.calcBarStyle();
-      });
-    }
-  };
-
-  Tabs.prototype.handleTabAdd = function handleTabAdd() {
-    var _props = this.props,
-        onTabAdd = _props.onTabAdd,
-        onTabEdit = _props.onTabEdit;
-
-
-    onTabEdit && onTabEdit('add');
-    onTabAdd && onTabAdd();
-  };
-
-  Tabs.prototype.handleTabRemove = function handleTabRemove(tab, index, e) {
-    var _state = this.state,
-        children = _state.children,
-        currentName = _state.currentName;
-    var _props2 = this.props,
-        onTabRemove = _props2.onTabRemove,
-        onTabEdit = _props2.onTabEdit;
-
-
-    e.stopPropagation();
-
-    if (children[index].props.name === currentName) {
-      var nextChild = children[index + 1];
-      var prevChild = children[index - 1];
-
-      this.setState({
-        currentName: nextChild ? nextChild.props.name : prevChild ? prevChild.props.name : '-1'
-      });
-    }
-
-    children.splice(index, 1);
-
-    this.setState({
-      children: children
-    }, function () {
-      onTabEdit && onTabEdit('remove', tab);
-      onTabRemove && onTabRemove(tab, e);
-    });
-  };
-
-  Tabs.prototype.handleTabClick = function handleTabClick(tab, e) {
-    var _this3 = this;
-
-    if (tab.props.disabled) {
-      return false;
-    }
-
-    this.setState({
-      currentName: tab.props.name
-    }, function () {
-      var onTabClick = _this3.props.onTabClick;
-
-
-      _this3.calcBarStyle();
-      _this3.scrollToActiveTab();
-      onTabClick && onTabClick(tab, e);
-    });
-  };
-
-  Tabs.prototype.calcBarStyle = function calcBarStyle(firstRendering) {
-    var _this4 = this;
-
-    if (this.props.type || !this.tabs.length) return {};
-
-    var style = {};
-    var offset = 0;
-    var tabWidth = 0;
-    var children = this.state.children instanceof Array ? this.state.children : [this.state.children];
-
-    children.every(function (item, index) {
-      var $el = _this4.tabs[index];
-
-      if (item.props.name !== _this4.state.currentName) {
-        offset += $el.clientWidth;
-        return true;
-      } else {
-        tabWidth = $el.clientWidth;
+      if (tab.props.disabled) {
         return false;
       }
-    });
 
-    style.width = tabWidth + 'px';
-    style.transform = 'translateX(' + offset + 'px)';
-
-    if (!firstRendering) {
-      style.transition = 'transform .3s cubic-bezier(.645,.045,.355,1), -webkit-transform .3s cubic-bezier(.645,.045,.355,1)';
-    }
-
-    this.setState({
-      barStyle: style
-    });
-  };
-
-  Tabs.prototype.scrollPrev = function scrollPrev() {
-    var containerWidth = this.refs.navScroll.offsetWidth;
-    var currentOffset = this.getCurrentScrollOffset();
-    if (!currentOffset) return;
-    var newOffset = currentOffset > containerWidth ? currentOffset - containerWidth : 0;
-    this.setOffset(newOffset);
-  };
-
-  Tabs.prototype.scrollNext = function scrollNext() {
-    var navWidth = this.refs.nav.offsetWidth;
-    var containerWidth = this.refs.navScroll.offsetWidth;
-    var currentOffset = this.getCurrentScrollOffset();
-    if (navWidth - currentOffset <= containerWidth) return;
-    var newOffset = navWidth - currentOffset > containerWidth * 2 ? currentOffset + containerWidth : navWidth - containerWidth;
-    this.setOffset(newOffset);
-  };
-
-  Tabs.prototype.scrollToActiveTab = function scrollToActiveTab() {
-    if (!this.state.scrollable) return;
-
-    var nav = this.refs.nav;
-    var activeTab = nav.querySelector('.is-active');
-    var navScroll = this.refs.navScroll;
-    var activeTabBounding = activeTab.getBoundingClientRect();
-    var navScrollBounding = navScroll.getBoundingClientRect();
-    var navBounding = nav.getBoundingClientRect();
-    var currentOffset = this.getCurrentScrollOffset();
-    var newOffset = currentOffset;
-
-    if (activeTabBounding.left < navScrollBounding.left) {
-      newOffset = currentOffset - (navScrollBounding.left - activeTabBounding.left);
-    }
-
-    if (activeTabBounding.right > navScrollBounding.right) {
-      newOffset = currentOffset + activeTabBounding.right - navScrollBounding.right;
-    }
-
-    if (navBounding.right < navScrollBounding.right) {
-      newOffset = nav.offsetWidth - navScrollBounding.width;
-    }
-
-    this.setOffset(Math.max(newOffset, 0));
-  };
-
-  Tabs.prototype.getCurrentScrollOffset = function getCurrentScrollOffset() {
-    var navStyle = this.state.navStyle;
-
-    return navStyle.transform ? Number(navStyle.transform.match(/translateX\(-(\d+(\.\d+)*)px\)/)[1]) : 0;
-  };
-
-  Tabs.prototype.setOffset = function setOffset(value) {
-    this.setState({
-      navStyle: {
-        transform: 'translateX(-' + value + 'px)'
-      }
-    });
-  };
-
-  Tabs.prototype.update = function update() {
-    var navWidth = this.refs.nav.offsetWidth;
-    var containerWidth = this.refs.navScroll.offsetWidth;
-    var currentOffset = this.getCurrentScrollOffset();
-
-    if (containerWidth < navWidth) {
-      var _currentOffset = this.getCurrentScrollOffset();
       this.setState({
-        scrollable: true,
-        scrollablePrev: _currentOffset,
-        scrollableNext: _currentOffset + containerWidth < navWidth
+        currentName: tab.props.name
+      }, function () {
+        var onTabClick = _this3.props.onTabClick;
+
+
+        _this3.calcBarStyle();
+        _this3.scrollToActiveTab();
+        onTabClick && onTabClick(tab, e);
+      });
+    }
+  }, {
+    key: 'calcBarStyle',
+    value: function calcBarStyle(firstRendering) {
+      var _this4 = this;
+
+      if (this.props.type || !this.tabs.length) return {};
+
+      var style = {};
+      var offset = 0;
+      var tabWidth = 0;
+      var children = this.state.children instanceof Array ? this.state.children : [this.state.children];
+
+      children.every(function (item, index) {
+        var $el = _this4.tabs[index];
+
+        if (item.props.name !== _this4.state.currentName) {
+          offset += $el.clientWidth;
+          return true;
+        } else {
+          tabWidth = $el.clientWidth;
+          return false;
+        }
       });
 
-      if (navWidth - _currentOffset < containerWidth) {
-        this.setOffset(navWidth - containerWidth);
-      }
-    } else {
-      this.setState({
-        scrollable: false
-      });
+      style.width = tabWidth + 'px';
+      style.transform = 'translateX(' + offset + 'px)';
 
-      if (currentOffset > 0) {
-        this.setOffset(0);
+      if (!firstRendering) {
+        style.transition = 'transform .3s cubic-bezier(.645,.045,.355,1), -webkit-transform .3s cubic-bezier(.645,.045,.355,1)';
+      }
+
+      this.setState({
+        barStyle: style
+      });
+    }
+  }, {
+    key: 'scrollPrev',
+    value: function scrollPrev() {
+      var containerWidth = this.refs.navScroll.offsetWidth;
+      var currentOffset = this.getCurrentScrollOffset();
+      if (!currentOffset) return;
+      var newOffset = currentOffset > containerWidth ? currentOffset - containerWidth : 0;
+      this.setOffset(newOffset);
+    }
+  }, {
+    key: 'scrollNext',
+    value: function scrollNext() {
+      var navWidth = this.refs.nav.offsetWidth;
+      var containerWidth = this.refs.navScroll.offsetWidth;
+      var currentOffset = this.getCurrentScrollOffset();
+      if (navWidth - currentOffset <= containerWidth) return;
+      var newOffset = navWidth - currentOffset > containerWidth * 2 ? currentOffset + containerWidth : navWidth - containerWidth;
+      this.setOffset(newOffset);
+    }
+  }, {
+    key: 'scrollToActiveTab',
+    value: function scrollToActiveTab() {
+      if (!this.state.scrollable) return;
+
+      var nav = this.refs.nav;
+      var activeTab = nav.querySelector('.is-active');
+      var navScroll = this.refs.navScroll;
+      var activeTabBounding = activeTab.getBoundingClientRect();
+      var navScrollBounding = navScroll.getBoundingClientRect();
+      var navBounding = nav.getBoundingClientRect();
+      var currentOffset = this.getCurrentScrollOffset();
+      var newOffset = currentOffset;
+
+      if (activeTabBounding.left < navScrollBounding.left) {
+        newOffset = currentOffset - (navScrollBounding.left - activeTabBounding.left);
+      }
+
+      if (activeTabBounding.right > navScrollBounding.right) {
+        newOffset = currentOffset + activeTabBounding.right - navScrollBounding.right;
+      }
+
+      if (navBounding.right < navScrollBounding.right) {
+        newOffset = nav.offsetWidth - navScrollBounding.width;
+      }
+
+      this.setOffset(Math.max(newOffset, 0));
+    }
+  }, {
+    key: 'getCurrentScrollOffset',
+    value: function getCurrentScrollOffset() {
+      var navStyle = this.state.navStyle;
+
+      return navStyle.transform ? Number(navStyle.transform.match(/translateX\(-(\d+(\.\d+)*)px\)/)[1]) : 0;
+    }
+  }, {
+    key: 'setOffset',
+    value: function setOffset(value) {
+      this.setState({
+        navStyle: {
+          transform: 'translateX(-' + value + 'px)'
+        }
+      });
+    }
+  }, {
+    key: 'update',
+    value: function update() {
+      var navWidth = this.refs.nav.offsetWidth;
+      var containerWidth = this.refs.navScroll.offsetWidth;
+      var currentOffset = this.getCurrentScrollOffset();
+
+      if (containerWidth < navWidth) {
+        var _currentOffset = this.getCurrentScrollOffset();
+        this.setState({
+          scrollable: true,
+          scrollablePrev: _currentOffset,
+          scrollableNext: _currentOffset + containerWidth < navWidth
+        });
+
+        if (navWidth - _currentOffset < containerWidth) {
+          this.setOffset(navWidth - containerWidth);
+        }
+      } else {
+        this.setState({
+          scrollable: false
+        });
+
+        if (currentOffset > 0) {
+          this.setOffset(0);
+        }
       }
     }
-  };
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this5 = this;
 
-  Tabs.prototype.render = function render() {
-    var _this5 = this;
+      var _state2 = this.state,
+          children = _state2.children,
+          currentName = _state2.currentName,
+          barStyle = _state2.barStyle,
+          navStyle = _state2.navStyle,
+          scrollable = _state2.scrollable,
+          scrollNext = _state2.scrollNext,
+          scrollPrev = _state2.scrollPrev;
+      var _props3 = this.props,
+          type = _props3.type,
+          addable = _props3.addable,
+          closable = _props3.closable,
+          editable = _props3.editable;
 
-    var _state2 = this.state,
-        children = _state2.children,
-        currentName = _state2.currentName,
-        barStyle = _state2.barStyle,
-        navStyle = _state2.navStyle,
-        scrollable = _state2.scrollable,
-        scrollNext = _state2.scrollNext,
-        scrollPrev = _state2.scrollPrev;
-    var _props3 = this.props,
-        type = _props3.type,
-        addable = _props3.addable,
-        closable = _props3.closable,
-        editable = _props3.editable;
+      var tabsCls = this.classNames({
+        'el-tabs': true,
+        'el-tabs--card': type === 'card',
+        'el-tabs--border-card': type === 'border-card'
+      });
+      var addButton = editable || addable ? _react2.default.createElement(
+        'span',
+        {
+          className: 'el-tabs__new-tab',
+          onClick: function onClick() {
+            return _this5.handleTabAdd();
+          }
+        },
+        _react2.default.createElement('i', { className: 'el-icon-plus' })
+      ) : null;
+      var scrollBtn = scrollable ? [_react2.default.createElement(
+        'span',
+        {
+          key: 'el-tabs__nav-prev',
+          className: scrollPrev ? 'el-tabs__nav-prev' : 'el-tabs__nav-prev is-disabled',
+          onClick: function onClick() {
+            return _this5.scrollPrev();
+          }
+        },
+        _react2.default.createElement('i', { className: 'el-icon-arrow-left' })
+      ), _react2.default.createElement(
+        'span',
+        {
+          key: 'el-tabs__nav-next',
+          className: scrollNext ? 'el-tabs__nav-next' : 'el-tabs__nav-next is-disabled',
+          onClick: function onClick() {
+            return _this5.scrollNext();
+          }
+        },
+        _react2.default.createElement('i', { className: 'el-icon-arrow-right' })
+      )] : null;
+      this.tabs = [];
 
-    var tabsCls = this.classNames({
-      'el-tabs': true,
-      'el-tabs--card': type === 'card',
-      'el-tabs--border-card': type === 'border-card'
-    });
-    var addButton = editable || addable ? React.createElement(
-      'span',
-      {
-        className: 'el-tabs__new-tab',
-        onClick: function onClick() {
-          return _this5.handleTabAdd();
-        }
-      },
-      React.createElement('i', { className: 'el-icon-plus' })
-    ) : null;
-    var scrollBtn = scrollable ? [React.createElement(
-      'span',
-      {
-        key: 'el-tabs__nav-prev',
-        className: scrollPrev ? 'el-tabs__nav-prev' : 'el-tabs__nav-prev is-disabled',
-        onClick: function onClick() {
-          return _this5.scrollPrev();
-        }
-      },
-      React.createElement('i', { className: 'el-icon-arrow-left' })
-    ), React.createElement(
-      'span',
-      {
-        key: 'el-tabs__nav-next',
-        className: scrollNext ? 'el-tabs__nav-next' : 'el-tabs__nav-next is-disabled',
-        onClick: function onClick() {
-          return _this5.scrollNext();
-        }
-      },
-      React.createElement('i', { className: 'el-icon-arrow-right' })
-    )] : null;
-    this.tabs = [];
-
-    return React.createElement(
-      'div',
-      { style: this.style(), className: this.className(tabsCls) },
-      React.createElement(
+      return _react2.default.createElement(
         'div',
-        { className: 'el-tabs__header' },
-        addButton,
-        React.createElement(
+        { style: this.style(), className: this.className(tabsCls) },
+        _react2.default.createElement(
           'div',
-          { className: scrollable ? 'el-tabs__nav-wrap is-scrollable' : 'el-tabs__nav-wrap' },
-          scrollBtn,
-          React.createElement(
+          { className: 'el-tabs__header' },
+          addButton,
+          _react2.default.createElement(
             'div',
-            { className: 'el-tabs__nav-scroll', ref: 'navScroll' },
-            React.createElement(
+            { className: scrollable ? 'el-tabs__nav-wrap is-scrollable' : 'el-tabs__nav-wrap' },
+            scrollBtn,
+            _react2.default.createElement(
               'div',
-              { className: 'el-tabs__nav', ref: 'nav', style: navStyle },
-              React.Children.map(children, function (item, index) {
-                var _item$props = item.props,
-                    name = _item$props.name,
-                    label = _item$props.label,
-                    disabled = _item$props.disabled;
+              { className: 'el-tabs__nav-scroll', ref: 'navScroll' },
+              _react2.default.createElement(
+                'div',
+                { className: 'el-tabs__nav', ref: 'nav', style: navStyle },
+                _react2.default.Children.map(children, function (item, index) {
+                  var _item$props = item.props,
+                      name = _item$props.name,
+                      label = _item$props.label,
+                      disabled = _item$props.disabled;
 
-                var tabCls = _this5.classNames({
-                  'el-tabs__item': true,
-                  'is-active': name === currentName,
-                  'is-disabled': disabled,
-                  'is-closable': closable || item.props.closable
-                });
+                  var tabCls = _this5.classNames({
+                    'el-tabs__item': true,
+                    'is-active': name === currentName,
+                    'is-disabled': disabled,
+                    'is-closable': closable || item.props.closable
+                  });
 
-                return React.createElement(
-                  'div',
-                  {
-                    key: 'el-tabs__item-' + index, ref: function ref(tab) {
-                      return tab && _this5.tabs.push(tab);
+                  return _react2.default.createElement(
+                    'div',
+                    {
+                      key: 'el-tabs__item-' + index, ref: function ref(tab) {
+                        return tab && _this5.tabs.push(tab);
+                      },
+                      name: name,
+                      className: tabCls, onClick: function onClick(e) {
+                        return _this5.handleTabClick(item, e);
+                      }
                     },
-                    name: name,
-                    className: tabCls, onClick: function onClick(e) {
-                      return _this5.handleTabClick(item, e);
-                    }
-                  },
-                  label,
-                  React.createElement(
-                    View,
-                    { show: editable || closable || item.props.closable },
-                    React.createElement('span', { className: 'el-icon-close', onClick: function onClick(e) {
-                        return _this5.handleTabRemove(item, index, e);
-                      } })
-                  )
-                );
-              }),
-              React.createElement(
-                View,
-                { show: !type },
-                React.createElement('div', { className: 'el-tabs__active-bar', style: barStyle })
+                    label,
+                    _react2.default.createElement(
+                      _libs.View,
+                      { show: editable || closable || item.props.closable },
+                      _react2.default.createElement('span', { className: 'el-icon-close', onClick: function onClick(e) {
+                          return _this5.handleTabRemove(item, index, e);
+                        } })
+                    )
+                  );
+                }),
+                _react2.default.createElement(
+                  _libs.View,
+                  { show: !type },
+                  _react2.default.createElement('div', { className: 'el-tabs__active-bar', style: barStyle })
+                )
               )
             )
           )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'el-tabs__content' },
+          _react2.default.Children.map(children, function (item) {
+            var name = item.props.name;
+
+            // let transitionName = '';
+            //
+            // if (name === currentName) {
+            //   transitionName = 'slideInRight';
+            // }
+
+            return _react2.default.createElement(
+              _libs.View,
+              { show: name === currentName },
+              item
+            );
+          })
         )
-      ),
-      React.createElement(
-        'div',
-        { className: 'el-tabs__content' },
-        React.Children.map(children, function (item) {
-          var name = item.props.name;
-
-          // let transitionName = '';
-          //
-          // if (name === currentName) {
-          //   transitionName = 'slideInRight';
-          // }
-
-          return React.createElement(
-            View,
-            { show: name === currentName },
-            item
-          );
-        })
-      )
-    );
-  };
-
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return Tabs;
-}(Component);
+}(_libs.Component);
 
-export default Tabs;
+var _default = Tabs;
+exports.default = _default;
 
 
 Tabs.propTypes = {
-  type: PropTypes.oneOf(['card', 'border-card']),
-  activeName: PropTypes.string,
-  value: PropTypes.string,
-  closable: PropTypes.bool,
-  addable: PropTypes.bool,
-  editable: PropTypes.bool,
-  onTabClick: PropTypes.func,
-  onTabRemove: PropTypes.func,
-  onTabAdd: PropTypes.func,
-  onTabEdit: PropTypes.func
+  type: _libs.PropTypes.oneOf(['card', 'border-card']),
+  activeName: _libs.PropTypes.string,
+  value: _libs.PropTypes.string,
+  closable: _libs.PropTypes.bool,
+  addable: _libs.PropTypes.bool,
+  editable: _libs.PropTypes.bool,
+  onTabClick: _libs.PropTypes.func,
+  onTabRemove: _libs.PropTypes.func,
+  onTabAdd: _libs.PropTypes.func,
+  onTabEdit: _libs.PropTypes.func
 };
 
 Tabs.defaultProps = {
@@ -412,3 +468,22 @@ Tabs.defaultProps = {
   addable: false,
   edidable: false
 };
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Tabs, 'Tabs', 'src/tabs/Tabs.jsx');
+  reactHotLoader.register(_default, 'default', 'src/tabs/Tabs.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

@@ -1,19 +1,54 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import { PropTypes, Component } from '../../libs';
-import { BAR_MAP, renderThumbStyle } from './util';
-import { on, off } from '../../libs/utils/dom';
+'use strict';
 
-export var Bar = function (_Component) {
-  _inherits(Bar, _Component);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Bar = undefined;
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _libs = require('../../libs');
+
+var _util = require('./util');
+
+var _dom = require('../../libs/utils/dom');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var Bar = exports.Bar = function (_Component) {
+  (0, _inherits3.default)(Bar, _Component);
 
   function Bar(props) {
-    _classCallCheck(this, Bar);
+    (0, _classCallCheck3.default)(this, Bar);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Bar.__proto__ || Object.getPrototypeOf(Bar)).call(this, props));
 
     _this.clickTrackHandler = _this.clickTrackHandler.bind(_this);
     _this.clickThumbHandler = _this.clickThumbHandler.bind(_this);
@@ -22,80 +57,93 @@ export var Bar = function (_Component) {
     return _this;
   }
 
-  Bar.prototype.clickThumbHandler = function clickThumbHandler(e) {
-    this.startDrag(e);
-    this[this.bar.axis] = e.currentTarget[this.bar.offset] - (e[this.bar.client] - e.currentTarget.getBoundingClientRect()[this.bar.direction]);
-  };
+  (0, _createClass3.default)(Bar, [{
+    key: 'clickThumbHandler',
+    value: function clickThumbHandler(e) {
+      this.startDrag(e);
+      this[this.bar.axis] = e.currentTarget[this.bar.offset] - (e[this.bar.client] - e.currentTarget.getBoundingClientRect()[this.bar.direction]);
+    }
+  }, {
+    key: 'clickTrackHandler',
+    value: function clickTrackHandler(e) {
+      var offset = Math.abs(e.target.getBoundingClientRect()[this.bar.direction] - e[this.bar.client]);
+      var thumbHalf = this.thumbRef[this.bar.offset] / 2;
+      var thumbPositionPercentage = (offset - thumbHalf) * 100 / this.rootRef[this.bar.offset];
 
-  Bar.prototype.clickTrackHandler = function clickTrackHandler(e) {
-    var offset = Math.abs(e.target.getBoundingClientRect()[this.bar.direction] - e[this.bar.client]);
-    var thumbHalf = this.thumbRef[this.bar.offset] / 2;
-    var thumbPositionPercentage = (offset - thumbHalf) * 100 / this.rootRef[this.bar.offset];
+      this.wrap[this.bar.scroll] = thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
+    }
+  }, {
+    key: 'startDrag',
+    value: function startDrag(e) {
+      e.nativeEvent.stopImmediatePropagation;
+      this.cursorDown = true;
 
-    this.wrap[this.bar.scroll] = thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
-  };
+      (0, _dom.on)(document, 'mousemove', this.mouseMoveDocumentHandler);
+      (0, _dom.on)(document, 'mouseup', this.mouseUpDocumentHandler);
+      document.onselectstart = function () {
+        return false;
+      };
+    }
+  }, {
+    key: 'mouseMoveDocumentHandler',
+    value: function mouseMoveDocumentHandler(e) {
+      if (this.cursorDown === false) return;
+      var prevPage = this[this.bar.axis];
 
-  Bar.prototype.startDrag = function startDrag(e) {
-    e.nativeEvent.stopImmediatePropagation;
-    this.cursorDown = true;
+      if (!prevPage) return;
 
-    on(document, 'mousemove', this.mouseMoveDocumentHandler);
-    on(document, 'mouseup', this.mouseUpDocumentHandler);
-    document.onselectstart = function () {
-      return false;
-    };
-  };
+      var offset = e[this.bar.client] - this.rootRef.getBoundingClientRect()[this.bar.direction];
+      var thumbClickPosition = this.thumbRef[this.bar.offset] - prevPage;
+      var thumbPositionPercentage = (offset - thumbClickPosition) * 100 / this.rootRef[this.bar.offset];
 
-  Bar.prototype.mouseMoveDocumentHandler = function mouseMoveDocumentHandler(e) {
-    if (this.cursorDown === false) return;
-    var prevPage = this[this.bar.axis];
+      this.wrap[this.bar.scroll] = thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
+    }
+  }, {
+    key: 'mouseUpDocumentHandler',
+    value: function mouseUpDocumentHandler() {
+      this.cursorDown = false;
+      this[this.bar.axis] = 0;
+      (0, _dom.off)(document, 'mousemove', this.mouseMoveDocumentHandler);
+      document.onselectstart = null;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
 
-    if (!prevPage) return;
-
-    var offset = e[this.bar.client] - this.rootRef.getBoundingClientRect()[this.bar.direction];
-    var thumbClickPosition = this.thumbRef[this.bar.offset] - prevPage;
-    var thumbPositionPercentage = (offset - thumbClickPosition) * 100 / this.rootRef[this.bar.offset];
-
-    this.wrap[this.bar.scroll] = thumbPositionPercentage * this.wrap[this.bar.scrollSize] / 100;
-  };
-
-  Bar.prototype.mouseUpDocumentHandler = function mouseUpDocumentHandler() {
-    this.cursorDown = false;
-    this[this.bar.axis] = 0;
-    off(document, 'mousemove', this.mouseMoveDocumentHandler);
-    document.onselectstart = null;
-  };
-
-  Bar.prototype.render = function render() {
-    var _this2 = this;
-
-    var _props = this.props,
-        size = _props.size,
-        move = _props.move;
+      var _props = this.props,
+          size = _props.size,
+          move = _props.move;
 
 
-    return React.createElement(
-      'div',
-      {
-        ref: function ref(root) {
-          return _this2.rootRef = root;
-        },
-        className: this.classNames('el-scrollbar__bar', 'is-' + this.bar.key),
-        onMouseDown: this.clickTrackHandler },
-      React.createElement('div', {
-        ref: function ref(thumb) {
-          return _this2.thumbRef = thumb;
-        },
-        className: 'el-scrollbar__thumb',
-        onMouseDown: this.clickThumbHandler,
-        style: renderThumbStyle({ size: size, move: move, bar: this.bar }) })
-    );
-  };
-
-  _createClass(Bar, [{
+      return _react2.default.createElement(
+        'div',
+        {
+          ref: function ref(root) {
+            return _this2.rootRef = root;
+          },
+          className: this.classNames('el-scrollbar__bar', 'is-' + this.bar.key),
+          onMouseDown: this.clickTrackHandler },
+        _react2.default.createElement('div', {
+          ref: function ref(thumb) {
+            return _this2.thumbRef = thumb;
+          },
+          className: 'el-scrollbar__thumb',
+          onMouseDown: this.clickThumbHandler,
+          style: (0, _util.renderThumbStyle)({ size: size, move: move, bar: this.bar }) })
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }, {
     key: 'bar',
     get: function get() {
-      return BAR_MAP[this.props.vertical ? 'vertical' : 'horizontal'];
+      return _util.BAR_MAP[this.props.vertical ? 'vertical' : 'horizontal'];
     }
   }, {
     key: 'wrap',
@@ -103,13 +151,30 @@ export var Bar = function (_Component) {
       return this.props.getParentWrap();
     }
   }]);
-
   return Bar;
-}(Component);
+}(_libs.Component);
 
 Bar.propTypes = {
-  vertical: PropTypes.bool,
-  size: PropTypes.string,
-  move: PropTypes.number,
-  getParentWrap: PropTypes.func.isRequired
+  vertical: _libs.PropTypes.bool,
+  size: _libs.PropTypes.string,
+  move: _libs.PropTypes.number,
+  getParentWrap: _libs.PropTypes.func.isRequired
 };
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Bar, 'Bar', 'src/scrollbar/Bar.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

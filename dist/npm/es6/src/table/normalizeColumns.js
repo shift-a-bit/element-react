@@ -1,8 +1,29 @@
-import * as React from 'react';
-import { getValueByPath } from "./utils";
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = normalizeColumns;
+
+var _react = require("react");
+
+var React = _interopRequireWildcard(_react);
+
+var _utils = require("./utils");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 function defaultRender(row, column) {
-  return getValueByPath(row, column.property);
+  return (0, _utils.getValueByPath)(row, column.property);
 }
 
 var defaults = {
@@ -44,7 +65,7 @@ var forced = {
 
 var columnIDSeed = 1;
 
-export default function normalizeColumns(columns, tableIDSeed) {
+function normalizeColumns(columns, tableIDSeed) {
   return columns.map(function (column) {
     var _column = void 0;
     if (column.subColumns) {
@@ -100,3 +121,25 @@ export default function normalizeColumns(columns, tableIDSeed) {
     return _column;
   });
 }
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(defaultRender, "defaultRender", "src/table/normalizeColumns.jsx");
+  reactHotLoader.register(defaults, "defaults", "src/table/normalizeColumns.jsx");
+  reactHotLoader.register(forced, "forced", "src/table/normalizeColumns.jsx");
+  reactHotLoader.register(columnIDSeed, "columnIDSeed", "src/table/normalizeColumns.jsx");
+  reactHotLoader.register(normalizeColumns, "normalizeColumns", "src/table/normalizeColumns.jsx");
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

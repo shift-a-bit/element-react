@@ -1,4 +1,24 @@
-import _typeof from 'babel-runtime/helpers/typeof';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
 /**
  *  String format template
  *  - Inspired:
@@ -15,12 +35,12 @@ var RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
  * @return {String}
  */
 
-export default function (string) {
+var _default = function _default(string) {
   for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     args[_key - 1] = arguments[_key];
   }
 
-  if (args.length === 1 && _typeof(args[0]) === 'object') {
+  if (args.length === 1 && (0, _typeof3.default)(args[0]) === 'object') {
     args = args[0];
   }
 
@@ -42,4 +62,25 @@ export default function (string) {
       return result;
     }
   });
-}
+};
+
+exports.default = _default;
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(RE_NARGS, 'RE_NARGS', 'src/locale/format.js');
+  reactHotLoader.register(_default, 'default', 'src/locale/format.js');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

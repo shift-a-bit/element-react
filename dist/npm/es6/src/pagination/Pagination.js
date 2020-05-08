@@ -1,133 +1,193 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import { Component, PropTypes } from '../../libs';
-import Pager from './Pager';
-import Select from '../select';
-import locale from '../locale';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _libs = require('../../libs');
+
+var _Pager = require('./Pager');
+
+var _Pager2 = _interopRequireDefault(_Pager);
+
+var _select = require('../select');
+
+var _select2 = _interopRequireDefault(_select);
+
+var _locale = require('../locale');
+
+var _locale2 = _interopRequireDefault(_locale);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var Pre = function Pre(props) {
   var disabled = props.internalCurrentPage <= 1 ? 'disabled' : '';
-  return React.createElement(
+  return _react2.default.createElement(
     'button',
     { type: 'button', className: 'btn-prev ' + disabled, onClick: props.prev },
-    React.createElement('i', { className: 'el-icon el-icon-arrow-left' })
+    _react2.default.createElement('i', { className: 'el-icon el-icon-arrow-left' })
   );
 };
 
 var Next = function Next(props) {
   var disabled = props.internalCurrentPage === props.internalPageCount || props.internalPageCount === 0 ? 'disabled' : '';
 
-  return React.createElement(
+  return _react2.default.createElement(
     'button',
     { type: 'button', className: 'btn-next ' + disabled, onClick: props.next },
-    React.createElement('i', { className: 'el-icon el-icon-arrow-right' })
+    _react2.default.createElement('i', { className: 'el-icon el-icon-arrow-right' })
   );
 };
 
 var Sizes = function (_Component) {
-  _inherits(Sizes, _Component);
+  (0, _inherits3.default)(Sizes, _Component);
 
   function Sizes() {
-    _classCallCheck(this, Sizes);
-
-    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    (0, _classCallCheck3.default)(this, Sizes);
+    return (0, _possibleConstructorReturn3.default)(this, (Sizes.__proto__ || Object.getPrototypeOf(Sizes)).apply(this, arguments));
   }
 
-  Sizes.prototype.render = function render() {
-    var _props = this.props,
-        onSizeChange = _props.onSizeChange,
-        internalPageSize = _props.internalPageSize;
+  (0, _createClass3.default)(Sizes, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          onSizeChange = _props.onSizeChange,
+          internalPageSize = _props.internalPageSize;
 
 
-    return React.createElement(
-      'span',
-      { className: 'el-pagination__sizes' },
-      React.createElement(
-        Select,
-        {
-          size: 'small',
-          value: internalPageSize,
-          onChange: onSizeChange,
-          width: 110
-        },
-        this.props.pageSizes.map(function (item, idx) {
-          return React.createElement(Select.Option, {
-            key: idx,
-            value: item,
-            label: item + ' ' + locale.t('el.pagination.pagesize')
-          });
-        })
-      )
-    );
-  };
-
+      return _react2.default.createElement(
+        'span',
+        { className: 'el-pagination__sizes' },
+        _react2.default.createElement(
+          _select2.default,
+          {
+            size: 'small',
+            value: internalPageSize,
+            onChange: onSizeChange,
+            width: 110
+          },
+          this.props.pageSizes.map(function (item, idx) {
+            return _react2.default.createElement(_select2.default.Option, {
+              key: idx,
+              value: item,
+              label: item + ' ' + _locale2.default.t('el.pagination.pagesize')
+            });
+          })
+        )
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return Sizes;
-}(Component);
+}(_libs.Component);
 
 var Total = function Total(props) {
-  return typeof props.total === 'number' ? React.createElement(
+  return typeof props.total === 'number' ? _react2.default.createElement(
     'span',
     { className: 'el-pagination__total' },
-    locale.t('el.pagination.total', { total: props.total })
-  ) : React.createElement('span', null);
+    _locale2.default.t('el.pagination.total', { total: props.total })
+  ) : _react2.default.createElement('span', null);
 };
 
 var Jumper = function (_Component2) {
-  _inherits(Jumper, _Component2);
+  (0, _inherits3.default)(Jumper, _Component2);
 
   function Jumper() {
-    _classCallCheck(this, Jumper);
-
-    return _possibleConstructorReturn(this, _Component2.apply(this, arguments));
+    (0, _classCallCheck3.default)(this, Jumper);
+    return (0, _possibleConstructorReturn3.default)(this, (Jumper.__proto__ || Object.getPrototypeOf(Jumper)).apply(this, arguments));
   }
 
-  Jumper.prototype.handleChange = function handleChange(_ref) {
-    var target = _ref.target;
-    var jumper = this.props.jumper;
+  (0, _createClass3.default)(Jumper, [{
+    key: 'handleChange',
+    value: function handleChange(_ref) {
+      var target = _ref.target;
+      var jumper = this.props.jumper;
 
-    jumper(target.value);
-  };
+      jumper(target.value);
+    }
+  }, {
+    key: 'handleFocus',
+    value: function handleFocus() {}
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
 
-  Jumper.prototype.handleFocus = function handleFocus() {};
-
-  Jumper.prototype.render = function render() {
-    var _this3 = this;
-
-    return React.createElement(
-      'span',
-      { className: 'el-pagination__jump' },
-      locale.t('el.pagination.goto'),
-      React.createElement('input', {
-        className: 'el-pagination__editor',
-        type: 'number',
-        min: 1,
-        max: this.props.internalPageCount,
-        defaultValue: this.props.internalCurrentPage,
-        onBlur: this.handleChange.bind(this),
-        onKeyUp: function onKeyUp(e) {
-          if (e.keyCode == 13) {
-            _this3.handleChange(e);
-          }
-        },
-        onFocus: this.handleFocus.bind(this),
-        style: { width: '30px' }
-      }),
-      locale.t('el.pagination.pageClassifier')
-    );
-  };
-
+      return _react2.default.createElement(
+        'span',
+        { className: 'el-pagination__jump' },
+        _locale2.default.t('el.pagination.goto'),
+        _react2.default.createElement('input', {
+          className: 'el-pagination__editor',
+          type: 'number',
+          min: 1,
+          max: this.props.internalPageCount,
+          defaultValue: this.props.internalCurrentPage,
+          onBlur: this.handleChange.bind(this),
+          onKeyUp: function onKeyUp(e) {
+            if (e.keyCode == 13) {
+              _this3.handleChange(e);
+            }
+          },
+          onFocus: this.handleFocus.bind(this),
+          style: { width: '30px' }
+        }),
+        _locale2.default.t('el.pagination.pageClassifier')
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return Jumper;
-}(Component);
+}(_libs.Component);
 
 var Pagination = function (_Component3) {
-  _inherits(Pagination, _Component3);
+  (0, _inherits3.default)(Pagination, _Component3);
 
   function Pagination(props, context) {
-    _classCallCheck(this, Pagination);
+    (0, _classCallCheck3.default)(this, Pagination);
 
-    var _this4 = _possibleConstructorReturn(this, _Component3.call(this, props, context));
+    var _this4 = (0, _possibleConstructorReturn3.default)(this, (Pagination.__proto__ || Object.getPrototypeOf(Pagination)).call(this, props, context));
 
     var _this4$props = _this4.props,
         currentPage = _this4$props.currentPage,
@@ -153,242 +213,260 @@ var Pagination = function (_Component3) {
     return _this4;
   }
 
-  Pagination.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-    var _this5 = this;
+  (0, _createClass3.default)(Pagination, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      var _this5 = this;
 
-    var _props2 = this.props,
-        currentPage = _props2.currentPage,
-        pageSizes = _props2.pageSizes,
-        pageSize = _props2.pageSize,
-        total = _props2.total,
-        pageCount = _props2.pageCount;
+      var _props2 = this.props,
+          currentPage = _props2.currentPage,
+          pageSizes = _props2.pageSizes,
+          pageSize = _props2.pageSize,
+          total = _props2.total,
+          pageCount = _props2.pageCount;
 
 
-    if (nextProps.currentPage != currentPage || nextProps.pageSizes != pageSizes || nextProps.pageSize != pageSize || nextProps.total != total || nextProps.pageCount != pageCount) {
-      var _internalPageSize = this.state.internalPageSize;
+      if (nextProps.currentPage != currentPage || nextProps.pageSizes != pageSizes || nextProps.pageSize != pageSize || nextProps.total != total || nextProps.pageCount != pageCount) {
+        var _internalPageSize = this.state.internalPageSize;
 
-      var hasSizesLayout = nextProps.layout.split(',').map(function (item) {
-        return item.trim();
-      }).indexOf('sizes') > -1;
+        var hasSizesLayout = nextProps.layout.split(',').map(function (item) {
+          return item.trim();
+        }).indexOf('sizes') > -1;
 
-      if (hasSizesLayout && Array.isArray(nextProps.pageSizes)) {
-        _internalPageSize = nextProps.pageSizes.indexOf(nextProps.pageSize) > -1 ? nextProps.pageSize : nextProps.pageSizes[0];
+        if (hasSizesLayout && Array.isArray(nextProps.pageSizes)) {
+          _internalPageSize = nextProps.pageSizes.indexOf(nextProps.pageSize) > -1 ? nextProps.pageSize : nextProps.pageSizes[0];
+        }
+
+        this.setState({
+          internalPageSize: _internalPageSize,
+          total: nextProps.total,
+          pageCount: nextProps.pageCount
+        }, function () {
+          _this5.setState({
+            internalCurrentPage: nextProps.currentPage ? _this5.getValidCurrentPage(nextProps.currentPage) : 1
+          });
+        });
       }
+    }
+  }, {
+    key: 'pre',
+    value: function pre() {
+      var _this6 = this;
+
+      var oldPage = this.state.internalCurrentPage;
+      var newVal = this.state.internalCurrentPage - 1;
 
       this.setState({
-        internalPageSize: _internalPageSize,
-        total: nextProps.total,
-        pageCount: nextProps.pageCount
+        internalCurrentPage: this.getValidCurrentPage(newVal)
       }, function () {
-        _this5.setState({
-          internalCurrentPage: nextProps.currentPage ? _this5.getValidCurrentPage(nextProps.currentPage) : 1
-        });
+        if (_this6.state.internalCurrentPage !== oldPage) {
+          var onCurrentChange = _this6.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(_this6.state.internalCurrentPage);
+        }
       });
     }
-  };
+  }, {
+    key: 'next',
+    value: function next() {
+      var _this7 = this;
 
-  Pagination.prototype.pre = function pre() {
-    var _this6 = this;
+      var oldPage = this.state.internalCurrentPage;
+      var newVal = this.state.internalCurrentPage + 1;
 
-    var oldPage = this.state.internalCurrentPage;
-    var newVal = this.state.internalCurrentPage - 1;
+      this.setState({
+        internalCurrentPage: this.getValidCurrentPage(newVal)
+      }, function () {
+        if (_this7.state.internalCurrentPage !== oldPage) {
+          var onCurrentChange = _this7.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(_this7.state.internalCurrentPage);
+        }
+      });
+    }
+  }, {
+    key: 'getValidCurrentPage',
+    value: function getValidCurrentPage(value) {
+      value = parseInt(value, 10);
 
-    this.setState({
-      internalCurrentPage: this.getValidCurrentPage(newVal)
-    }, function () {
-      if (_this6.state.internalCurrentPage !== oldPage) {
-        var onCurrentChange = _this6.props.onCurrentChange;
-        onCurrentChange && onCurrentChange(_this6.state.internalCurrentPage);
+      var internalPageCount = this.internalPageCount();
+
+      var resetValue = void 0;
+      if (!internalPageCount) {
+        if (isNaN(value) || value < 1) resetValue = 1;
+      } else {
+        if (value < 1) {
+          resetValue = 1;
+        } else if (value > internalPageCount) {
+          resetValue = internalPageCount;
+        }
       }
-    });
-  };
 
-  Pagination.prototype.next = function next() {
-    var _this7 = this;
-
-    var oldPage = this.state.internalCurrentPage;
-    var newVal = this.state.internalCurrentPage + 1;
-
-    this.setState({
-      internalCurrentPage: this.getValidCurrentPage(newVal)
-    }, function () {
-      if (_this7.state.internalCurrentPage !== oldPage) {
-        var onCurrentChange = _this7.props.onCurrentChange;
-        onCurrentChange && onCurrentChange(_this7.state.internalCurrentPage);
-      }
-    });
-  };
-
-  Pagination.prototype.getValidCurrentPage = function getValidCurrentPage(value) {
-    value = parseInt(value, 10);
-
-    var internalPageCount = this.internalPageCount();
-
-    var resetValue = void 0;
-    if (!internalPageCount) {
-      if (isNaN(value) || value < 1) resetValue = 1;
-    } else {
-      if (value < 1) {
+      if (resetValue === undefined && isNaN(value)) {
         resetValue = 1;
-      } else if (value > internalPageCount) {
-        resetValue = internalPageCount;
+      } else if (resetValue === 0) {
+        resetValue = 1;
       }
+
+      return resetValue === undefined ? value : resetValue;
     }
+  }, {
+    key: 'internalPageCount',
+    value: function internalPageCount() {
+      if (this.state) {
+        if (typeof this.state.total === 'number') {
+          return Math.ceil(this.state.total / this.state.internalPageSize);
+        } else if (typeof this.state.pageCount === 'number') {
+          return this.state.pageCount;
+        }
+      }
 
-    if (resetValue === undefined && isNaN(value)) {
-      resetValue = 1;
-    } else if (resetValue === 0) {
-      resetValue = 1;
+      return null;
     }
+  }, {
+    key: 'jumperToPage',
+    value: function jumperToPage(page) {
+      var _this8 = this;
 
-    return resetValue === undefined ? value : resetValue;
-  };
-
-  Pagination.prototype.internalPageCount = function internalPageCount() {
-    if (this.state) {
-      if (typeof this.state.total === 'number') {
-        return Math.ceil(this.state.total / this.state.internalPageSize);
-      } else if (typeof this.state.pageCount === 'number') {
-        return this.state.pageCount;
-      }
-    }
-
-    return null;
-  };
-
-  Pagination.prototype.jumperToPage = function jumperToPage(page) {
-    var _this8 = this;
-
-    var oldPage = this.state.internalCurrentPage;
-    this.setState({
-      internalCurrentPage: this.getValidCurrentPage(page)
-    }, function () {
-      if (oldPage !== _this8.state.internalCurrentPage) {
-        var onCurrentChange = _this8.props.onCurrentChange;
-        onCurrentChange && onCurrentChange(_this8.state.internalCurrentPage);
-      }
-    });
-
-    //this.oldValue = null;
-  };
-
-  Pagination.prototype.handleCurrentChange = function handleCurrentChange(val) {
-    var _this9 = this;
-
-    var oldPage = this.state.internalCurrentPage;
-    this.setState({
-      internalCurrentPage: this.getValidCurrentPage(val)
-    }, function () {
-      if (oldPage !== _this9.state.internalCurrentPage) {
-        var onCurrentChange = _this9.props.onCurrentChange;
-        onCurrentChange && onCurrentChange(_this9.state.internalCurrentPage);
-      }
-    });
-  };
-
-  Pagination.prototype.onSizeChange = function onSizeChange(val) {
-    var _this10 = this;
-
-    if (val !== this.state.internalPageSize) {
-      val = parseInt(val, 10);
-
+      var oldPage = this.state.internalCurrentPage;
       this.setState({
-        internalPageSize: val
+        internalCurrentPage: this.getValidCurrentPage(page)
       }, function () {
-        _this10.setState({
-          internalCurrentPage: _this10.getValidCurrentPage(_this10.state.internalCurrentPage)
-        });
-        var onSizeChange = _this10.props.onSizeChange;
+        if (oldPage !== _this8.state.internalCurrentPage) {
+          var onCurrentChange = _this8.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(_this8.state.internalCurrentPage);
+        }
+      });
 
-        onSizeChange && onSizeChange(val);
+      //this.oldValue = null;
+    }
+  }, {
+    key: 'handleCurrentChange',
+    value: function handleCurrentChange(val) {
+      var _this9 = this;
+
+      var oldPage = this.state.internalCurrentPage;
+      this.setState({
+        internalCurrentPage: this.getValidCurrentPage(val)
+      }, function () {
+        if (oldPage !== _this9.state.internalCurrentPage) {
+          var onCurrentChange = _this9.props.onCurrentChange;
+          onCurrentChange && onCurrentChange(_this9.state.internalCurrentPage);
+        }
       });
     }
-  };
+  }, {
+    key: 'onSizeChange',
+    value: function onSizeChange(val) {
+      var _this10 = this;
 
-  Pagination.prototype.render = function render() {
-    var _state = this.state,
-        internalCurrentPage = _state.internalCurrentPage,
-        internalPageSize = _state.internalPageSize;
+      if (val !== this.state.internalPageSize) {
+        val = parseInt(val, 10);
 
+        this.setState({
+          internalPageSize: val
+        }, function () {
+          _this10.setState({
+            internalCurrentPage: _this10.getValidCurrentPage(_this10.state.internalCurrentPage)
+          });
+          var onSizeChange = _this10.props.onSizeChange;
 
-    var className = this.classNames({
-      'el-pagination': true,
-      'el-pagination__rightwrapper': false,
-      'el-pagination--small': this.props.small
-    });
-
-    var children = [];
-    var layout = this.props.layout || '';
-
-    if (!layout) return null;
-
-    var components = layout.split(',').map(function (item) {
-      return item.trim();
-    });
-    var TEMPLATE_MAP = {
-      prev: React.createElement(Pre, {
-        key: 'pre',
-        internalCurrentPage: internalCurrentPage,
-        prev: this.pre.bind(this)
-      }),
-      jumper: React.createElement(Jumper, {
-        key: 'jumper',
-        jumper: this.jumperToPage.bind(this),
-        internalPageCount: this.internalPageCount(),
-        internalCurrentPage: internalCurrentPage
-      }),
-      pager: React.createElement(Pager, {
-        key: 'pager',
-        currentPage: internalCurrentPage,
-        pageCount: this.internalPageCount(),
-        onChange: this.handleCurrentChange.bind(this)
-      }),
-      next: React.createElement(Next, {
-        key: 'next',
-        internalCurrentPage: internalCurrentPage,
-        internalPageCount: this.internalPageCount(),
-        next: this.next.bind(this)
-      }),
-      sizes: React.createElement(Sizes, {
-        key: 'sizes',
-        internalPageSize: internalPageSize,
-        pageSizes: this.props.pageSizes,
-        onSizeChange: this.onSizeChange.bind(this)
-      }),
-      total: React.createElement(Total, { key: 'total', total: this.state.total })
-    };
-
-    components.forEach(function (compo) {
-      if (compo !== '->') {
-        children.push(TEMPLATE_MAP[compo]);
+          onSizeChange && onSizeChange(val);
+        });
       }
-    });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _state = this.state,
+          internalCurrentPage = _state.internalCurrentPage,
+          internalPageSize = _state.internalPageSize;
 
-    return React.createElement(
-      'div',
-      { style: this.style(), className: this.className(className) },
-      children
-    );
-  };
 
+      var className = this.classNames({
+        'el-pagination': true,
+        'el-pagination__rightwrapper': false,
+        'el-pagination--small': this.props.small
+      });
+
+      var children = [];
+      var layout = this.props.layout || '';
+
+      if (!layout) return null;
+
+      var components = layout.split(',').map(function (item) {
+        return item.trim();
+      });
+      var TEMPLATE_MAP = {
+        prev: _react2.default.createElement(Pre, {
+          key: 'pre',
+          internalCurrentPage: internalCurrentPage,
+          prev: this.pre.bind(this)
+        }),
+        jumper: _react2.default.createElement(Jumper, {
+          key: 'jumper',
+          jumper: this.jumperToPage.bind(this),
+          internalPageCount: this.internalPageCount(),
+          internalCurrentPage: internalCurrentPage
+        }),
+        pager: _react2.default.createElement(_Pager2.default, {
+          key: 'pager',
+          currentPage: internalCurrentPage,
+          pageCount: this.internalPageCount(),
+          onChange: this.handleCurrentChange.bind(this)
+        }),
+        next: _react2.default.createElement(Next, {
+          key: 'next',
+          internalCurrentPage: internalCurrentPage,
+          internalPageCount: this.internalPageCount(),
+          next: this.next.bind(this)
+        }),
+        sizes: _react2.default.createElement(Sizes, {
+          key: 'sizes',
+          internalPageSize: internalPageSize,
+          pageSizes: this.props.pageSizes,
+          onSizeChange: this.onSizeChange.bind(this)
+        }),
+        total: _react2.default.createElement(Total, { key: 'total', total: this.state.total })
+      };
+
+      components.forEach(function (compo) {
+        if (compo !== '->') {
+          children.push(TEMPLATE_MAP[compo]);
+        }
+      });
+
+      return _react2.default.createElement(
+        'div',
+        { style: this.style(), className: this.className(className) },
+        children
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return Pagination;
-}(Component);
+}(_libs.Component);
 
-export default Pagination;
+var _default = Pagination;
+exports.default = _default;
 
 
 Pagination.propTypes = {
-  pageSize: PropTypes.number,
-  small: PropTypes.bool,
-  total: PropTypes.number,
-  pageCount: PropTypes.number,
-  currentPage: PropTypes.number,
-  layout: PropTypes.string,
-  pageSizes: PropTypes.array,
+  pageSize: _libs.PropTypes.number,
+  small: _libs.PropTypes.bool,
+  total: _libs.PropTypes.number,
+  pageCount: _libs.PropTypes.number,
+  currentPage: _libs.PropTypes.number,
+  layout: _libs.PropTypes.string,
+  pageSizes: _libs.PropTypes.array,
 
   //Event
-  onCurrentChange: PropTypes.func,
-  onSizeChange: PropTypes.func
+  onCurrentChange: _libs.PropTypes.func,
+  onSizeChange: _libs.PropTypes.func
 };
 
 Pagination.defaultProps = {
@@ -398,3 +476,27 @@ Pagination.defaultProps = {
   layout: 'prev, pager, next, jumper, ->, total',
   pageSizes: [10, 20, 30, 40, 50, 100]
 };
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Pre, 'Pre', 'src/pagination/Pagination.jsx');
+  reactHotLoader.register(Next, 'Next', 'src/pagination/Pagination.jsx');
+  reactHotLoader.register(Sizes, 'Sizes', 'src/pagination/Pagination.jsx');
+  reactHotLoader.register(Total, 'Total', 'src/pagination/Pagination.jsx');
+  reactHotLoader.register(Jumper, 'Jumper', 'src/pagination/Pagination.jsx');
+  reactHotLoader.register(Pagination, 'Pagination', 'src/pagination/Pagination.jsx');
+  reactHotLoader.register(_default, 'default', 'src/pagination/Pagination.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

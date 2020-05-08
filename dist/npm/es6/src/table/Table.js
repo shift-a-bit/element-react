@@ -1,24 +1,73 @@
-import _extends from 'babel-runtime/helpers/extends';
-import _objectWithoutProperties from 'babel-runtime/helpers/objectWithoutProperties';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import * as React from 'react';
-import { Component, PropTypes } from '../../libs';
-import TableHeader from './TableHeader';
-import TableBody from './TableBody';
-import TableFooter from './TableFooter';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _objectWithoutProperties2 = require('babel-runtime/helpers/objectWithoutProperties');
+
+var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var React = _interopRequireWildcard(_react);
+
+var _libs = require('../../libs');
+
+var _TableHeader = require('./TableHeader');
+
+var _TableHeader2 = _interopRequireDefault(_TableHeader);
+
+var _TableBody = require('./TableBody');
+
+var _TableBody2 = _interopRequireDefault(_TableBody);
+
+var _TableFooter = require('./TableFooter');
+
+var _TableFooter2 = _interopRequireDefault(_TableFooter);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 // let tableIdSeed = 1;
 
 var Table = function (_Component) {
-  _inherits(Table, _Component);
+  (0, _inherits3.default)(Table, _Component);
 
   function Table(props) {
-    _classCallCheck(this, Table);
+    (0, _classCallCheck3.default)(this, Table);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Table.__proto__ || Object.getPrototypeOf(Table)).call(this, props));
 
     _this.state = {};
 
@@ -31,211 +80,221 @@ var Table = function (_Component) {
     return _this;
   }
 
-  Table.prototype.getChildContext = function getChildContext() {
-    return {
-      table: this
-    };
-  };
-
-  Table.prototype.syncScroll = function syncScroll() {
-    var headerWrapper = this.headerWrapper,
-        footerWrapper = this.footerWrapper,
-        bodyWrapper = this.bodyWrapper,
-        fixedBodyWrapper = this.fixedBodyWrapper,
-        rightFixedBodyWrapper = this.rightFixedBodyWrapper;
-
-    if (headerWrapper) {
-      headerWrapper.scrollLeft = bodyWrapper.scrollLeft;
+  (0, _createClass3.default)(Table, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        table: this
+      };
     }
-    if (footerWrapper) {
-      footerWrapper.scrollLeft = bodyWrapper.scrollLeft;
+  }, {
+    key: 'syncScroll',
+    value: function syncScroll() {
+      var headerWrapper = this.headerWrapper,
+          footerWrapper = this.footerWrapper,
+          bodyWrapper = this.bodyWrapper,
+          fixedBodyWrapper = this.fixedBodyWrapper,
+          rightFixedBodyWrapper = this.rightFixedBodyWrapper;
+
+      if (headerWrapper) {
+        headerWrapper.scrollLeft = bodyWrapper.scrollLeft;
+      }
+      if (footerWrapper) {
+        footerWrapper.scrollLeft = bodyWrapper.scrollLeft;
+      }
+
+      if (fixedBodyWrapper) {
+        fixedBodyWrapper.scrollTop = bodyWrapper.scrollTop;
+      }
+      if (rightFixedBodyWrapper) {
+        rightFixedBodyWrapper.scrollTop = bodyWrapper.scrollTop;
+      }
     }
+  }, {
+    key: 'bindRef',
+    value: function bindRef(key) {
+      var _this2 = this;
 
-    if (fixedBodyWrapper) {
-      fixedBodyWrapper.scrollTop = bodyWrapper.scrollTop;
+      return function (node) {
+        _this2[key] = node;
+      };
     }
-    if (rightFixedBodyWrapper) {
-      rightFixedBodyWrapper.scrollTop = bodyWrapper.scrollTop;
-    }
-  };
-
-  Table.prototype.bindRef = function bindRef(key) {
-    var _this2 = this;
-
-    return function (node) {
-      _this2[key] = node;
-    };
-  };
-
-  Table.prototype.render = function render() {
-    var _props = this.props,
-        tableStoreState = _props.tableStoreState,
-        layout = _props.layout,
-        props = _objectWithoutProperties(_props, ['tableStoreState', 'layout']);
-
-    var isHidden = this.state.isHidden;
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          tableStoreState = _props.tableStoreState,
+          layout = _props.layout,
+          props = (0, _objectWithoutProperties3.default)(_props, ['tableStoreState', 'layout']);
+      var isHidden = this.state.isHidden;
 
 
-    return React.createElement(
-      'div',
-      {
-        style: this.style({
-          height: props.height,
-          maxHeight: props.maxHeight
-        }),
-        className: this.className('el-table', {
-          'el-table--fit': props.fit,
-          'el-table--striped': props.stripe,
-          'el-table--border': props.border,
-          'el-table--hidden': isHidden,
-          'el-table--fluid-height': props.maxHeight,
-          'el-table--enable-row-hover': !tableStoreState.isComplex,
-          'el-table--enable-row-transition': (tableStoreState.data || []).length && (tableStoreState.data || []).length < 100
-        }),
-        ref: this.bindRef('el')
-      },
-      props.showHeader && React.createElement(
-        'div',
-        { className: 'el-table__header-wrapper', ref: this.bindRef('headerWrapper') },
-        React.createElement(TableHeader, _extends({}, this.props, {
-          style: { width: this.bodyWidth || '' }
-        }))
-      ),
-      React.createElement(
+      return React.createElement(
         'div',
         {
-          style: this.bodyWrapperHeight,
-          className: 'el-table__body-wrapper',
-          ref: this.bindRef('bodyWrapper'),
-          onScroll: this.syncScroll
-        },
-        React.createElement(TableBody, _extends({}, this.props, {
-          style: { width: this.bodyWidth }
-        })),
-        (!props.data || !props.data.length) && React.createElement(
-          'div',
-          {
-            style: { width: this.bodyWidth },
-            className: 'el-table__empty-block'
-          },
-          React.createElement(
-            'span',
-            { className: 'el-table__empty-text' },
-            props.emptyText
-          )
-        )
-      ),
-      props.showSummary && React.createElement(
-        'div',
-        {
-          style: { visibility: props.data && props.data.length ? 'visible' : 'hidden' },
-          className: 'el-table__footer-wrapper',
-          ref: this.bindRef('footerWrapper')
-        },
-        React.createElement(TableFooter, _extends({}, this.props, {
-          style: { width: this.bodyWidth || '' }
-        }))
-      ),
-      !!tableStoreState.fixedColumns.length && React.createElement(
-        'div',
-        {
-          style: Object.assign({}, this.fixedHeight, {
-            width: layout.fixedWidth || ''
+          style: this.style({
+            height: props.height,
+            maxHeight: props.maxHeight
           }),
-          className: 'el-table__fixed',
-          ref: this.bindRef('fixedWrapper')
+          className: this.className('el-table', {
+            'el-table--fit': props.fit,
+            'el-table--striped': props.stripe,
+            'el-table--border': props.border,
+            'el-table--hidden': isHidden,
+            'el-table--fluid-height': props.maxHeight,
+            'el-table--enable-row-hover': !tableStoreState.isComplex,
+            'el-table--enable-row-transition': (tableStoreState.data || []).length && (tableStoreState.data || []).length < 100
+          }),
+          ref: this.bindRef('el')
         },
         props.showHeader && React.createElement(
           'div',
-          { className: 'el-table__fixed-header-wrapper', ref: this.bindRef('fixedHeaderWrapper') },
-          React.createElement(TableHeader, _extends({
-            fixed: 'left'
-          }, this.props, {
+          { className: 'el-table__header-wrapper', ref: this.bindRef('headerWrapper') },
+          React.createElement(_TableHeader2.default, (0, _extends3.default)({}, this.props, {
             style: { width: this.bodyWidth || '' }
           }))
         ),
         React.createElement(
           'div',
           {
-            style: Object.assign({}, this.fixedBodyHeight, {
-              top: layout.headerHeight || 0
+            style: this.bodyWrapperHeight,
+            className: 'el-table__body-wrapper',
+            ref: this.bindRef('bodyWrapper'),
+            onScroll: this.syncScroll
+          },
+          React.createElement(_TableBody2.default, (0, _extends3.default)({}, this.props, {
+            style: { width: this.bodyWidth }
+          })),
+          (!props.data || !props.data.length) && React.createElement(
+            'div',
+            {
+              style: { width: this.bodyWidth },
+              className: 'el-table__empty-block'
+            },
+            React.createElement(
+              'span',
+              { className: 'el-table__empty-text' },
+              props.emptyText
+            )
+          )
+        ),
+        props.showSummary && React.createElement(
+          'div',
+          {
+            style: { visibility: props.data && props.data.length ? 'visible' : 'hidden' },
+            className: 'el-table__footer-wrapper',
+            ref: this.bindRef('footerWrapper')
+          },
+          React.createElement(_TableFooter2.default, (0, _extends3.default)({}, this.props, {
+            style: { width: this.bodyWidth || '' }
+          }))
+        ),
+        !!tableStoreState.fixedColumns.length && React.createElement(
+          'div',
+          {
+            style: Object.assign({}, this.fixedHeight, {
+              width: layout.fixedWidth || ''
             }),
-            className: 'el-table__fixed-body-wrapper',
-            ref: this.bindRef('fixedBodyWrapper')
+            className: 'el-table__fixed',
+            ref: this.bindRef('fixedWrapper')
           },
-          React.createElement(TableBody, _extends({
-            fixed: 'left'
-          }, this.props, {
-            style: { width: this.bodyWidth || '' }
-          }))
+          props.showHeader && React.createElement(
+            'div',
+            { className: 'el-table__fixed-header-wrapper', ref: this.bindRef('fixedHeaderWrapper') },
+            React.createElement(_TableHeader2.default, (0, _extends3.default)({
+              fixed: 'left'
+            }, this.props, {
+              style: { width: this.bodyWidth || '' }
+            }))
+          ),
+          React.createElement(
+            'div',
+            {
+              style: Object.assign({}, this.fixedBodyHeight, {
+                top: layout.headerHeight || 0
+              }),
+              className: 'el-table__fixed-body-wrapper',
+              ref: this.bindRef('fixedBodyWrapper')
+            },
+            React.createElement(_TableBody2.default, (0, _extends3.default)({
+              fixed: 'left'
+            }, this.props, {
+              style: { width: this.bodyWidth || '' }
+            }))
+          ),
+          props.showSummary && React.createElement(
+            'div',
+            { className: 'el-table__fixed-footer-wrapper', ref: this.bindRef('fixedFooterWrapper') },
+            React.createElement(_TableFooter2.default, (0, _extends3.default)({
+              fixed: 'left'
+            }, this.props, {
+              style: { width: this.bodyWidth || '' }
+            }))
+          )
         ),
-        props.showSummary && React.createElement(
-          'div',
-          { className: 'el-table__fixed-footer-wrapper', ref: this.bindRef('fixedFooterWrapper') },
-          React.createElement(TableFooter, _extends({
-            fixed: 'left'
-          }, this.props, {
-            style: { width: this.bodyWidth || '' }
-          }))
-        )
-      ),
-      !!tableStoreState.rightFixedColumns.length && React.createElement(
-        'div',
-        {
-          className: 'el-table__fixed-right',
-          ref: this.bindRef('rightFixedWrapper'),
-          style: Object.assign({}, {
-            width: layout.rightFixedWidth || '',
-            right: layout.scrollY ? props.border ? layout.gutterWidth : layout.gutterWidth || 1 : ''
-          }, this.fixedHeight)
-        },
-        props.showHeader && React.createElement(
-          'div',
-          { className: 'el-table__fixed-header-wrapper', ref: this.bindRef('rightFixedHeaderWrapper') },
-          React.createElement(TableHeader, _extends({
-            fixed: 'right'
-          }, this.props, {
-            style: { width: this.bodyWidth || '' }
-          }))
-        ),
-        React.createElement(
+        !!tableStoreState.rightFixedColumns.length && React.createElement(
           'div',
           {
-            className: 'el-table__fixed-body-wrapper',
-            ref: this.bindRef('rightFixedBodyWrapper'),
+            className: 'el-table__fixed-right',
+            ref: this.bindRef('rightFixedWrapper'),
             style: Object.assign({}, {
-              top: layout.headerHeight
-            }, this.fixedBodyHeight)
+              width: layout.rightFixedWidth || '',
+              right: layout.scrollY ? props.border ? layout.gutterWidth : layout.gutterWidth || 1 : ''
+            }, this.fixedHeight)
           },
-          React.createElement(TableBody, _extends({
-            fixed: 'right'
-          }, this.props, {
-            style: { width: this.bodyWidth || '' }
-          }))
+          props.showHeader && React.createElement(
+            'div',
+            { className: 'el-table__fixed-header-wrapper', ref: this.bindRef('rightFixedHeaderWrapper') },
+            React.createElement(_TableHeader2.default, (0, _extends3.default)({
+              fixed: 'right'
+            }, this.props, {
+              style: { width: this.bodyWidth || '' }
+            }))
+          ),
+          React.createElement(
+            'div',
+            {
+              className: 'el-table__fixed-body-wrapper',
+              ref: this.bindRef('rightFixedBodyWrapper'),
+              style: Object.assign({}, {
+                top: layout.headerHeight
+              }, this.fixedBodyHeight)
+            },
+            React.createElement(_TableBody2.default, (0, _extends3.default)({
+              fixed: 'right'
+            }, this.props, {
+              style: { width: this.bodyWidth || '' }
+            }))
+          ),
+          props.showSummary && React.createElement(
+            'div',
+            {
+              className: 'el-table__fixed-footer-wrapper',
+              ref: this.bindRef('rightFixedFooterWrapper'),
+              style: { visibility: props.data && props.data.length ? 'visible' : 'hidden' }
+            },
+            React.createElement(_TableFooter2.default, (0, _extends3.default)({
+              fixed: 'right'
+            }, this.props, {
+              style: { width: this.bodyWidth || '' }
+            }))
+          )
         ),
-        props.showSummary && React.createElement(
-          'div',
-          {
-            className: 'el-table__fixed-footer-wrapper',
-            ref: this.bindRef('rightFixedFooterWrapper'),
-            style: { visibility: props.data && props.data.length ? 'visible' : 'hidden' }
-          },
-          React.createElement(TableFooter, _extends({
-            fixed: 'right'
-          }, this.props, {
-            style: { width: this.bodyWidth || '' }
-          }))
-        )
-      ),
-      !!tableStoreState.rightFixedColumns.length && React.createElement('div', {
-        className: 'el-table__fixed-right-patch',
-        style: { width: layout.scrollY ? layout.gutterWidth : '0', height: layout.headerHeight }
-      }),
-      React.createElement('div', { className: 'el-table__column-resize-proxy', ref: this.bindRef('resizeProxy'), style: { visibility: 'hidden' } })
-    );
-  };
-
-  _createClass(Table, [{
+        !!tableStoreState.rightFixedColumns.length && React.createElement('div', {
+          className: 'el-table__fixed-right-patch',
+          style: { width: layout.scrollY ? layout.gutterWidth : '0', height: layout.headerHeight }
+        }),
+        React.createElement('div', { className: 'el-table__column-resize-proxy', ref: this.bindRef('resizeProxy'), style: { visibility: 'hidden' } })
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }, {
     key: 'bodyWrapperHeight',
     get: function get() {
       var _props2 = this.props,
@@ -280,7 +339,7 @@ var Table = function (_Component) {
     get: function get() {
       var _props3 = this.props,
           layout = _props3.layout,
-          props = _objectWithoutProperties(_props3, ['layout']);
+          props = (0, _objectWithoutProperties3.default)(_props3, ['layout']);
 
       var style = {};
 
@@ -295,15 +354,34 @@ var Table = function (_Component) {
       return style;
     }
   }]);
-
   return Table;
-}(Component);
+}(_libs.Component);
 
 Table.contextTypes = {
-  tableStore: PropTypes.any,
-  layout: PropTypes.any
+  tableStore: _libs.PropTypes.any,
+  layout: _libs.PropTypes.any
 };
 Table.childContextTypes = {
-  table: PropTypes.any
+  table: _libs.PropTypes.any
 };
-export default Table;
+var _default = Table;
+exports.default = _default;
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Table, 'Table', 'src/table/Table.jsx');
+  reactHotLoader.register(_default, 'default', 'src/table/Table.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

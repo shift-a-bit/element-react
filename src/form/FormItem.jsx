@@ -141,6 +141,15 @@ export default class FormItem extends Component {
     }
   }
 
+  resetError(): void {
+    let { valid, error } = this.state;
+
+    valid = true;
+    error = '';
+
+    this.setState({ valid, error });
+  }
+  
   getRules(): Array<any> {
     let formRules = this.parent().props.rules;
     let selfRuels = this.props.rules;

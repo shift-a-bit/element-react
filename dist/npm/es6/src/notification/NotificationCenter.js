@@ -1,11 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
 
-import Notification from './Notification';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = NotificationCenter;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _Notification = require('./Notification');
+
+var _Notification2 = _interopRequireDefault(_Notification);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var className = '.el-notification';
 
-export default function NotificationCenter() {
+function NotificationCenter() {
   var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var type = arguments[1];
 
@@ -13,7 +38,7 @@ export default function NotificationCenter() {
 
   document.body.appendChild(div);
 
-  if (typeof props === 'string' || React.isValidElement(props)) {
+  if (typeof props === 'string' || _react2.default.isValidElement(props)) {
     props = {
       message: props
     };
@@ -33,7 +58,7 @@ export default function NotificationCenter() {
 
   props.top = (lastInstance ? parseInt(lastInstance.style.top) + lastInstance.offsetHeight : props.offset) + 16;
 
-  var element = React.createElement(Notification, Object.assign({}, props, {
+  var element = _react2.default.createElement(_Notification2.default, Object.assign({}, props, {
     willUnmount: function willUnmount(height, top) {
       setTimeout(function () {
         return document.body.removeChild(div);
@@ -52,7 +77,7 @@ export default function NotificationCenter() {
     }
   }));
 
-  ReactDOM.render(element, div);
+  _reactDom2.default.render(element, div);
 }
 
 /* eslint-disable */
@@ -63,3 +88,23 @@ export default function NotificationCenter() {
   };
 });
 /* eslint-enable */
+
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(className, 'className', 'src/notification/NotificationCenter.jsx');
+  reactHotLoader.register(NotificationCenter, 'NotificationCenter', 'src/notification/NotificationCenter.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

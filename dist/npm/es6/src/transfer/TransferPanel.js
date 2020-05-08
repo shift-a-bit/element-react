@@ -1,20 +1,61 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import { Component, PropTypes, View } from '../../libs';
-import Input from '../input';
-import Checkbox from '../checkbox';
-import i18n from '../locale';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _libs = require('../../libs');
+
+var _input = require('../input');
+
+var _input2 = _interopRequireDefault(_input);
+
+var _checkbox = require('../checkbox');
+
+var _checkbox2 = _interopRequireDefault(_checkbox);
+
+var _locale = require('../locale');
+
+var _locale2 = _interopRequireDefault(_locale);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var TransferPanel = function (_Component) {
-  _inherits(TransferPanel, _Component);
+  (0, _inherits3.default)(TransferPanel, _Component);
 
   function TransferPanel(props) {
-    _classCallCheck(this, TransferPanel);
+    (0, _classCallCheck3.default)(this, TransferPanel);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (TransferPanel.__proto__ || Object.getPrototypeOf(TransferPanel)).call(this, props));
 
     _this.handleMouseEnter = function () {
       return _this.setState({ inputHover: true });
@@ -52,111 +93,119 @@ var TransferPanel = function (_Component) {
     return _this;
   }
 
-  TransferPanel.prototype.render = function render() {
-    var _this2 = this;
+  (0, _createClass3.default)(TransferPanel, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
 
-    var _props = this.props,
-        filterable = _props.filterable,
-        title = _props.title,
-        data = _props.data,
-        renderContent = _props.renderContent,
-        checked = _props.checked,
-        placeholder = _props.placeholder;
-    var query = this.state.query;
+      var _props = this.props,
+          filterable = _props.filterable,
+          title = _props.title,
+          data = _props.data,
+          renderContent = _props.renderContent,
+          checked = _props.checked,
+          placeholder = _props.placeholder;
+      var query = this.state.query;
 
-    return React.createElement(
-      'div',
-      { className: 'el-transfer-panel' },
-      React.createElement(
-        'p',
-        { className: 'el-transfer-panel__header' },
-        title
-      ),
-      React.createElement(
+      return _react2.default.createElement(
         'div',
-        { className: 'el-transfer-panel__body' },
-        filterable && React.createElement(Input, {
-          className: 'el-transfer-panel__filter',
-          value: query,
-          size: 'small',
-          placeholder: placeholder,
-          icon: this.inputIcon,
-          onMouseEnter: this.handleMouseEnter,
-          onMouseLeave: this.handleMouseLeave,
-          onIconClick: this.clearQuery,
-          onChange: this.handleInputChange
-        }),
-        React.createElement(
-          View,
-          { show: !this.hasNoMatch && data.length > 0 },
-          React.createElement(
-            Checkbox.Group,
+        { className: 'el-transfer-panel' },
+        _react2.default.createElement(
+          'p',
+          { className: 'el-transfer-panel__header' },
+          title
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'el-transfer-panel__body' },
+          filterable && _react2.default.createElement(_input2.default, {
+            className: 'el-transfer-panel__filter',
+            value: query,
+            size: 'small',
+            placeholder: placeholder,
+            icon: this.inputIcon,
+            onMouseEnter: this.handleMouseEnter,
+            onMouseLeave: this.handleMouseLeave,
+            onIconClick: this.clearQuery,
+            onChange: this.handleInputChange
+          }),
+          _react2.default.createElement(
+            _libs.View,
+            { show: !this.hasNoMatch && data.length > 0 },
+            _react2.default.createElement(
+              _checkbox2.default.Group,
+              {
+                value: checked,
+                'v-show': '',
+                className: this.classNames({
+                  'is-filterable': filterable,
+                  'el-transfer-panel__list': true
+                }),
+                onChange: this.handleCheckedChange
+              },
+              this.filteredData.map(function (item, index) {
+                return _react2.default.createElement(
+                  _checkbox2.default,
+                  {
+                    className: 'el-transfer-panel__item',
+                    label: item[_this2.labelProp],
+                    disabled: item[_this2.disabledProp],
+                    value: item[_this2.keyProp],
+                    key: index
+                  },
+                  _react2.default.createElement(OptionContent, {
+                    option: item,
+                    renderContent: renderContent,
+                    labelProp: _this2.labelProp,
+                    keyProp: _this2.keyProp
+                  })
+                );
+              })
+            )
+          ),
+          _react2.default.createElement(
+            _libs.View,
+            { show: this.hasNoMatch },
+            _react2.default.createElement(
+              'p',
+              { className: 'el-transfer-panel__empty' },
+              _locale2.default.t('el.transfer.noMatch')
+            )
+          ),
+          _react2.default.createElement(
+            _libs.View,
+            { show: data.length === 0 && !this.hasNoMatch },
+            _react2.default.createElement(
+              'p',
+              { className: 'el-transfer-panel__empty' },
+              _locale2.default.t('el.transfer.noData')
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'p',
+          { className: 'el-transfer-panel__footer' },
+          _react2.default.createElement(
+            _checkbox2.default,
             {
-              value: checked,
-              'v-show': '',
-              className: this.classNames({
-                'is-filterable': filterable,
-                'el-transfer-panel__list': true
-              }),
-              onChange: this.handleCheckedChange
+              checked: this.allChecked,
+              onChange: this.handleAllCheckedChange,
+              indeterminate: this.isIndeterminate
             },
-            this.filteredData.map(function (item, index) {
-              return React.createElement(
-                Checkbox,
-                {
-                  className: 'el-transfer-panel__item',
-                  label: item[_this2.labelProp],
-                  disabled: item[_this2.disabledProp],
-                  value: item[_this2.keyProp],
-                  key: index
-                },
-                React.createElement(OptionContent, {
-                  option: item,
-                  renderContent: renderContent,
-                  labelProp: _this2.labelProp,
-                  keyProp: _this2.keyProp
-                })
-              );
-            })
-          )
-        ),
-        React.createElement(
-          View,
-          { show: this.hasNoMatch },
-          React.createElement(
-            'p',
-            { className: 'el-transfer-panel__empty' },
-            i18n.t('el.transfer.noMatch')
-          )
-        ),
-        React.createElement(
-          View,
-          { show: data.length === 0 && !this.hasNoMatch },
-          React.createElement(
-            'p',
-            { className: 'el-transfer-panel__empty' },
-            i18n.t('el.transfer.noData')
-          )
+            this.checkedSummary
+          ),
+          this.props.children
         )
-      ),
-      React.createElement(
-        'p',
-        { className: 'el-transfer-panel__footer' },
-        React.createElement(
-          Checkbox,
-          {
-            checked: this.allChecked,
-            onChange: this.handleAllCheckedChange,
-            indeterminate: this.isIndeterminate
-          },
-          this.checkedSummary
-        ),
-        this.props.children
-      )
-    );
-  };
-
-  _createClass(TransferPanel, [{
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }, {
     key: 'allChecked',
     get: function get() {
       var _this3 = this;
@@ -203,10 +252,10 @@ var TransferPanel = function (_Component) {
       if (noChecked && hasChecked) {
         return checkedLength > 0 ? hasChecked.replace(/\${checked}/g, checkedLength).replace(/\${total}/g, dataLength) : noChecked.replace(/\${total}/g, dataLength);
       } else {
-        return checkedLength > 0 ? i18n.t('el.transfer.hasCheckedFormat', {
+        return checkedLength > 0 ? _locale2.default.t('el.transfer.hasCheckedFormat', {
           total: dataLength,
           checked: checkedLength
-        }) : i18n.t('el.transfer.noCheckedFormat', { total: dataLength });
+        }) : _locale2.default.t('el.transfer.noCheckedFormat', { total: dataLength });
       }
     }
   }, {
@@ -247,21 +296,20 @@ var TransferPanel = function (_Component) {
       return this.props.propsAlias.disabled;
     }
   }]);
-
   return TransferPanel;
-}(Component);
+}(_libs.Component);
 
 TransferPanel.propTypes = {
-  data: PropTypes.array,
-  renderContent: PropTypes.func,
-  placeholder: PropTypes.string,
-  title: PropTypes.string,
-  filterable: PropTypes.bool,
-  footerFormat: PropTypes.object,
-  filterMethod: PropTypes.func,
-  propsAlias: PropTypes.object,
-  onChange: PropTypes.func,
-  checked: PropTypes.array
+  data: _libs.PropTypes.array,
+  renderContent: _libs.PropTypes.func,
+  placeholder: _libs.PropTypes.string,
+  title: _libs.PropTypes.string,
+  filterable: _libs.PropTypes.bool,
+  footerFormat: _libs.PropTypes.object,
+  filterMethod: _libs.PropTypes.func,
+  propsAlias: _libs.PropTypes.object,
+  onChange: _libs.PropTypes.func,
+  checked: _libs.PropTypes.array
 };
 TransferPanel.defaultProps = {
   data: [],
@@ -269,7 +317,8 @@ TransferPanel.defaultProps = {
   propsAlias: {},
   onChange: function onChange() {}
 };
-export default TransferPanel;
+var _default = TransferPanel;
+exports.default = _default;
 
 
 var OptionContent = function OptionContent(_ref) {
@@ -278,9 +327,29 @@ var OptionContent = function OptionContent(_ref) {
       labelProp = _ref.labelProp,
       keyProp = _ref.keyProp;
 
-  return renderContent ? renderContent(option) : React.createElement(
+  return renderContent ? renderContent(option) : _react2.default.createElement(
     'span',
     null,
     option[labelProp] || option[keyProp]
   );
 };
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(TransferPanel, 'TransferPanel', 'src/transfer/TransferPanel.jsx');
+  reactHotLoader.register(OptionContent, 'OptionContent', 'src/transfer/TransferPanel.jsx');
+  reactHotLoader.register(_default, 'default', 'src/transfer/TransferPanel.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

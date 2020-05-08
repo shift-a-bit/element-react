@@ -1,9 +1,21 @@
-import React from 'react';
-import { mount, render } from 'enzyme';
-import { Switch, Tooltip } from '../../../src';
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enzyme = require('enzyme');
+
+var _src = require('../../../src');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 test('Basic usage', function () {
-  var switch1 = mount(React.createElement(Switch, {
+  var switch1 = (0, _enzyme.mount)(_react2.default.createElement(_src.Switch, {
     value: true,
     onText: '',
     offText: '' }));
@@ -19,7 +31,7 @@ test('Basic usage', function () {
   expect(switch1.find('label.el-switch .el-switch__label').at(1).text()).toEqual('');
   expect(switch1.find('label.el-switch').at(0).hasClass('is-checked')).toEqual(false);
 
-  var switch2 = mount(React.createElement(Switch, {
+  var switch2 = (0, _enzyme.mount)(_react2.default.createElement(_src.Switch, {
     value: true,
     onColor: '#13ce66',
     offColor: '#ff4949' }));
@@ -49,20 +61,20 @@ test('Extended value types', function () {
     state.value = value;
   };
 
-  var component = mount(React.createElement(
+  var component = (0, _enzyme.mount)(_react2.default.createElement(
     'div',
     null,
-    React.createElement(
-      Tooltip,
+    _react2.default.createElement(
+      _src.Tooltip,
       {
         placement: 'top',
-        content: React.createElement(
+        content: _react2.default.createElement(
           'div',
           null,
           'Switch value: ',
           state.value
         ) },
-      React.createElement(Switch, {
+      _react2.default.createElement(_src.Switch, {
         value: state.value,
         onColor: '#13ce66',
         offColor: '#ff4949',
@@ -91,7 +103,7 @@ test('Extended value types', function () {
 });
 
 test('Disabled', function () {
-  var switch1 = mount(React.createElement(Switch, {
+  var switch1 = (0, _enzyme.mount)(_react2.default.createElement(_src.Switch, {
     value: true,
     onText: '',
     offText: '',
@@ -100,7 +112,7 @@ test('Disabled', function () {
   expect(switch1.find('label.el-switch').at(0).hasClass('is-disabled')).toEqual(true);
   expect(switch1.find('input[type="checkbox"]').at(0).prop('disabled')).toEqual(true);
 
-  var switch2 = mount(React.createElement(Switch, {
+  var switch2 = (0, _enzyme.mount)(_react2.default.createElement(_src.Switch, {
     value: true,
     disabled: true }));
 
@@ -111,7 +123,7 @@ test('Disabled', function () {
 test('Focus', function () {
   var focusFn = jest.fn();
   var blurFn = jest.fn();
-  var switch1 = mount(React.createElement(Switch, {
+  var switch1 = (0, _enzyme.mount)(_react2.default.createElement(_src.Switch, {
     allowFocus: true,
     onFocus: focusFn,
     onBlur: blurFn

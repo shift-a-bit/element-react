@@ -1,24 +1,75 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ClickOutside from 'react-click-outside';
-import { debounce } from 'throttle-debounce';
-import Popper from 'popper.js';
-import { Component, PropTypes, View } from '../../libs';
+'use strict';
 
-import CascaderMenu from './Menu';
-import Input from '../input';
-import i18n from '../locale';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactClickOutside = require('react-click-outside');
+
+var _reactClickOutside2 = _interopRequireDefault(_reactClickOutside);
+
+var _throttleDebounce = require('throttle-debounce');
+
+var _popper = require('popper.js');
+
+var _popper2 = _interopRequireDefault(_popper);
+
+var _libs = require('../../libs');
+
+var _Menu = require('./Menu');
+
+var _Menu2 = _interopRequireDefault(_Menu);
+
+var _input = require('../input');
+
+var _input2 = _interopRequireDefault(_input);
+
+var _locale = require('../locale');
+
+var _locale2 = _interopRequireDefault(_locale);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var Cascader = function (_Component) {
-  _inherits(Cascader, _Component);
+  (0, _inherits3.default)(Cascader, _Component);
 
   function Cascader(props) {
-    _classCallCheck(this, Cascader);
+    (0, _classCallCheck3.default)(this, Cascader);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Cascader.__proto__ || Object.getPrototypeOf(Cascader)).call(this, props));
 
     _this.state = {
       currentValue: props.value,
@@ -29,7 +80,7 @@ var Cascader = function (_Component) {
       flatOptions: _this.flattenOptions(props.options)
     };
 
-    _this.debouncedInputChange = debounce(props.debounce, function () {
+    _this.debouncedInputChange = (0, _throttleDebounce.debounce)(props.debounce, function () {
       var value = _this.state.inputValue;
       var before = _this.props.beforeFilter(value);
 
@@ -37,7 +88,7 @@ var Cascader = function (_Component) {
         _this.state.menu.setState({
           options: [{
             __IS__FLAT__OPTIONS: true,
-            label: i18n.t('el.cascader.loading'),
+            label: _locale2.default.t('el.cascader.loading'),
             value: '',
             disabled: true
           }]
@@ -53,373 +104,406 @@ var Cascader = function (_Component) {
     return _this;
   }
 
-  Cascader.prototype.getChildContext = function getChildContext() {
-    return {
-      component: this
-    };
-  };
-
-  Cascader.prototype.componentDidMount = function componentDidMount() {
-    this.input = ReactDOM.findDOMNode(this.refs.input);
-  };
-
-  Cascader.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
-    this.setState({
-      currentValue: props.value,
-      flatOptions: this.flattenOptions(props.options)
-    });
-
-    this.state.menu.setState({
-      options: props.options
-    });
-  };
-
-  Cascader.prototype.componentDidUpdate = function componentDidUpdate(props, state) {
-    var menuVisible = this.state.menuVisible;
-
-
-    if (menuVisible !== state.menuVisible) {
-      if (menuVisible) {
-        this.showMenu();
-
-        if (this.popperJS) {
-          this.popperJS.update();
-        } else {
-          this.popperJS = new Popper(this.input, ReactDOM.findDOMNode(this.refs.menu), {
-            placement: 'bottom-start',
-            modifiers: {
-              computeStyle: {
-                gpuAcceleration: false
-              }
-            }
-          });
-        }
-      } else {
-        this.hideMenu();
-
-        if (this.popperJS) {
-          this.popperJS.destroy();
-        }
-
-        delete this.popperJS;
-      }
+  (0, _createClass3.default)(Cascader, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        component: this
+      };
     }
-  };
-
-  Cascader.prototype.componentWillUnmount = function componentWillUnmount() {
-    if (this.popperJS) {
-      this.popperJS.destroy();
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.input = _reactDom2.default.findDOMNode(this.refs.input);
     }
-  };
-
-  Cascader.prototype.placeholder = function placeholder() {
-    return this.props.placeholder || i18n.t('el.cascader.placeholder');
-  };
-
-  Cascader.prototype.updatePopper = function updatePopper() {
-    if (this.popperJS) {
-      this.popperJS.update();
-    }
-  };
-
-  Cascader.prototype.initMenu = function initMenu(menu) {
-    this.state.menu = menu;
-  };
-
-  Cascader.prototype.showMenu = function showMenu() {
-    this.state.menu.setState({
-      value: this.state.currentValue.slice(0),
-      visible: true,
-      options: this.props.options,
-      inputWidth: this.input.offsetWidth - 2
-    });
-  };
-
-  Cascader.prototype.hideMenu = function hideMenu() {
-    this.setState({ inputValue: '' });
-
-    if (this.state.menu) {
-      this.state.menu.setState({ visible: false });
-    }
-  };
-
-  Cascader.prototype.handleActiveItemChange = function handleActiveItemChange(value) {
-    this.updatePopper();
-
-    if (this.props.activeItemChange) {
-      this.props.activeItemChange(value);
-    }
-  };
-
-  Cascader.prototype.handlePick = function handlePick(value) {
-    var close = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-    this.setState({
-      currentValue: value
-    });
-
-    if (close) {
-      this.setState({ menuVisible: false });
-    }
-
-    if (this.props.onChange) {
-      this.props.onChange(value);
-    }
-  };
-
-  Cascader.prototype.handleInputChange = function handleInputChange(value) {
-    var _this2 = this;
-
-    if (!this.state.menuVisible) return;
-
-    var flatOptions = this.state.flatOptions;
-
-    if (!value) {
-      this.state.menu.setState({
-        options: this.props.options
-      });
-      return;
-    }
-
-    var filteredFlatOptions = flatOptions.filter(function (optionsStack) {
-      return optionsStack.some(function (option) {
-        return new RegExp(value, 'i').test(option[_this2.labelKey()]);
-      });
-    });
-
-    if (filteredFlatOptions.length > 0) {
-      filteredFlatOptions = filteredFlatOptions.map(function (optionStack) {
-        return {
-          __IS__FLAT__OPTIONS: true,
-          value: optionStack.map(function (item) {
-            return item[_this2.valueKey()];
-          }),
-          label: _this2.renderFilteredOptionLabel(value, optionStack)
-        };
-      });
-    } else {
-      filteredFlatOptions = [{
-        __IS__FLAT__OPTIONS: true,
-        label: i18n.t('el.cascader.noMatch'),
-        value: '',
-        disabled: true
-      }];
-    }
-
-    this.state.menu.setState({
-      options: filteredFlatOptions
-    });
-  };
-
-  Cascader.prototype.renderFilteredOptionLabel = function renderFilteredOptionLabel(inputValue, optionsStack) {
-    var _this3 = this;
-
-    return optionsStack.map(function (option, index) {
-      var label = option[_this3.labelKey()];
-      var keywordIndex = label.toLowerCase().indexOf(inputValue.toLowerCase());
-      var labelPart = label.slice(keywordIndex, inputValue.length + keywordIndex);
-      var node = keywordIndex > -1 ? _this3.highlightKeyword(label, labelPart) : label;
-      return index === 0 ? node : [' / ', node];
-    });
-  };
-
-  Cascader.prototype.highlightKeyword = function highlightKeyword(label, keyword) {
-    return label.split(keyword).map(function (node, index) {
-      return index === 0 ? node : [React.createElement(
-        'span',
-        { className: 'el-cascader-menu__item__keyword' },
-        keyword
-      ), node];
-    });
-  };
-
-  Cascader.prototype.flattenOptions = function flattenOptions(options) {
-    var _this4 = this;
-
-    var ancestor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-
-    var flatOptions = [];
-
-    options.forEach(function (option) {
-      var optionsStack = ancestor.concat(option);
-      if (!option[_this4.childrenKey()]) {
-        flatOptions.push(optionsStack);
-      } else {
-        if (_this4.changeOnSelect) {
-          flatOptions.push(optionsStack);
-        }
-        flatOptions = flatOptions.concat(_this4.flattenOptions(option[_this4.childrenKey()], optionsStack));
-      }
-    });
-
-    return flatOptions;
-  };
-
-  Cascader.prototype.clearValue = function clearValue(e) {
-    e.stopPropagation();
-
-    this.handlePick([], true);
-  };
-
-  Cascader.prototype.handleClickOutside = function handleClickOutside() {
-    if (this.state.menuVisible) {
-      this.setState({ menuVisible: false });
-    }
-  };
-
-  Cascader.prototype.handleClick = function handleClick() {
-    if (this.props.disabled) return;
-
-    if (this.filterable) {
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
       this.setState({
-        menuVisible: true
+        currentValue: props.value,
+        flatOptions: this.flattenOptions(props.options)
       });
-      return;
+
+      this.state.menu.setState({
+        options: props.options
+      });
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(props, state) {
+      var menuVisible = this.state.menuVisible;
+
+
+      if (menuVisible !== state.menuVisible) {
+        if (menuVisible) {
+          this.showMenu();
+
+          if (this.popperJS) {
+            this.popperJS.update();
+          } else {
+            this.popperJS = new _popper2.default(this.input, _reactDom2.default.findDOMNode(this.refs.menu), {
+              placement: 'bottom-start',
+              modifiers: {
+                computeStyle: {
+                  gpuAcceleration: false
+                }
+              }
+            });
+          }
+        } else {
+          this.hideMenu();
+
+          if (this.popperJS) {
+            this.popperJS.destroy();
+          }
+
+          delete this.popperJS;
+        }
+      }
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      if (this.popperJS) {
+        this.popperJS.destroy();
+      }
+    }
+  }, {
+    key: 'placeholder',
+    value: function placeholder() {
+      return this.props.placeholder || _locale2.default.t('el.cascader.placeholder');
+    }
+  }, {
+    key: 'updatePopper',
+    value: function updatePopper() {
+      if (this.popperJS) {
+        this.popperJS.update();
+      }
+    }
+  }, {
+    key: 'initMenu',
+    value: function initMenu(menu) {
+      this.state.menu = menu;
+    }
+  }, {
+    key: 'showMenu',
+    value: function showMenu() {
+      this.state.menu.setState({
+        value: this.state.currentValue.slice(0),
+        visible: true,
+        options: this.props.options,
+        inputWidth: this.input.offsetWidth - 2
+      });
+    }
+  }, {
+    key: 'hideMenu',
+    value: function hideMenu() {
+      this.setState({ inputValue: '' });
+
+      if (this.state.menu) {
+        this.state.menu.setState({ visible: false });
+      }
+    }
+  }, {
+    key: 'handleActiveItemChange',
+    value: function handleActiveItemChange(value) {
+      this.updatePopper();
+
+      if (this.props.activeItemChange) {
+        this.props.activeItemChange(value);
+      }
+    }
+  }, {
+    key: 'handlePick',
+    value: function handlePick(value) {
+      var close = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+      this.setState({
+        currentValue: value
+      });
+
+      if (close) {
+        this.setState({ menuVisible: false });
+      }
+
+      if (this.props.onChange) {
+        this.props.onChange(value);
+      }
+    }
+  }, {
+    key: 'handleInputChange',
+    value: function handleInputChange(value) {
+      var _this2 = this;
+
+      if (!this.state.menuVisible) return;
+
+      var flatOptions = this.state.flatOptions;
+
+      if (!value) {
+        this.state.menu.setState({
+          options: this.props.options
+        });
+        return;
+      }
+
+      var filteredFlatOptions = flatOptions.filter(function (optionsStack) {
+        return optionsStack.some(function (option) {
+          return new RegExp(value, 'i').test(option[_this2.labelKey()]);
+        });
+      });
+
+      if (filteredFlatOptions.length > 0) {
+        filteredFlatOptions = filteredFlatOptions.map(function (optionStack) {
+          return {
+            __IS__FLAT__OPTIONS: true,
+            value: optionStack.map(function (item) {
+              return item[_this2.valueKey()];
+            }),
+            label: _this2.renderFilteredOptionLabel(value, optionStack)
+          };
+        });
+      } else {
+        filteredFlatOptions = [{
+          __IS__FLAT__OPTIONS: true,
+          label: _locale2.default.t('el.cascader.noMatch'),
+          value: '',
+          disabled: true
+        }];
+      }
+
+      this.state.menu.setState({
+        options: filteredFlatOptions
+      });
+    }
+  }, {
+    key: 'renderFilteredOptionLabel',
+    value: function renderFilteredOptionLabel(inputValue, optionsStack) {
+      var _this3 = this;
+
+      return optionsStack.map(function (option, index) {
+        var label = option[_this3.labelKey()];
+        var keywordIndex = label.toLowerCase().indexOf(inputValue.toLowerCase());
+        var labelPart = label.slice(keywordIndex, inputValue.length + keywordIndex);
+        var node = keywordIndex > -1 ? _this3.highlightKeyword(label, labelPart) : label;
+        return index === 0 ? node : [' / ', node];
+      });
+    }
+  }, {
+    key: 'highlightKeyword',
+    value: function highlightKeyword(label, keyword) {
+      return label.split(keyword).map(function (node, index) {
+        return index === 0 ? node : [_react2.default.createElement(
+          'span',
+          { className: 'el-cascader-menu__item__keyword' },
+          keyword
+        ), node];
+      });
+    }
+  }, {
+    key: 'flattenOptions',
+    value: function flattenOptions(options) {
+      var _this4 = this;
+
+      var ancestor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+      var flatOptions = [];
+
+      options.forEach(function (option) {
+        var optionsStack = ancestor.concat(option);
+        if (!option[_this4.childrenKey()]) {
+          flatOptions.push(optionsStack);
+        } else {
+          if (_this4.changeOnSelect) {
+            flatOptions.push(optionsStack);
+          }
+          flatOptions = flatOptions.concat(_this4.flattenOptions(option[_this4.childrenKey()], optionsStack));
+        }
+      });
+
+      return flatOptions;
+    }
+  }, {
+    key: 'clearValue',
+    value: function clearValue(e) {
+      e.stopPropagation();
+
+      this.handlePick([], true);
+    }
+  }, {
+    key: 'handleClickOutside',
+    value: function handleClickOutside() {
+      if (this.state.menuVisible) {
+        this.setState({ menuVisible: false });
+      }
+    }
+  }, {
+    key: 'handleClick',
+    value: function handleClick() {
+      if (this.props.disabled) return;
+
+      if (this.filterable) {
+        this.setState({
+          menuVisible: true
+        });
+        return;
+      }
+
+      this.setState({
+        menuVisible: !this.state.menuVisible
+      });
     }
 
-    this.setState({
-      menuVisible: !this.state.menuVisible
-    });
-  };
+    /* Computed Methods */
 
-  /* Computed Methods */
+  }, {
+    key: 'labelKey',
+    value: function labelKey() {
+      return this.props.props.label || 'label';
+    }
+  }, {
+    key: 'valueKey',
+    value: function valueKey() {
+      return this.props.props.value || 'value';
+    }
+  }, {
+    key: 'childrenKey',
+    value: function childrenKey() {
+      return this.props.props.children || 'children';
+    }
+  }, {
+    key: 'currentLabels',
+    value: function currentLabels() {
+      var _this5 = this;
 
-  Cascader.prototype.labelKey = function labelKey() {
-    return this.props.props.label || 'label';
-  };
+      var options = this.props.options;
+      var labels = [];
 
-  Cascader.prototype.valueKey = function valueKey() {
-    return this.props.props.value || 'value';
-  };
+      this.state.currentValue.forEach(function (value) {
+        var targetOption = options && options.filter(function (option) {
+          return option[_this5.valueKey()] === value;
+        })[0];
 
-  Cascader.prototype.childrenKey = function childrenKey() {
-    return this.props.props.children || 'children';
-  };
+        if (targetOption) {
+          labels.push(targetOption[_this5.labelKey()]);
+          options = targetOption[_this5.childrenKey()];
+        }
+      });
 
-  Cascader.prototype.currentLabels = function currentLabels() {
-    var _this5 = this;
+      return labels;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this6 = this;
 
-    var options = this.props.options;
-    var labels = [];
+      var _props = this.props,
+          size = _props.size,
+          disabled = _props.disabled,
+          filterable = _props.filterable,
+          clearable = _props.clearable,
+          showAllLevels = _props.showAllLevels;
+      var _state = this.state,
+          menuVisible = _state.menuVisible,
+          inputHover = _state.inputHover,
+          inputValue = _state.inputValue;
 
-    this.state.currentValue.forEach(function (value) {
-      var targetOption = options && options.filter(function (option) {
-        return option[_this5.valueKey()] === value;
-      })[0];
+      var currentLabels = this.currentLabels();
 
-      if (targetOption) {
-        labels.push(targetOption[_this5.labelKey()]);
-        options = targetOption[_this5.childrenKey()];
-      }
-    });
-
-    return labels;
-  };
-
-  Cascader.prototype.render = function render() {
-    var _this6 = this;
-
-    var _props = this.props,
-        size = _props.size,
-        disabled = _props.disabled,
-        filterable = _props.filterable,
-        clearable = _props.clearable,
-        showAllLevels = _props.showAllLevels;
-    var _state = this.state,
-        menuVisible = _state.menuVisible,
-        inputHover = _state.inputHover,
-        inputValue = _state.inputValue;
-
-    var currentLabels = this.currentLabels();
-
-    return React.createElement(
-      'span',
-      { ref: 'reference', className: this.className('el-cascader', size ? 'el-cascader--' + size : '', {
-          'is-opened': menuVisible,
-          'is-disabled': disabled
-        }) },
-      React.createElement(
+      return _react2.default.createElement(
         'span',
-        {
-          onClick: this.handleClick.bind(this),
-          onMouseEnter: function onMouseEnter() {
-            _this6.setState({ inputHover: true });
+        { ref: 'reference', className: this.className('el-cascader', size ? 'el-cascader--' + size : '', {
+            'is-opened': menuVisible,
+            'is-disabled': disabled
+          }) },
+        _react2.default.createElement(
+          'span',
+          {
+            onClick: this.handleClick.bind(this),
+            onMouseEnter: function onMouseEnter() {
+              _this6.setState({ inputHover: true });
+            },
+            onMouseLeave: function onMouseLeave() {
+              _this6.setState({ inputHover: false });
+            }
           },
-          onMouseLeave: function onMouseLeave() {
-            _this6.setState({ inputHover: false });
-          }
-        },
-        React.createElement(Input, {
-          ref: 'input',
-          readOnly: !filterable,
-          placeholder: currentLabels.length ? undefined : this.placeholder(),
-          value: inputValue,
-          onChange: function onChange(value) {
-            _this6.setState({ inputValue: value });
-          },
-          onKeyUp: this.debouncedInputChange.bind(this),
-          size: size,
-          disabled: disabled,
-          icon: clearable && inputHover && currentLabels.length ? React.createElement('i', {
-            className: 'el-input__icon el-icon-circle-close el-cascader__clearIcon',
-            onClick: this.clearValue.bind(this)
-          }) : React.createElement('i', {
-            className: this.classNames('el-input__icon el-icon-caret-bottom', {
-              'is-reverse': menuVisible
+          _react2.default.createElement(_input2.default, {
+            ref: 'input',
+            readOnly: !filterable,
+            placeholder: currentLabels.length ? undefined : this.placeholder(),
+            value: inputValue,
+            onChange: function onChange(value) {
+              _this6.setState({ inputValue: value });
+            },
+            onKeyUp: this.debouncedInputChange.bind(this),
+            size: size,
+            disabled: disabled,
+            icon: clearable && inputHover && currentLabels.length ? _react2.default.createElement('i', {
+              className: 'el-input__icon el-icon-circle-close el-cascader__clearIcon',
+              onClick: this.clearValue.bind(this)
+            }) : _react2.default.createElement('i', {
+              className: this.classNames('el-input__icon el-icon-caret-bottom', {
+                'is-reverse': menuVisible
+              })
             })
-          })
-        }),
-        React.createElement(
-          View,
-          { show: currentLabels.length },
-          React.createElement(
-            'span',
-            { className: 'el-cascader__label' },
-            showAllLevels ? currentLabels.map(function (label, index) {
-              return React.createElement(
-                'label',
-                { key: index },
-                label,
-                index < currentLabels.length - 1 && React.createElement(
-                  'span',
-                  null,
-                  ' / '
-                )
-              );
-            }) : currentLabels[currentLabels.length - 1]
+          }),
+          _react2.default.createElement(
+            _libs.View,
+            { show: currentLabels.length },
+            _react2.default.createElement(
+              'span',
+              { className: 'el-cascader__label' },
+              showAllLevels ? currentLabels.map(function (label, index) {
+                return _react2.default.createElement(
+                  'label',
+                  { key: index },
+                  label,
+                  index < currentLabels.length - 1 && _react2.default.createElement(
+                    'span',
+                    null,
+                    ' / '
+                  )
+                );
+              }) : currentLabels[currentLabels.length - 1]
+            )
           )
-        )
-      ),
-      React.createElement(CascaderMenu, { ref: 'menu' })
-    );
-  };
-
+        ),
+        _react2.default.createElement(_Menu2.default, { ref: 'menu' })
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return Cascader;
-}(Component);
+}(_libs.Component);
 
 Cascader.childContextTypes = {
-  component: PropTypes.any
+  component: _libs.PropTypes.any
 };
 
 Cascader.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.string
+  options: _libs.PropTypes.arrayOf(_libs.PropTypes.shape({
+    value: _libs.PropTypes.string
   })).isRequired,
-  props: PropTypes.object,
-  value: PropTypes.array,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-  clearable: PropTypes.bool,
-  changeOnSelect: PropTypes.bool,
-  popperClass: PropTypes.string,
-  expandTrigger: PropTypes.string,
-  filterable: PropTypes.bool,
-  size: PropTypes.string,
-  showAllLevels: PropTypes.bool,
-  debounce: PropTypes.number,
-  activeItemChange: PropTypes.func,
-  beforeFilter: PropTypes.func,
-  onChange: PropTypes.func
+  props: _libs.PropTypes.object,
+  value: _libs.PropTypes.array,
+  placeholder: _libs.PropTypes.string,
+  disabled: _libs.PropTypes.bool,
+  clearable: _libs.PropTypes.bool,
+  changeOnSelect: _libs.PropTypes.bool,
+  popperClass: _libs.PropTypes.string,
+  expandTrigger: _libs.PropTypes.string,
+  filterable: _libs.PropTypes.bool,
+  size: _libs.PropTypes.string,
+  showAllLevels: _libs.PropTypes.bool,
+  debounce: _libs.PropTypes.number,
+  activeItemChange: _libs.PropTypes.func,
+  beforeFilter: _libs.PropTypes.func,
+  onChange: _libs.PropTypes.func
 };
 
 Cascader.defaultProps = {
@@ -439,4 +523,25 @@ Cascader.defaultProps = {
   }
 };
 
-export default ClickOutside(Cascader);
+var _default = (0, _reactClickOutside2.default)(Cascader);
+
+exports.default = _default;
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Cascader, 'Cascader', 'src/cascader/Cascader.jsx');
+  reactHotLoader.register(_default, 'default', 'src/cascader/Cascader.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

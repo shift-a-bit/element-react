@@ -1,5 +1,32 @@
-import _typeof from 'babel-runtime/helpers/typeof';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
 var hsv2hsl = function hsv2hsl(hue, sat, val) {
   var sl = void 0,
       l = void 0;
@@ -163,7 +190,7 @@ var hsv2rgb = function hsv2rgb(h, s, v) {
 
 var Color = function () {
   function Color(options) {
-    _classCallCheck(this, Color);
+    (0, _classCallCheck3.default)(this, Color);
 
     this._hue = 0;
     this._saturation = 100;
@@ -185,180 +212,224 @@ var Color = function () {
     this.doOnChange();
   }
 
-  Color.prototype.set = function set(prop, value) {
-    if (arguments.length === 1 && (typeof prop === 'undefined' ? 'undefined' : _typeof(prop)) === 'object') {
-      for (var p in prop) {
-        if (prop.hasOwnProperty(p)) {
-          this.set(p, prop[p]);
+  (0, _createClass3.default)(Color, [{
+    key: 'set',
+    value: function set(prop, value) {
+      if (arguments.length === 1 && (typeof prop === 'undefined' ? 'undefined' : (0, _typeof3.default)(prop)) === 'object') {
+        for (var p in prop) {
+          if (prop.hasOwnProperty(p)) {
+            this.set(p, prop[p]);
+          }
+        }
+
+        return;
+      }
+
+      this['_' + prop] = value;
+      this.doOnChange();
+    }
+  }, {
+    key: 'get',
+    value: function get(prop) {
+      return this['_' + prop];
+    }
+  }, {
+    key: 'toRgb',
+    value: function toRgb() {
+      return hsv2rgb(this._hue, this._saturation, this._value);
+    }
+  }, {
+    key: 'fromString',
+    value: function fromString(value) {
+      var _this = this;
+
+      if (!value) {
+        this._hue = 0;
+        this._saturation = 100;
+        this._value = 100;
+
+        this.doOnChange();
+        return;
+      }
+
+      var fromHSV = function fromHSV(h, s, v) {
+        _this._hue = h;
+        _this._saturation = s;
+        _this._value = v;
+
+        _this.doOnChange();
+      };
+
+      if (value.indexOf('hsl') !== -1) {
+        var parts = value.replace(/hsla|hsl|\(|\)/gm, '').split(/\s|,/g).filter(function (val) {
+          return val !== '';
+        }).map(function (val, index) {
+          return index > 2 ? parseFloat(val) : parseInt(val, 10);
+        });
+
+        if (parts.length === 4) {
+          this._alpha = Math.floor(parseFloat(parts[3]) * 100);
+        }
+        if (parts.length >= 3) {
+          var _hsl2hsv = hsl2hsv(parts[0], parts[1], parts[2]),
+              h = _hsl2hsv.h,
+              s = _hsl2hsv.s,
+              v = _hsl2hsv.v;
+
+          fromHSV(h, s, v);
+        }
+      } else if (value.indexOf('hsv') !== -1) {
+        var _parts = value.replace(/hsva|hsv|\(|\)/gm, '').split(/\s|,/g).filter(function (val) {
+          return val !== '';
+        }).map(function (val, index) {
+          return index > 2 ? parseFloat(val) : parseInt(val, 10);
+        });
+
+        if (_parts.length === 4) {
+          this._alpha = Math.floor(parseFloat(_parts[3]) * 100);
+        }
+        if (_parts.length >= 3) {
+          fromHSV(_parts[0], _parts[1], _parts[2]);
+        }
+      } else if (value.indexOf('rgb') !== -1) {
+        var _parts2 = value.replace(/rgba|rgb|\(|\)/gm, '').split(/\s|,/g).filter(function (val) {
+          return val !== '';
+        }).map(function (val, index) {
+          return index > 2 ? parseFloat(val) : parseInt(val, 10);
+        });
+
+        if (_parts2.length === 4) {
+          this._alpha = Math.floor(parseFloat(_parts2[3]) * 100);
+        }
+        if (_parts2.length >= 3) {
+          var _rgb2hsv = rgb2hsv(_parts2[0], _parts2[1], _parts2[2]),
+              _h = _rgb2hsv.h,
+              _s = _rgb2hsv.s,
+              _v = _rgb2hsv.v;
+
+          fromHSV(_h, _s, _v);
+        }
+      } else if (value.indexOf('#') !== -1) {
+        var hex = value.replace('#', '').trim();
+        var r = void 0,
+            g = void 0,
+            b = void 0;
+
+        if (hex.length === 3) {
+          r = parseHexChannel(hex[0] + hex[0]);
+          g = parseHexChannel(hex[1] + hex[1]);
+          b = parseHexChannel(hex[2] + hex[2]);
+        } else if (hex.length === 6) {
+          r = parseHexChannel(hex.substring(0, 2));
+          g = parseHexChannel(hex.substring(2, 4));
+          b = parseHexChannel(hex.substring(4));
+        }
+
+        var _rgb2hsv2 = rgb2hsv(r, g, b),
+            _h2 = _rgb2hsv2.h,
+            _s2 = _rgb2hsv2.s,
+            _v2 = _rgb2hsv2.v;
+
+        fromHSV(_h2, _s2, _v2);
+      }
+    }
+  }, {
+    key: 'doOnChange',
+    value: function doOnChange() {
+      var _hue = this._hue,
+          _saturation = this._saturation,
+          _value = this._value,
+          _alpha = this._alpha,
+          format = this.format;
+
+
+      if (this.enableAlpha) {
+        switch (format) {
+          case 'hsl':
+            {
+              var hsl = hsv2hsl(_hue, _saturation / 100, _value / 100);
+              this.value = 'hsla(' + _hue + ', ' + Math.round(hsl[1] * 100) + '%, ' + Math.round(hsl[2] * 100) + '%, ' + _alpha / 100 + ')';
+              break;
+            }
+          case 'hsv':
+            this.value = 'hsva(' + _hue + ', ' + Math.round(_saturation) + '%, ' + Math.round(_value) + '%, ' + _alpha / 100 + ')';
+            break;
+          default:
+            {
+              var _hsv2rgb = hsv2rgb(_hue, _saturation, _value),
+                  r = _hsv2rgb.r,
+                  g = _hsv2rgb.g,
+                  b = _hsv2rgb.b;
+
+              this.value = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + _alpha / 100 + ')';
+            }
+        }
+      } else {
+        switch (format) {
+          case 'hsl':
+            {
+              var _hsl = hsv2hsl(_hue, _saturation / 100, _value / 100);
+              this.value = 'hsl(' + _hue + ', ' + Math.round(_hsl[1] * 100) + '%, ' + Math.round(_hsl[2] * 100) + '%)';
+              break;
+            }
+          case 'hsv':
+            this.value = 'hsv(' + _hue + ', ' + Math.round(_saturation) + '%, ' + Math.round(_value) + '%)';
+            break;
+          case 'rgb':
+            {
+              var _hsv2rgb2 = hsv2rgb(_hue, _saturation, _value),
+                  _r = _hsv2rgb2.r,
+                  _g = _hsv2rgb2.g,
+                  _b = _hsv2rgb2.b;
+
+              this.value = 'rgb(' + _r + ', ' + _g + ', ' + _b + ')';
+              break;
+            }
+          default:
+            this.value = toHex(hsv2rgb(_hue, _saturation, _value));
         }
       }
-
-      return;
     }
-
-    this['_' + prop] = value;
-    this.doOnChange();
-  };
-
-  Color.prototype.get = function get(prop) {
-    return this['_' + prop];
-  };
-
-  Color.prototype.toRgb = function toRgb() {
-    return hsv2rgb(this._hue, this._saturation, this._value);
-  };
-
-  Color.prototype.fromString = function fromString(value) {
-    var _this = this;
-
-    if (!value) {
-      this._hue = 0;
-      this._saturation = 100;
-      this._value = 100;
-
-      this.doOnChange();
-      return;
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
     }
-
-    var fromHSV = function fromHSV(h, s, v) {
-      _this._hue = h;
-      _this._saturation = s;
-      _this._value = v;
-
-      _this.doOnChange();
-    };
-
-    if (value.indexOf('hsl') !== -1) {
-      var parts = value.replace(/hsla|hsl|\(|\)/gm, '').split(/\s|,/g).filter(function (val) {
-        return val !== '';
-      }).map(function (val, index) {
-        return index > 2 ? parseFloat(val) : parseInt(val, 10);
-      });
-
-      if (parts.length === 4) {
-        this._alpha = Math.floor(parseFloat(parts[3]) * 100);
-      }
-      if (parts.length >= 3) {
-        var _hsl2hsv = hsl2hsv(parts[0], parts[1], parts[2]),
-            h = _hsl2hsv.h,
-            s = _hsl2hsv.s,
-            v = _hsl2hsv.v;
-
-        fromHSV(h, s, v);
-      }
-    } else if (value.indexOf('hsv') !== -1) {
-      var _parts = value.replace(/hsva|hsv|\(|\)/gm, '').split(/\s|,/g).filter(function (val) {
-        return val !== '';
-      }).map(function (val, index) {
-        return index > 2 ? parseFloat(val) : parseInt(val, 10);
-      });
-
-      if (_parts.length === 4) {
-        this._alpha = Math.floor(parseFloat(_parts[3]) * 100);
-      }
-      if (_parts.length >= 3) {
-        fromHSV(_parts[0], _parts[1], _parts[2]);
-      }
-    } else if (value.indexOf('rgb') !== -1) {
-      var _parts2 = value.replace(/rgba|rgb|\(|\)/gm, '').split(/\s|,/g).filter(function (val) {
-        return val !== '';
-      }).map(function (val, index) {
-        return index > 2 ? parseFloat(val) : parseInt(val, 10);
-      });
-
-      if (_parts2.length === 4) {
-        this._alpha = Math.floor(parseFloat(_parts2[3]) * 100);
-      }
-      if (_parts2.length >= 3) {
-        var _rgb2hsv = rgb2hsv(_parts2[0], _parts2[1], _parts2[2]),
-            _h = _rgb2hsv.h,
-            _s = _rgb2hsv.s,
-            _v = _rgb2hsv.v;
-
-        fromHSV(_h, _s, _v);
-      }
-    } else if (value.indexOf('#') !== -1) {
-      var hex = value.replace('#', '').trim();
-      var r = void 0,
-          g = void 0,
-          b = void 0;
-
-      if (hex.length === 3) {
-        r = parseHexChannel(hex[0] + hex[0]);
-        g = parseHexChannel(hex[1] + hex[1]);
-        b = parseHexChannel(hex[2] + hex[2]);
-      } else if (hex.length === 6) {
-        r = parseHexChannel(hex.substring(0, 2));
-        g = parseHexChannel(hex.substring(2, 4));
-        b = parseHexChannel(hex.substring(4));
-      }
-
-      var _rgb2hsv2 = rgb2hsv(r, g, b),
-          _h2 = _rgb2hsv2.h,
-          _s2 = _rgb2hsv2.s,
-          _v2 = _rgb2hsv2.v;
-
-      fromHSV(_h2, _s2, _v2);
-    }
-  };
-
-  Color.prototype.doOnChange = function doOnChange() {
-    var _hue = this._hue,
-        _saturation = this._saturation,
-        _value = this._value,
-        _alpha = this._alpha,
-        format = this.format;
-
-
-    if (this.enableAlpha) {
-      switch (format) {
-        case 'hsl':
-          {
-            var hsl = hsv2hsl(_hue, _saturation / 100, _value / 100);
-            this.value = 'hsla(' + _hue + ', ' + Math.round(hsl[1] * 100) + '%, ' + Math.round(hsl[2] * 100) + '%, ' + _alpha / 100 + ')';
-            break;
-          }
-        case 'hsv':
-          this.value = 'hsva(' + _hue + ', ' + Math.round(_saturation) + '%, ' + Math.round(_value) + '%, ' + _alpha / 100 + ')';
-          break;
-        default:
-          {
-            var _hsv2rgb = hsv2rgb(_hue, _saturation, _value),
-                r = _hsv2rgb.r,
-                g = _hsv2rgb.g,
-                b = _hsv2rgb.b;
-
-            this.value = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + _alpha / 100 + ')';
-          }
-      }
-    } else {
-      switch (format) {
-        case 'hsl':
-          {
-            var _hsl = hsv2hsl(_hue, _saturation / 100, _value / 100);
-            this.value = 'hsl(' + _hue + ', ' + Math.round(_hsl[1] * 100) + '%, ' + Math.round(_hsl[2] * 100) + '%)';
-            break;
-          }
-        case 'hsv':
-          this.value = 'hsv(' + _hue + ', ' + Math.round(_saturation) + '%, ' + Math.round(_value) + '%)';
-          break;
-        case 'rgb':
-          {
-            var _hsv2rgb2 = hsv2rgb(_hue, _saturation, _value),
-                _r = _hsv2rgb2.r,
-                _g = _hsv2rgb2.g,
-                _b = _hsv2rgb2.b;
-
-            this.value = 'rgb(' + _r + ', ' + _g + ', ' + _b + ')';
-            break;
-          }
-        default:
-          this.value = toHex(hsv2rgb(_hue, _saturation, _value));
-      }
-    }
-  };
-
+  }]);
   return Color;
 }();
 
-export default Color;
+var _default = Color;
+exports.default = _default;
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(hsv2hsl, 'hsv2hsl', 'src/color-picker/color.js');
+  reactHotLoader.register(isOnePointZero, 'isOnePointZero', 'src/color-picker/color.js');
+  reactHotLoader.register(isPercentage, 'isPercentage', 'src/color-picker/color.js');
+  reactHotLoader.register(bound01, 'bound01', 'src/color-picker/color.js');
+  reactHotLoader.register(INT_HEX_MAP, 'INT_HEX_MAP', 'src/color-picker/color.js');
+  reactHotLoader.register(toHex, 'toHex', 'src/color-picker/color.js');
+  reactHotLoader.register(HEX_INT_MAP, 'HEX_INT_MAP', 'src/color-picker/color.js');
+  reactHotLoader.register(parseHexChannel, 'parseHexChannel', 'src/color-picker/color.js');
+  reactHotLoader.register(hsl2hsv, 'hsl2hsv', 'src/color-picker/color.js');
+  reactHotLoader.register(rgb2hsv, 'rgb2hsv', 'src/color-picker/color.js');
+  reactHotLoader.register(hsv2rgb, 'hsv2rgb', 'src/color-picker/color.js');
+  reactHotLoader.register(Color, 'Color', 'src/color-picker/color.js');
+  reactHotLoader.register(_default, 'default', 'src/color-picker/color.js');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

@@ -78,6 +78,13 @@ var Form = function (_Component) {
       });
     }
   }, {
+    key: 'resetErrors',
+    value: function resetErrors() {
+      this.state.fields.forEach(function (field) {
+        field.resetError();
+      });
+    }
+  }, {
     key: 'validate',
     value: function validate(callback) {
       var _this2 = this;

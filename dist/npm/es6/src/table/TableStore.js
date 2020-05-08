@@ -1,17 +1,69 @@
-import _extends from 'babel-runtime/helpers/extends';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import * as React from 'react';
-import { Component, PropTypes } from '../../libs';
-import local from '../locale';
+'use strict';
 
-import TableLayout from './TableLayout';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+var _extends2 = require('babel-runtime/helpers/extends');
 
-import normalizeColumns from './normalizeColumns';
-import { getLeafColumns, getValueByPath, getColumns, convertToRows, getRowIdentity } from "./utils";
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var React = _interopRequireWildcard(_react);
+
+var _libs = require('../../libs');
+
+var _locale = require('../locale');
+
+var _locale2 = _interopRequireDefault(_locale);
+
+var _TableLayout = require('./TableLayout');
+
+var _TableLayout2 = _interopRequireDefault(_TableLayout);
+
+var _normalizeColumns = require('./normalizeColumns');
+
+var _normalizeColumns2 = _interopRequireDefault(_normalizeColumns);
+
+var _utils = require('./utils');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var tableIDSeed = 1;
 
@@ -40,18 +92,20 @@ function filterData(data, columns) {
 }
 
 var TableStore = function (_Component) {
-  _inherits(TableStore, _Component);
-
-  TableStore.prototype.getChildContext = function getChildContext() {
-    return {
-      tableStore: this
-    };
-  };
+  (0, _inherits3.default)(TableStore, _Component);
+  (0, _createClass3.default)(TableStore, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        tableStore: this
+      };
+    }
+  }]);
 
   function TableStore(props) {
-    _classCallCheck(this, TableStore);
+    (0, _classCallCheck3.default)(this, TableStore);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (TableStore.__proto__ || Object.getPrototypeOf(TableStore)).call(this, props));
 
     _this.state = {
       fixedColumns: null, // left fixed columns in _columns
@@ -76,404 +130,430 @@ var TableStore = function (_Component) {
     return _this;
   }
 
-  TableStore.prototype.componentWillMount = function componentWillMount() {
-    this.updateColumns(getColumns(this.props));
-    this.updateData(this.props);
-    this._isMounted = true;
-  };
-
-  TableStore.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-    var data = this.props.data;
-
-    var nextColumns = getColumns(nextProps);
-
-    if (getColumns(this.props) !== nextColumns) {
-      this.updateColumns(nextColumns);
+  (0, _createClass3.default)(TableStore, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.updateColumns((0, _utils.getColumns)(this.props));
+      this.updateData(this.props);
+      this._isMounted = true;
     }
-    if (data !== nextProps.data) {
-      this.updateData(nextProps);
-    }
-  };
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      var data = this.props.data;
 
-  // shouldComponentUpdate(nextProps) {
-  //   const propsKeys = Object.keys(this.props);
-  //   const nextPropsKeys = Object.keys(nextProps);
-  //
-  //   if (propsKeys.length !== nextPropsKeys.length) {
-  //     return true;
-  //   }
-  //   for (const key of propsKeys) {
-  //     if (this.props[key] !== nextProps[key]) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
+      var nextColumns = (0, _utils.getColumns)(nextProps);
 
-  TableStore.prototype.updateColumns = function updateColumns(columns) {
-    var _columns = normalizeColumns(columns, tableIDSeed++);
-
-    var fixedColumns = _columns.filter(function (column) {
-      return column.fixed === true || column.fixed === 'left';
-    });
-    var rightFixedColumns = _columns.filter(function (column) {
-      return column.fixed === 'right';
-    });
-
-    var selectable = void 0;
-    if (_columns[0] && _columns[0].type === 'selection') {
-      selectable = _columns[0].selectable;
-      if (fixedColumns.length && !_columns[0].fixed) {
-        _columns[0].fixed = true;
-        fixedColumns.unshift(_columns[0]);
+      if ((0, _utils.getColumns)(this.props) !== nextColumns) {
+        this.updateColumns(nextColumns);
+      }
+      if (data !== nextProps.data) {
+        this.updateData(nextProps);
       }
     }
+  }, {
+    key: 'updateColumns',
 
-    _columns = [].concat(fixedColumns, _columns.filter(function (column) {
-      return !column.fixed;
-    }), rightFixedColumns);
 
-    this.setState(Object.assign(this.state || {}, {
-      fixedColumns: fixedColumns,
-      rightFixedColumns: rightFixedColumns,
-      columnRows: convertToRows(_columns),
-      columns: getLeafColumns(_columns),
-      isComplex: fixedColumns.length > 0 || rightFixedColumns.length > 0,
-      selectable: selectable
-    }));
-  };
+    // shouldComponentUpdate(nextProps) {
+    //   const propsKeys = Object.keys(this.props);
+    //   const nextPropsKeys = Object.keys(nextProps);
+    //
+    //   if (propsKeys.length !== nextPropsKeys.length) {
+    //     return true;
+    //   }
+    //   for (const key of propsKeys) {
+    //     if (this.props[key] !== nextProps[key]) {
+    //       return true;
+    //     }
+    //   }
+    //   return false;
+    // }
 
-  TableStore.prototype.updateData = function updateData(props) {
-    var _props$data = props.data,
-        data = _props$data === undefined ? [] : _props$data,
-        defaultExpandAll = props.defaultExpandAll,
-        defaultSort = props.defaultSort;
-    var columns = this.state.columns;
+    value: function updateColumns(columns) {
+      var _columns = (0, _normalizeColumns2.default)(columns, tableIDSeed++);
 
-    var filteredData = filterData(data.slice(), columns);
+      var fixedColumns = _columns.filter(function (column) {
+        return column.fixed === true || column.fixed === 'left';
+      });
+      var rightFixedColumns = _columns.filter(function (column) {
+        return column.fixed === 'right';
+      });
 
-    var _state = this.state,
-        hoverRow = _state.hoverRow,
-        currentRow = _state.currentRow,
-        selectedRows = _state.selectedRows,
-        expandingRows = _state.expandingRows;
+      var selectable = void 0;
+      if (_columns[0] && _columns[0].type === 'selection') {
+        selectable = _columns[0].selectable;
+        if (fixedColumns.length && !_columns[0].fixed) {
+          _columns[0].fixed = true;
+          fixedColumns.unshift(_columns[0]);
+        }
+      }
 
-    hoverRow = hoverRow && data.includes(hoverRow) ? hoverRow : null;
-    currentRow = currentRow && data.includes(currentRow) ? currentRow : null;
-    var _columns$ = columns[0],
-        firstColumn = _columns$ === undefined ? {} : _columns$;
+      _columns = [].concat(fixedColumns, _columns.filter(function (column) {
+        return !column.fixed;
+      }), rightFixedColumns);
 
-    if (this._isMounted && data !== this.props.data && !firstColumn.reserveSelection) {
-      selectedRows = [];
-    } else {
-      selectedRows = selectedRows && selectedRows.filter(function (row) {
-        return data.includes(row);
-      }) || [];
+      this.setState(Object.assign(this.state || {}, {
+        fixedColumns: fixedColumns,
+        rightFixedColumns: rightFixedColumns,
+        columnRows: (0, _utils.convertToRows)(_columns),
+        columns: (0, _utils.getLeafColumns)(_columns),
+        isComplex: fixedColumns.length > 0 || rightFixedColumns.length > 0,
+        selectable: selectable
+      }));
     }
+  }, {
+    key: 'updateData',
+    value: function updateData(props) {
+      var _props$data = props.data,
+          data = _props$data === undefined ? [] : _props$data,
+          defaultExpandAll = props.defaultExpandAll,
+          defaultSort = props.defaultSort;
+      var columns = this.state.columns;
 
-    if (!this._isMounted) {
-      expandingRows = defaultExpandAll ? data.slice() : [];
-    } else {
-      expandingRows = expandingRows.filter(function (row) {
-        return data.includes(row);
+      var filteredData = filterData(data.slice(), columns);
+
+      var _state = this.state,
+          hoverRow = _state.hoverRow,
+          currentRow = _state.currentRow,
+          selectedRows = _state.selectedRows,
+          expandingRows = _state.expandingRows;
+
+      hoverRow = hoverRow && data.includes(hoverRow) ? hoverRow : null;
+      currentRow = currentRow && data.includes(currentRow) ? currentRow : null;
+
+      var _columns2 = (0, _slicedToArray3.default)(columns, 1),
+          _columns2$ = _columns2[0],
+          firstColumn = _columns2$ === undefined ? {} : _columns2$;
+
+      if (this._isMounted && data !== this.props.data && !firstColumn.reserveSelection) {
+        selectedRows = [];
+      } else {
+        selectedRows = selectedRows && selectedRows.filter(function (row) {
+          return data.includes(row);
+        }) || [];
+      }
+
+      if (!this._isMounted) {
+        expandingRows = defaultExpandAll ? data.slice() : [];
+      } else {
+        expandingRows = expandingRows.filter(function (row) {
+          return data.includes(row);
+        });
+      }
+
+      this.setState(Object.assign(this.state, {
+        data: filteredData,
+        filteredData: filteredData,
+        hoverRow: hoverRow,
+        currentRow: currentRow,
+        expandingRows: expandingRows,
+        selectedRows: selectedRows
+      }));
+      if ((!this._isMounted || data !== this.props.data) && defaultSort) {
+        var prop = defaultSort.prop,
+            _defaultSort$order = defaultSort.order,
+            order = _defaultSort$order === undefined ? 'ascending' : _defaultSort$order;
+
+        var sortColumn = columns.find(function (column) {
+          return column.property === prop;
+        });
+        this.changeSortCondition(sortColumn, order, false);
+      } else {
+        this.changeSortCondition(null, null, false);
+      }
+    }
+  }, {
+    key: 'setHoverRow',
+    value: function setHoverRow(index) {
+      if (!this.state.isComplex) return;
+      this.setState({
+        hoverRow: index
       });
     }
+  }, {
+    key: 'toggleRowExpanded',
+    value: function toggleRowExpanded(row, rowKey) {
+      var _this2 = this;
 
-    this.setState(Object.assign(this.state, {
-      data: filteredData,
-      filteredData: filteredData,
-      hoverRow: hoverRow,
-      currentRow: currentRow,
-      expandingRows: expandingRows,
-      selectedRows: selectedRows
-    }));
-    if ((!this._isMounted || data !== this.props.data) && defaultSort) {
-      var prop = defaultSort.prop,
-          _defaultSort$order = defaultSort.order,
-          order = _defaultSort$order === undefined ? 'ascending' : _defaultSort$order;
+      var expandRowKeys = this.props.expandRowKeys;
+      var expandingRows = this.state.expandingRows;
 
-      var sortColumn = columns.find(function (column) {
-        return column.property === prop;
+      if (expandRowKeys) {
+        var isRowExpanding = expandRowKeys.includes(rowKey);
+        this.dispatchEvent('onExpand', row, !isRowExpanding);
+        return;
+      }
+
+      expandingRows = expandingRows.slice();
+      var rowIndex = expandingRows.indexOf(row);
+      if (rowIndex > -1) {
+        expandingRows.splice(rowIndex, 1);
+      } else {
+        expandingRows.push(row);
+      }
+
+      this.setState({
+        expandingRows: expandingRows
+      }, function () {
+        _this2.dispatchEvent('onExpand', row, rowIndex === -1);
       });
-      this.changeSortCondition(sortColumn, order, false);
-    } else {
+    }
+  }, {
+    key: 'isRowExpanding',
+    value: function isRowExpanding(row, rowKey) {
+      var expandRowKeys = this.props.expandRowKeys;
+      var expandingRows = this.state.expandingRows;
+
+
+      if (expandRowKeys) {
+        return expandRowKeys.includes(rowKey);
+      }
+      return expandingRows.includes(row);
+    }
+  }, {
+    key: 'setCurrentRow',
+    value: function setCurrentRow(row) {
+      var _this3 = this;
+
+      var _props = this.props,
+          currentRowKey = _props.currentRowKey,
+          rowKey = _props.rowKey;
+
+      if (currentRowKey && !Array.isArray(currentRowKey)) {
+        this.dispatchEvent('onCurrentChange', (0, _utils.getRowIdentity)(row, rowKey), currentRowKey);
+        return;
+      }
+
+      var oldRow = this.state.currentRow;
+
+      this.setState({
+        currentRow: row
+      }, function () {
+        _this3.dispatchEvent('onCurrentChange', row, oldRow);
+      });
+    }
+  }, {
+    key: 'toggleRowSelection',
+    value: function toggleRowSelection(row, isSelected) {
+      var _this4 = this;
+
+      var _props2 = this.props,
+          currentRowKey = _props2.currentRowKey,
+          rowKey = _props2.rowKey;
+
+
+      if (Array.isArray(currentRowKey)) {
+        var toggledRowKey = (0, _utils.getRowIdentity)(row, rowKey);
+        var rowIndex = currentRowKey.indexOf(toggledRowKey);
+        var newCurrentRowKey = currentRowKey.slice();
+
+        if (isSelected !== undefined) {
+          if (isSelected && rowIndex === -1) {
+            newCurrentRowKey.push(toggledRowKey);
+          } else if (!isSelected && rowIndex !== -1) {
+            newCurrentRowKey.splice(rowIndex, 1);
+          }
+        } else {
+          rowIndex === -1 ? newCurrentRowKey.push(toggledRowKey) : newCurrentRowKey.splice(rowIndex, 1);
+        }
+
+        this.dispatchEvent('onSelect', newCurrentRowKey, row);
+        this.dispatchEvent('onSelectChange', newCurrentRowKey);
+        return;
+      }
+
+      this.setState(function (state) {
+        var selectedRows = state.selectedRows.slice();
+        var rowIndex = selectedRows.indexOf(row);
+
+        if (isSelected !== undefined) {
+          if (isSelected) {
+            rowIndex === -1 && selectedRows.push(row);
+          } else {
+            rowIndex !== -1 && selectedRows.splice(rowIndex, 1);
+          }
+        } else {
+          rowIndex === -1 ? selectedRows.push(row) : selectedRows.splice(rowIndex, 1);
+        }
+
+        return { selectedRows: selectedRows };
+      }, function () {
+        _this4.dispatchEvent('onSelect', _this4.state.selectedRows, row);
+        _this4.dispatchEvent('onSelectChange', _this4.state.selectedRows);
+      });
+    }
+  }, {
+    key: 'toggleAllSelection',
+    value: function toggleAllSelection() {
+      var _this5 = this;
+
+      var _props3 = this.props,
+          currentRowKey = _props3.currentRowKey,
+          rowKey = _props3.rowKey;
+      var _state2 = this.state,
+          data = _state2.data,
+          selectedRows = _state2.selectedRows,
+          selectable = _state2.selectable;
+
+
+      var allSelectableRows = selectable ? data.filter(function (data, index) {
+        return selectable(data, index);
+      }) : data.slice();
+
+      if (Array.isArray(currentRowKey)) {
+        var newCurrentRowKey = this.isAllSelected ? [] : allSelectableRows.map(function (row) {
+          return (0, _utils.getRowIdentity)(row, rowKey);
+        });
+        this.dispatchEvent('onSelectAll', newCurrentRowKey);
+        this.dispatchEvent('onSelectChange', newCurrentRowKey);
+        return;
+      }
+
+      if (this.isAllSelected) {
+        selectedRows = [];
+      } else {
+        selectedRows = allSelectableRows;
+      }
+
+      this.setState({
+        selectedRows: selectedRows
+      }, function () {
+        _this5.dispatchEvent('onSelectAll', selectedRows);
+        _this5.dispatchEvent('onSelectChange', selectedRows);
+      });
+    }
+  }, {
+    key: 'clearSelection',
+    value: function clearSelection() {
+      var currentRowKey = this.props.currentRowKey;
+
+      if (Array.isArray(currentRowKey)) return;
+
+      this.setState({
+        selectedRows: []
+      });
+    }
+  }, {
+    key: 'isRowSelected',
+    value: function isRowSelected(row, rowKey) {
+      var currentRowKey = this.props.currentRowKey;
+      var selectedRows = this.state.selectedRows;
+
+
+      if (Array.isArray(currentRowKey)) {
+        return currentRowKey.includes(rowKey);
+      }
+      return selectedRows.includes(row);
+    }
+  }, {
+    key: 'changeSortCondition',
+    value: function changeSortCondition(column, order) {
+      var _this6 = this;
+
+      var shouldDispatchEvent = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+      if (!column) {
+        ;
+
+        var _state3 = this.state;
+        column = _state3.sortColumn;
+        order = _state3.sortOrder;
+      }var data = this.state.filteredData.slice();
+      if (!column) {
+        this.setState({
+          data: data
+        });
+        return;
+      }
+
+      var _column = column,
+          sortMethod = _column.sortMethod,
+          property = _column.property,
+          sortable = _column.sortable;
+
+      var sortedData = void 0;
+      if (!order || sortable === 'custom') {
+        sortedData = data;
+      } else if (sortable && sortable !== 'custom') {
+        var flag = order === 'ascending' ? 1 : -1;
+        if (sortMethod) {
+          sortedData = data.sort(function (a, b) {
+            return sortMethod(a, b) ? flag : -flag;
+          });
+        } else {
+          sortedData = data.sort(function (a, b) {
+            var aVal = (0, _utils.getValueByPath)(a, property);
+            var bVal = (0, _utils.getValueByPath)(b, property);
+            return aVal === bVal ? 0 : aVal > bVal ? flag : -flag;
+          });
+        }
+      }
+      var sortSet = function sortSet() {
+        shouldDispatchEvent && _this6.dispatchEvent('onSortChange', column && order ? { column: column, prop: column.property, order: order } : { column: null, prop: null, order: null });
+      };
+      if (sortable && sortable !== 'custom') {
+        this.setState({
+          sortColumn: column,
+          sortOrder: order,
+          data: sortedData
+        }, sortSet());
+      } else if (sortable && sortable === 'custom') {
+        this.setState({
+          sortColumn: column,
+          sortOrder: order
+        }, sortSet());
+      }
+    }
+  }, {
+    key: 'toggleFilterOpened',
+    value: function toggleFilterOpened(column) {
+      column.filterOpened = !column.filterOpened;
+      this.forceUpdate();
+    }
+  }, {
+    key: 'changeFilteredValue',
+    value: function changeFilteredValue(column, value) {
+      var _this7 = this;
+
+      column.filteredValue = value;
+      var filteredData = filterData(this.props.data.slice(), this.state.columns);
+      this.setState(Object.assign(this.state, {
+        filteredData: filteredData
+      }), function () {
+        _this7.dispatchEvent('onFilterChange', (0, _defineProperty3.default)({}, column.columnKey, value));
+      });
       this.changeSortCondition(null, null, false);
     }
-  };
+  }, {
+    key: 'dispatchEvent',
+    value: function dispatchEvent(name) {
+      var fn = this.props[name];
 
-  TableStore.prototype.setHoverRow = function setHoverRow(index) {
-    if (!this.state.isComplex) return;
-    this.setState({
-      hoverRow: index
-    });
-  };
-
-  TableStore.prototype.toggleRowExpanded = function toggleRowExpanded(row, rowKey) {
-    var _this2 = this;
-
-    var expandRowKeys = this.props.expandRowKeys;
-    var expandingRows = this.state.expandingRows;
-
-    if (expandRowKeys) {
-      var isRowExpanding = expandRowKeys.includes(rowKey);
-      this.dispatchEvent('onExpand', row, !isRowExpanding);
-      return;
-    }
-
-    expandingRows = expandingRows.slice();
-    var rowIndex = expandingRows.indexOf(row);
-    if (rowIndex > -1) {
-      expandingRows.splice(rowIndex, 1);
-    } else {
-      expandingRows.push(row);
-    }
-
-    this.setState({
-      expandingRows: expandingRows
-    }, function () {
-      _this2.dispatchEvent('onExpand', row, rowIndex === -1);
-    });
-  };
-
-  TableStore.prototype.isRowExpanding = function isRowExpanding(row, rowKey) {
-    var expandRowKeys = this.props.expandRowKeys;
-    var expandingRows = this.state.expandingRows;
-
-
-    if (expandRowKeys) {
-      return expandRowKeys.includes(rowKey);
-    }
-    return expandingRows.includes(row);
-  };
-
-  TableStore.prototype.setCurrentRow = function setCurrentRow(row) {
-    var _this3 = this;
-
-    var _props = this.props,
-        currentRowKey = _props.currentRowKey,
-        rowKey = _props.rowKey;
-
-    if (currentRowKey && !Array.isArray(currentRowKey)) {
-      this.dispatchEvent('onCurrentChange', getRowIdentity(row, rowKey), currentRowKey);
-      return;
-    }
-
-    var oldRow = this.state.currentRow;
-
-    this.setState({
-      currentRow: row
-    }, function () {
-      _this3.dispatchEvent('onCurrentChange', row, oldRow);
-    });
-  };
-
-  TableStore.prototype.toggleRowSelection = function toggleRowSelection(row, isSelected) {
-    var _this4 = this;
-
-    var _props2 = this.props,
-        currentRowKey = _props2.currentRowKey,
-        rowKey = _props2.rowKey;
-
-
-    if (Array.isArray(currentRowKey)) {
-      var toggledRowKey = getRowIdentity(row, rowKey);
-      var rowIndex = currentRowKey.indexOf(toggledRowKey);
-      var newCurrentRowKey = currentRowKey.slice();
-
-      if (isSelected !== undefined) {
-        if (isSelected && rowIndex === -1) {
-          newCurrentRowKey.push(toggledRowKey);
-        } else if (!isSelected && rowIndex !== -1) {
-          newCurrentRowKey.splice(rowIndex, 1);
-        }
-      } else {
-        rowIndex === -1 ? newCurrentRowKey.push(toggledRowKey) : newCurrentRowKey.splice(rowIndex, 1);
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
       }
 
-      this.dispatchEvent('onSelect', newCurrentRowKey, row);
-      this.dispatchEvent('onSelectChange', newCurrentRowKey);
-      return;
+      fn && fn.apply(undefined, args);
     }
-
-    this.setState(function (state) {
-      var selectedRows = state.selectedRows.slice();
-      var rowIndex = selectedRows.indexOf(row);
-
-      if (isSelected !== undefined) {
-        if (isSelected) {
-          rowIndex === -1 && selectedRows.push(row);
-        } else {
-          rowIndex !== -1 && selectedRows.splice(rowIndex, 1);
-        }
-      } else {
-        rowIndex === -1 ? selectedRows.push(row) : selectedRows.splice(rowIndex, 1);
-      }
-
-      return { selectedRows: selectedRows };
-    }, function () {
-      _this4.dispatchEvent('onSelect', _this4.state.selectedRows, row);
-      _this4.dispatchEvent('onSelectChange', _this4.state.selectedRows);
-    });
-  };
-
-  TableStore.prototype.toggleAllSelection = function toggleAllSelection() {
-    var _this5 = this;
-
-    var _props3 = this.props,
-        currentRowKey = _props3.currentRowKey,
-        rowKey = _props3.rowKey;
-    var _state2 = this.state,
-        data = _state2.data,
-        selectedRows = _state2.selectedRows,
-        selectable = _state2.selectable;
-
-
-    var allSelectableRows = selectable ? data.filter(function (data, index) {
-      return selectable(data, index);
-    }) : data.slice();
-
-    if (Array.isArray(currentRowKey)) {
-      var newCurrentRowKey = this.isAllSelected ? [] : allSelectableRows.map(function (row) {
-        return getRowIdentity(row, rowKey);
-      });
-      this.dispatchEvent('onSelectAll', newCurrentRowKey);
-      this.dispatchEvent('onSelectChange', newCurrentRowKey);
-      return;
+  }, {
+    key: 'render',
+    value: function render() {
+      var renderExpanded = (this.state.columns.find(function (column) {
+        return column.type === 'expand';
+      }) || {}).expandPannel;
+      return React.createElement(_TableLayout2.default, (0, _extends3.default)({}, this.props, {
+        renderExpanded: renderExpanded,
+        tableStoreState: this.state
+      }));
     }
-
-    if (this.isAllSelected) {
-      selectedRows = [];
-    } else {
-      selectedRows = allSelectableRows;
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
     }
-
-    this.setState({
-      selectedRows: selectedRows
-    }, function () {
-      _this5.dispatchEvent('onSelectAll', selectedRows);
-      _this5.dispatchEvent('onSelectChange', selectedRows);
-    });
-  };
-
-  TableStore.prototype.clearSelection = function clearSelection() {
-    var currentRowKey = this.props.currentRowKey;
-
-    if (Array.isArray(currentRowKey)) return;
-
-    this.setState({
-      selectedRows: []
-    });
-  };
-
-  TableStore.prototype.isRowSelected = function isRowSelected(row, rowKey) {
-    var currentRowKey = this.props.currentRowKey;
-    var selectedRows = this.state.selectedRows;
-
-
-    if (Array.isArray(currentRowKey)) {
-      return currentRowKey.includes(rowKey);
-    }
-    return selectedRows.includes(row);
-  };
-
-  TableStore.prototype.changeSortCondition = function changeSortCondition(column, order) {
-    var _this6 = this;
-
-    var shouldDispatchEvent = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-    if (!column) {
-      ;
-
-      var _state3 = this.state;
-      column = _state3.sortColumn;
-      order = _state3.sortOrder;
-    }var data = this.state.filteredData.slice();
-    if (!column) {
-      this.setState({
-        data: data
-      });
-      return;
-    }
-
-    var _column = column,
-        sortMethod = _column.sortMethod,
-        property = _column.property,
-        sortable = _column.sortable;
-
-    var sortedData = void 0;
-    if (!order || sortable === 'custom') {
-      sortedData = data;
-    } else if (sortable && sortable !== 'custom') {
-      var flag = order === 'ascending' ? 1 : -1;
-      if (sortMethod) {
-        sortedData = data.sort(function (a, b) {
-          return sortMethod(a, b) ? flag : -flag;
-        });
-      } else {
-        sortedData = data.sort(function (a, b) {
-          var aVal = getValueByPath(a, property);
-          var bVal = getValueByPath(b, property);
-          return aVal === bVal ? 0 : aVal > bVal ? flag : -flag;
-        });
-      }
-    }
-    var sortSet = function sortSet() {
-      shouldDispatchEvent && _this6.dispatchEvent('onSortChange', column && order ? { column: column, prop: column.property, order: order } : { column: null, prop: null, order: null });
-    };
-    if (sortable && sortable !== 'custom') {
-      this.setState({
-        sortColumn: column,
-        sortOrder: order,
-        data: sortedData
-      }, sortSet());
-    } else if (sortable && sortable === 'custom') {
-      this.setState({
-        sortColumn: column,
-        sortOrder: order
-      }, sortSet());
-    }
-  };
-
-  TableStore.prototype.toggleFilterOpened = function toggleFilterOpened(column) {
-    column.filterOpened = !column.filterOpened;
-    this.forceUpdate();
-  };
-
-  TableStore.prototype.changeFilteredValue = function changeFilteredValue(column, value) {
-    var _this7 = this;
-
-    column.filteredValue = value;
-    var filteredData = filterData(this.props.data.slice(), this.state.columns);
-    this.setState(Object.assign(this.state, {
-      filteredData: filteredData
-    }), function () {
-      var _this7$dispatchEvent;
-
-      _this7.dispatchEvent('onFilterChange', (_this7$dispatchEvent = {}, _this7$dispatchEvent[column.columnKey] = value, _this7$dispatchEvent));
-    });
-    this.changeSortCondition(null, null, false);
-  };
-
-  TableStore.prototype.dispatchEvent = function dispatchEvent(name) {
-    var fn = this.props[name];
-
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    fn && fn.apply(undefined, args);
-  };
-
-  TableStore.prototype.render = function render() {
-    var renderExpanded = (this.state.columns.find(function (column) {
-      return column.type === 'expand';
-    }) || {}).expandPannel;
-    return React.createElement(TableLayout, _extends({}, this.props, {
-      renderExpanded: renderExpanded,
-      tableStoreState: this.state
-    }));
-  };
-
-  _createClass(TableStore, [{
+  }, {
     key: 'isAllSelected',
     get: function get() {
       var _props4 = this.props,
@@ -494,56 +574,77 @@ var TableStore = function (_Component) {
 
       if (Array.isArray(currentRowKey)) {
         return selectableData.every(function (data) {
-          return currentRowKey.includes(getRowIdentity(data, rowKey));
+          return currentRowKey.includes((0, _utils.getRowIdentity)(data, rowKey));
         });
       }
 
       return selectedRows && selectedRows.length === selectableData.length;
     }
   }]);
-
   return TableStore;
-}(Component);
+}(_libs.Component);
 
 TableStore.propTypes = {
-  style: PropTypes.object,
-  columns: PropTypes.arrayOf(PropTypes.object),
-  data: PropTypes.arrayOf(PropTypes.object),
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  maxHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  stripe: PropTypes.bool,
-  border: PropTypes.bool,
-  fit: PropTypes.bool,
-  showHeader: PropTypes.bool,
-  highlightCurrentRow: PropTypes.bool,
-  currentRowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)]),
-  rowClassName: PropTypes.func,
-  rowStyle: PropTypes.func,
-  rowKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  emptyText: PropTypes.string,
-  defaultExpandAll: PropTypes.bool,
-  expandRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
-  defaultSort: PropTypes.shape({ prop: PropTypes.string, order: PropTypes.oneOf(['ascending', 'descending']) }),
-  tooltipEffect: PropTypes.oneOf(['dark', 'light']),
-  showSummary: PropTypes.bool,
-  sumText: PropTypes.string,
-  summaryMethod: PropTypes.func,
-  onSelect: PropTypes.func,
-  onSelectAll: PropTypes.func,
-  onSelectChange: PropTypes.func
+  style: _libs.PropTypes.object,
+  columns: _libs.PropTypes.arrayOf(_libs.PropTypes.object),
+  data: _libs.PropTypes.arrayOf(_libs.PropTypes.object),
+  height: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
+  maxHeight: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number]),
+  stripe: _libs.PropTypes.bool,
+  border: _libs.PropTypes.bool,
+  fit: _libs.PropTypes.bool,
+  showHeader: _libs.PropTypes.bool,
+  highlightCurrentRow: _libs.PropTypes.bool,
+  currentRowKey: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number, _libs.PropTypes.arrayOf(_libs.PropTypes.string)]),
+  rowClassName: _libs.PropTypes.func,
+  rowStyle: _libs.PropTypes.func,
+  rowKey: _libs.PropTypes.oneOfType([_libs.PropTypes.func, _libs.PropTypes.string]),
+  emptyText: _libs.PropTypes.string,
+  defaultExpandAll: _libs.PropTypes.bool,
+  expandRowKeys: _libs.PropTypes.arrayOf(_libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.number])),
+  defaultSort: _libs.PropTypes.shape({ prop: _libs.PropTypes.string, order: _libs.PropTypes.oneOf(['ascending', 'descending']) }),
+  tooltipEffect: _libs.PropTypes.oneOf(['dark', 'light']),
+  showSummary: _libs.PropTypes.bool,
+  sumText: _libs.PropTypes.string,
+  summaryMethod: _libs.PropTypes.func,
+  onSelect: _libs.PropTypes.func,
+  onSelectAll: _libs.PropTypes.func,
+  onSelectChange: _libs.PropTypes.func
 };
 TableStore.defaultProps = {
   data: [],
   showHeader: true,
   stripe: false,
   fit: true,
-  emptyText: local.t('el.table.emptyText'),
+  emptyText: _locale2.default.t('el.table.emptyText'),
   defaultExpandAll: false,
   highlightCurrentRow: false,
   showSummary: false,
-  sumText: local.t('el.table.sumText')
+  sumText: _locale2.default.t('el.table.sumText')
 };
 TableStore.childContextTypes = {
-  tableStore: PropTypes.any
+  tableStore: _libs.PropTypes.any
 };
-export default TableStore;
+var _default = TableStore;
+exports.default = _default;
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(tableIDSeed, 'tableIDSeed', 'src/table/TableStore.jsx');
+  reactHotLoader.register(filterData, 'filterData', 'src/table/TableStore.jsx');
+  reactHotLoader.register(TableStore, 'TableStore', 'src/table/TableStore.jsx');
+  reactHotLoader.register(_default, 'default', 'src/table/TableStore.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

@@ -1,55 +1,123 @@
-import _extends from 'babel-runtime/helpers/extends';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
+'use strict';
 
-import { pick } from '../../libs/utils';
-import { SELECTION_MODES } from './utils';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-import BasePicker from './BasePicker';
-import DatePanel from './panel/DatePanel';
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _utils = require('../../libs/utils');
+
+var _utils2 = require('./utils');
+
+var _BasePicker2 = require('./BasePicker');
+
+var _BasePicker3 = _interopRequireDefault(_BasePicker2);
+
+var _DatePanel = require('./panel/DatePanel');
+
+var _DatePanel2 = _interopRequireDefault(_DatePanel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var DatePicker = function (_BasePicker) {
-  _inherits(DatePicker, _BasePicker);
-
-  _createClass(DatePicker, null, [{
+  (0, _inherits3.default)(DatePicker, _BasePicker);
+  (0, _createClass3.default)(DatePicker, null, [{
     key: 'propTypes',
     get: function get() {
-      return Object.assign({}, BasePicker.propTypes, pick(DatePanel.propTypes, ['value', 'shortcuts', 'selectionMode', 'disabledDate', 'showWeekNumber', 'firstDayOfWeek', 'isShowTime']));
+      return Object.assign({}, _BasePicker3.default.propTypes, (0, _utils.pick)(_DatePanel2.default.propTypes, ['value', 'shortcuts', 'selectionMode', 'disabledDate', 'showWeekNumber', 'firstDayOfWeek', 'isShowTime']));
     }
   }, {
     key: 'defaultProps',
     get: function get() {
-      var result = Object.assign({}, BasePicker.defaultProps);
+      var result = Object.assign({}, _BasePicker3.default.defaultProps);
       return result;
     }
   }]);
 
   function DatePicker(props) {
-    _classCallCheck(this, DatePicker);
+    (0, _classCallCheck3.default)(this, DatePicker);
 
     var type = 'date';
     switch (props.selectionMode) {
-      case SELECTION_MODES.YEAR:
+      case _utils2.SELECTION_MODES.YEAR:
         type = 'year';break;
-      case SELECTION_MODES.MONTH:
+      case _utils2.SELECTION_MODES.MONTH:
         type = 'month';break;
-      case SELECTION_MODES.WEEK:
+      case _utils2.SELECTION_MODES.WEEK:
         type = 'week';break;
     }
-    return _possibleConstructorReturn(this, _BasePicker.call(this, props, type, {}));
+    return (0, _possibleConstructorReturn3.default)(this, (DatePicker.__proto__ || Object.getPrototypeOf(DatePicker)).call(this, props, type, {}));
   }
 
-  DatePicker.prototype.pickerPanel = function pickerPanel(state, props) {
-    return React.createElement(DatePanel, _extends({}, props, {
-      value: state.value,
-      onPick: this.onPicked.bind(this)
-    }));
-  };
-
+  (0, _createClass3.default)(DatePicker, [{
+    key: 'pickerPanel',
+    value: function pickerPanel(state, props) {
+      return _react2.default.createElement(_DatePanel2.default, (0, _extends3.default)({}, props, {
+        value: state.value,
+        onPick: this.onPicked.bind(this)
+      }));
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return DatePicker;
-}(BasePicker);
+}(_BasePicker3.default);
 
-export default DatePicker;
+var _default = DatePicker;
+exports.default = _default;
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(DatePicker, 'DatePicker', 'src/date-picker/DatePicker.jsx');
+  reactHotLoader.register(_default, 'default', 'src/date-picker/DatePicker.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

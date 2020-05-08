@@ -1,23 +1,66 @@
-import _objectWithoutProperties from 'babel-runtime/helpers/objectWithoutProperties';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import * as React from 'react';
-import { Component, PropTypes } from '../../libs';
-import { getRowIdentity, getValueByPath } from "./utils";
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _objectWithoutProperties2 = require('babel-runtime/helpers/objectWithoutProperties');
+
+var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var React = _interopRequireWildcard(_react);
+
+var _libs = require('../../libs');
+
+var _utils = require('./utils');
+
+var _checkbox = require('../checkbox');
+
+var _checkbox2 = _interopRequireDefault(_checkbox);
+
+var _tag = require('../tag');
+
+var _tag2 = _interopRequireDefault(_tag);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 // import {toDate} from "../date-picker/utils/index";
 
-import Checkbox from '../checkbox';
-import Tag from '../tag';
-
 var TableBody = function (_Component) {
-  _inherits(TableBody, _Component);
+  (0, _inherits3.default)(TableBody, _Component);
 
   function TableBody(props) {
-    _classCallCheck(this, TableBody);
+    (0, _classCallCheck3.default)(this, TableBody);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (TableBody.__proto__ || Object.getPrototypeOf(TableBody)).call(this, props));
 
     ['handleMouseLeave'].forEach(function (fn) {
       _this[fn] = _this[fn].bind(_this);
@@ -25,223 +68,246 @@ var TableBody = function (_Component) {
     return _this;
   }
 
-  TableBody.prototype.handleMouseEnter = function handleMouseEnter(index) {
-    this.context.tableStore.setHoverRow(index);
-  };
+  (0, _createClass3.default)(TableBody, [{
+    key: 'handleMouseEnter',
+    value: function handleMouseEnter(index) {
+      this.context.tableStore.setHoverRow(index);
+    }
+  }, {
+    key: 'handleMouseLeave',
+    value: function handleMouseLeave() {
+      this.context.tableStore.setHoverRow(null);
+    }
+  }, {
+    key: 'handleCellMouseEnter',
+    value: function handleCellMouseEnter(row, column, event) {
+      this.dispatchEvent('onCellMouseEnter', row, column, event.currentTarget, event);
+    }
+  }, {
+    key: 'handleCellMouseLeave',
+    value: function handleCellMouseLeave(row, column, event) {
+      this.dispatchEvent('onCellMouseLeave', row, column, event.currentTarget, event);
+    }
+  }, {
+    key: 'handleCellClick',
+    value: function handleCellClick(row, column, event) {
+      this.dispatchEvent('onCellClick', row, column, event.currentTarget, event);
+      this.dispatchEvent('onRowClick', row, event, column);
+    }
+  }, {
+    key: 'handleCellDbClick',
+    value: function handleCellDbClick(row, column, event) {
+      this.dispatchEvent('onCellDbClick', row, column, event.currentTarget, event);
+      this.dispatchEvent('onRowDbClick', row, column);
+    }
+  }, {
+    key: 'handleRowContextMenu',
+    value: function handleRowContextMenu(row, event) {
+      this.dispatchEvent('onRowContextMenu', row, event);
+    }
+  }, {
+    key: 'dispatchEvent',
+    value: function dispatchEvent(name) {
+      var fn = this.props[name];
 
-  TableBody.prototype.handleMouseLeave = function handleMouseLeave() {
-    this.context.tableStore.setHoverRow(null);
-  };
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
 
-  TableBody.prototype.handleCellMouseEnter = function handleCellMouseEnter(row, column, event) {
-    this.dispatchEvent('onCellMouseEnter', row, column, event.currentTarget, event);
-  };
+      fn && fn.apply(undefined, args);
+    }
+  }, {
+    key: 'isColumnHidden',
+    value: function isColumnHidden(index) {
+      var _props = this.props,
+          tableStoreState = _props.tableStoreState,
+          layout = _props.layout,
+          props = (0, _objectWithoutProperties3.default)(_props, ['tableStoreState', 'layout']);
 
-  TableBody.prototype.handleCellMouseLeave = function handleCellMouseLeave(row, column, event) {
-    this.dispatchEvent('onCellMouseLeave', row, column, event.currentTarget, event);
-  };
+      if (props.fixed === true || props.fixed === 'left') {
+        return index >= this.leftFixedCount;
+      } else if (props.fixed === 'right') {
+        return index < this.columnsCount - this.rightFixedCount;
+      } else {
+        return index < this.leftFixedCount || index >= this.columnsCount - this.rightFixedCount;
+      }
+    }
+  }, {
+    key: 'getRowStyle',
+    value: function getRowStyle(row, index) {
+      var rowStyle = this.props.rowStyle;
 
-  TableBody.prototype.handleCellClick = function handleCellClick(row, column, event) {
-    this.dispatchEvent('onCellClick', row, column, event.currentTarget, event);
-    this.dispatchEvent('onRowClick', row, event, column);
-  };
+      if (typeof rowStyle === 'function') {
+        return rowStyle.call(null, row, index);
+      }
 
-  TableBody.prototype.handleCellDbClick = function handleCellDbClick(row, column, event) {
-    this.dispatchEvent('onCellDbClick', row, column, event.currentTarget, event);
-    this.dispatchEvent('onRowDbClick', row, column);
-  };
+      return rowStyle;
+    }
+  }, {
+    key: 'getKeyOfRow',
+    value: function getKeyOfRow(row, index) {
+      var rowKey = this.props.rowKey;
 
-  TableBody.prototype.handleRowContextMenu = function handleRowContextMenu(row, event) {
-    this.dispatchEvent('onRowContextMenu', row, event);
-  };
+      if (rowKey) {
+        return (0, _utils.getRowIdentity)(row, rowKey);
+      }
 
-  TableBody.prototype.dispatchEvent = function dispatchEvent(name) {
-    var fn = this.props[name];
-
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
+      return index;
     }
 
-    fn && fn.apply(undefined, args);
-  };
+    // getRowClass(row, index) {
+    //   const { rowClassName, stripe } = this.props;
+    //
+    // }
 
-  TableBody.prototype.isColumnHidden = function isColumnHidden(index) {
-    var _props = this.props,
-        tableStoreState = _props.tableStoreState,
-        layout = _props.layout,
-        props = _objectWithoutProperties(_props, ['tableStoreState', 'layout']);
-
-    if (props.fixed === true || props.fixed === 'left') {
-      return index >= this.leftFixedCount;
-    } else if (props.fixed === 'right') {
-      return index < this.columnsCount - this.rightFixedCount;
-    } else {
-      return index < this.leftFixedCount || index >= this.columnsCount - this.rightFixedCount;
+  }, {
+    key: 'handleExpandClick',
+    value: function handleExpandClick(row, rowKey) {
+      this.context.tableStore.toggleRowExpanded(row, rowKey);
     }
-  };
-
-  TableBody.prototype.getRowStyle = function getRowStyle(row, index) {
-    var rowStyle = this.props.rowStyle;
-
-    if (typeof rowStyle === 'function') {
-      return rowStyle.call(null, row, index);
+  }, {
+    key: 'handleClick',
+    value: function handleClick(row) {
+      this.context.tableStore.setCurrentRow(row);
     }
+  }, {
+    key: 'renderCell',
+    value: function renderCell(row, column, index, rowKey) {
+      var _this2 = this;
 
-    return rowStyle;
-  };
+      var type = column.type,
+          selectable = column.selectable;
 
-  TableBody.prototype.getKeyOfRow = function getKeyOfRow(row, index) {
-    var rowKey = this.props.rowKey;
+      if (type === 'expand') {
+        return React.createElement(
+          'div',
+          {
+            className: this.classNames('el-table__expand-icon ', {
+              'el-table__expand-icon--expanded': this.context.tableStore.isRowExpanding(row, rowKey)
+            }),
+            onClick: this.handleExpandClick.bind(this, row, rowKey)
+          },
+          React.createElement('i', { className: 'el-icon el-icon-arrow-right' })
+        );
+      }
 
-    if (rowKey) {
-      return getRowIdentity(row, rowKey);
+      if (type === 'index') {
+        return React.createElement(
+          'div',
+          null,
+          index + 1
+        );
+      }
+
+      if (type === 'selection') {
+        var isSelected = this.context.tableStore.isRowSelected(row, rowKey);
+        return React.createElement(_checkbox2.default, {
+          checked: isSelected,
+          disabled: selectable && !selectable(row, index),
+          onChange: function onChange() {
+            _this2.context.tableStore.toggleRowSelection(row, !isSelected);
+          }
+        });
+      }
+
+      return column.render(row, column, index);
     }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
 
-    return index;
-  };
+      var _props2 = this.props,
+          tableStoreState = _props2.tableStoreState,
+          layout = _props2.layout,
+          props = (0, _objectWithoutProperties3.default)(_props2, ['tableStoreState', 'layout']);
 
-  // getRowClass(row, index) {
-  //   const { rowClassName, stripe } = this.props;
-  //
-  // }
-
-  TableBody.prototype.handleExpandClick = function handleExpandClick(row, rowKey) {
-    this.context.tableStore.toggleRowExpanded(row, rowKey);
-  };
-
-  TableBody.prototype.handleClick = function handleClick(row) {
-    this.context.tableStore.setCurrentRow(row);
-  };
-
-  TableBody.prototype.renderCell = function renderCell(row, column, index, rowKey) {
-    var _this2 = this;
-
-    var type = column.type,
-        selectable = column.selectable;
-
-    if (type === 'expand') {
-      return React.createElement(
-        'div',
-        {
-          className: this.classNames('el-table__expand-icon ', {
-            'el-table__expand-icon--expanded': this.context.tableStore.isRowExpanding(row, rowKey)
-          }),
-          onClick: this.handleExpandClick.bind(this, row, rowKey)
-        },
-        React.createElement('i', { className: 'el-icon el-icon-arrow-right' })
-      );
-    }
-
-    if (type === 'index') {
-      return React.createElement(
-        'div',
-        null,
-        index + 1
-      );
-    }
-
-    if (type === 'selection') {
-      var isSelected = this.context.tableStore.isRowSelected(row, rowKey);
-      return React.createElement(Checkbox, {
-        checked: isSelected,
-        disabled: selectable && !selectable(row, index),
-        onChange: function onChange() {
-          _this2.context.tableStore.toggleRowSelection(row, !isSelected);
-        }
+      var columnsHidden = tableStoreState.columns.map(function (column, index) {
+        return _this3.isColumnHidden(index);
       });
-    }
-
-    return column.render(row, column, index);
-  };
-
-  TableBody.prototype.render = function render() {
-    var _this3 = this;
-
-    var _props2 = this.props,
-        tableStoreState = _props2.tableStoreState,
-        layout = _props2.layout,
-        props = _objectWithoutProperties(_props2, ['tableStoreState', 'layout']);
-
-    var columnsHidden = tableStoreState.columns.map(function (column, index) {
-      return _this3.isColumnHidden(index);
-    });
-    return React.createElement(
-      'table',
-      {
-        className: 'el-table__body',
-        cellPadding: 0,
-        cellSpacing: 0,
-        style: this.style({
-          borderSpacing: 0,
-          border: 0
-        })
-      },
-      React.createElement(
-        'colgroup',
-        null,
-        tableStoreState.columns.map(function (column, index) {
-          return React.createElement('col', { width: column.realWidth, style: { width: column.realWidth }, key: index });
-        })
-      ),
-      React.createElement(
-        'tbody',
-        null,
-        tableStoreState.data.map(function (row, rowIndex) {
-          var rowKey = _this3.getKeyOfRow(row, rowIndex);
-          return [React.createElement(
-            'tr',
-            {
-              key: rowKey,
-              style: _this3.getRowStyle(row, rowIndex),
-              className: _this3.className('el-table__row', {
-                'el-table__row--striped': props.stripe && rowIndex % 2 === 1,
-                'hover-row': tableStoreState.hoverRow === rowIndex,
-                'current-row': props.highlightCurrentRow && (props.currentRowKey === rowKey || tableStoreState.currentRow === row)
-              }, typeof props.rowClassName === 'string' ? props.rowClassName : typeof props.rowClassName === 'function' && props.rowClassName(row, rowIndex)),
-              onMouseEnter: _this3.handleMouseEnter.bind(_this3, rowIndex),
-              onMouseLeave: _this3.handleMouseLeave,
-              onClick: _this3.handleClick.bind(_this3, row),
-              onContextMenu: _this3.handleRowContextMenu.bind(_this3, row)
-            },
-            tableStoreState.columns.map(function (column, cellIndex) {
-              return React.createElement(
+      return React.createElement(
+        'table',
+        {
+          className: 'el-table__body',
+          cellPadding: 0,
+          cellSpacing: 0,
+          style: this.style({
+            borderSpacing: 0,
+            border: 0
+          })
+        },
+        React.createElement(
+          'colgroup',
+          null,
+          tableStoreState.columns.map(function (column, index) {
+            return React.createElement('col', { width: column.realWidth, style: { width: column.realWidth }, key: index });
+          })
+        ),
+        React.createElement(
+          'tbody',
+          null,
+          tableStoreState.data.map(function (row, rowIndex) {
+            var rowKey = _this3.getKeyOfRow(row, rowIndex);
+            return [React.createElement(
+              'tr',
+              {
+                key: rowKey,
+                style: _this3.getRowStyle(row, rowIndex),
+                className: _this3.className('el-table__row', {
+                  'el-table__row--striped': props.stripe && rowIndex % 2 === 1,
+                  'hover-row': tableStoreState.hoverRow === rowIndex,
+                  'current-row': props.highlightCurrentRow && (props.currentRowKey === rowKey || tableStoreState.currentRow === row)
+                }, typeof props.rowClassName === 'string' ? props.rowClassName : typeof props.rowClassName === 'function' && props.rowClassName(row, rowIndex)),
+                onMouseEnter: _this3.handleMouseEnter.bind(_this3, rowIndex),
+                onMouseLeave: _this3.handleMouseLeave,
+                onClick: _this3.handleClick.bind(_this3, row),
+                onContextMenu: _this3.handleRowContextMenu.bind(_this3, row)
+              },
+              tableStoreState.columns.map(function (column, cellIndex) {
+                return React.createElement(
+                  'td',
+                  {
+                    key: cellIndex,
+                    className: _this3.classNames(column.className, column.align, column.columnKey, {
+                      'is-hidden': columnsHidden[cellIndex]
+                    }),
+                    onMouseEnter: _this3.handleCellMouseEnter.bind(_this3, row, column),
+                    onMouseLeave: _this3.handleCellMouseLeave.bind(_this3, row, column),
+                    onClick: _this3.handleCellClick.bind(_this3, row, column),
+                    onDoubleClick: _this3.handleCellDbClick.bind(_this3, row, column)
+                  },
+                  React.createElement(
+                    'div',
+                    { className: 'cell' },
+                    _this3.renderCell(row, column, rowIndex, rowKey)
+                  )
+                );
+              }),
+              !props.fixed && layout.scrollY && !!layout.gutterWidth && React.createElement('td', { className: 'gutter' })
+            ), _this3.context.tableStore.isRowExpanding(row, rowKey) && React.createElement(
+              'tr',
+              { key: rowKey + 'Expanded' },
+              React.createElement(
                 'td',
                 {
-                  key: cellIndex,
-                  className: _this3.classNames(column.className, column.align, column.columnKey, {
-                    'is-hidden': columnsHidden[cellIndex]
-                  }),
-                  onMouseEnter: _this3.handleCellMouseEnter.bind(_this3, row, column),
-                  onMouseLeave: _this3.handleCellMouseLeave.bind(_this3, row, column),
-                  onClick: _this3.handleCellClick.bind(_this3, row, column),
-                  onDoubleClick: _this3.handleCellDbClick.bind(_this3, row, column)
+                  colSpan: tableStoreState.columns.length,
+                  className: 'el-table__expanded-cell'
                 },
-                React.createElement(
-                  'div',
-                  { className: 'cell' },
-                  _this3.renderCell(row, column, rowIndex, rowKey)
-                )
-              );
-            }),
-            !props.fixed && layout.scrollY && !!layout.gutterWidth && React.createElement('td', { className: 'gutter' })
-          ), _this3.context.tableStore.isRowExpanding(row, rowKey) && React.createElement(
-            'tr',
-            { key: rowKey + 'Expanded' },
-            React.createElement(
-              'td',
-              {
-                colSpan: tableStoreState.columns.length,
-                className: 'el-table__expanded-cell'
-              },
-              typeof props.renderExpanded === 'function' && props.renderExpanded(row, rowIndex)
-            )
-          )];
-        })
-      )
-    );
-  };
-
-  _createClass(TableBody, [{
+                typeof props.renderExpanded === 'function' && props.renderExpanded(row, rowIndex)
+              )
+            )];
+          })
+        )
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }, {
     key: 'columnsCount',
     get: function get() {
       return this.props.tableStoreState.columns.length;
@@ -257,12 +323,31 @@ var TableBody = function (_Component) {
       return this.props.tableStoreState.rightFixedColumns.length;
     }
   }]);
-
   return TableBody;
-}(Component);
+}(_libs.Component);
 
 TableBody.contextTypes = {
-  tableStore: PropTypes.any,
-  layout: PropTypes.any
+  tableStore: _libs.PropTypes.any,
+  layout: _libs.PropTypes.any
 };
-export default TableBody;
+var _default = TableBody;
+exports.default = _default;
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(TableBody, 'TableBody', 'src/table/TableBody.jsx');
+  reactHotLoader.register(_default, 'default', 'src/table/TableBody.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

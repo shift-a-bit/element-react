@@ -1,12 +1,28 @@
-import _extends from 'babel-runtime/helpers/extends';
-/* eslint react/prop-types: ["off"] */
+'use strict';
 
-import React from 'react';
-import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
+var _extends2 = require('babel-runtime/helpers/extends');
 
-import { DatePicker, DateRangePicker } from '../';
-import { mockRAf, nativeEvent } from './utils';
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enzyme = require('enzyme');
+
+var _sinon = require('sinon');
+
+var _sinon2 = _interopRequireDefault(_sinon);
+
+var _ = require('../');
+
+var _utils = require('./utils');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+}; /* eslint react/prop-types: ["off"] */
 
 describe('DatePicker tests', function () {
 
@@ -20,28 +36,28 @@ describe('DatePicker tests', function () {
     function mountDefault() {
       var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      return mount(React.createElement(DatePicker, _extends({}, minProps, props)));
+      return (0, _enzyme.mount)(_react2.default.createElement(_.DatePicker, (0, _extends3.default)({}, minProps, props)));
     }
 
     function shallowDefault() {
       var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      return shallow(React.createElement(DatePicker, _extends({}, minProps, props)));
+      return (0, _enzyme.shallow)(_react2.default.createElement(_.DatePicker, (0, _extends3.default)({}, minProps, props)));
     }
 
     it('should render without exploding', function () {
-      var w = shallow(React.createElement(DatePicker, minProps));
+      var w = (0, _enzyme.shallow)(_react2.default.createElement(_.DatePicker, minProps));
       expect(w.exists()).toBeTruthy();
     });
 
     it('should unmount without exploding', function () {
-      var w = mount(React.createElement(DatePicker, minProps));
+      var w = (0, _enzyme.mount)(_react2.default.createElement(_.DatePicker, minProps));
       w.unmount();
       expect(true).toBeTruthy();
     });
 
     it('disabledDate should work', function () {
-      mockRAf();
+      (0, _utils.mockRAf)();
       var date = new Date(2017, 1, 2);
       var w = mountDefault({
         value: date,
@@ -91,8 +107,8 @@ describe('DatePicker tests', function () {
     });
 
     it('onFocus & onBlur should work', function () {
-      var onFocus = sinon.spy();
-      var onBlur = sinon.spy();
+      var onFocus = _sinon2.default.spy();
+      var onBlur = _sinon2.default.spy();
       var w = mountDefault({
         onFocus: onFocus,
         onBlur: onBlur
@@ -113,7 +129,7 @@ describe('DatePicker tests', function () {
     function mountDefault() {
       var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      return mount(React.createElement(DateRangePicker, _extends({}, minProps, props)));
+      return (0, _enzyme.mount)(_react2.default.createElement(_.DateRangePicker, (0, _extends3.default)({}, minProps, props)));
     }
 
     it('should render without exploding', function () {

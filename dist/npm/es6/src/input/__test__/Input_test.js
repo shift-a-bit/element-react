@@ -1,26 +1,42 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import sinon from 'sinon';
+'use strict';
 
-import Input from '../';
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enzyme = require('enzyme');
+
+var _sinon = require('sinon');
+
+var _sinon2 = _interopRequireDefault(_sinon);
+
+var _ = require('../');
+
+var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 // const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
 describe('Input test', function () {
   it('create', function () {
-    var w = shallow(React.createElement(Input, { placeholder: '\u8BF7\u8F93\u5165\u5185\u5BB9' }));
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(_2.default, { placeholder: '\u8BF7\u8F93\u5165\u5185\u5BB9' }));
     // to be tested: focus/placeholder/minlength/maxlength
     expect(w.hasClass('el-input')).toBeTruthy();
   });
 
   it('disabled', function () {
-    var w = shallow(React.createElement(Input, { disabled: true }));
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(_2.default, { disabled: true }));
     expect(w.find('.el-input input').prop('disabled')).toBe(true);
   });
 
   it('icon', function () {
-    var cb = sinon.spy();
-    var w = shallow(React.createElement(Input, {
+    var cb = _sinon2.default.spy();
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(_2.default, {
       icon: 'time',
       placeholder: '\u8BF7\u9009\u62E9\u65E5\u671F',
       onIconClick: cb
@@ -32,22 +48,22 @@ describe('Input test', function () {
   });
 
   it('size', function () {
-    var w = shallow(React.createElement(Input, { size: 'large' }));
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(_2.default, { size: 'large' }));
     expect(w.hasClass('el-input--large')).toBeTruthy();
   });
 
   it('type', function () {
-    var w = shallow(React.createElement(Input, { type: 'textarea' }));
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(_2.default, { type: 'textarea' }));
     expect(w.hasClass('el-textarea')).toBeTruthy();
   });
 
   it('rows', function () {
-    var w = shallow(React.createElement(Input, { type: 'textarea', rows: 3 }));
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(_2.default, { type: 'textarea', rows: 3 }));
     expect(w.find('.el-textarea__inner').prop('rows')).toBe(3);
   });
 
   it('resize', function () {
-    var w = shallow(React.createElement(Input, { type: 'textarea', resize: 'both' }));
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(_2.default, { type: 'textarea', resize: 'both' }));
     expect(w.find('.el-textarea__inner').first().prop('style').resize).toBe('both');
   });
 });

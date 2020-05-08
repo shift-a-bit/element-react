@@ -1,60 +1,104 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import { Component, PropTypes } from '../../libs';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _libs = require('../../libs');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var Row = function (_Component) {
-  _inherits(Row, _Component);
+  (0, _inherits3.default)(Row, _Component);
 
   function Row() {
-    _classCallCheck(this, Row);
-
-    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    (0, _classCallCheck3.default)(this, Row);
+    return (0, _possibleConstructorReturn3.default)(this, (Row.__proto__ || Object.getPrototypeOf(Row)).apply(this, arguments));
   }
 
-  Row.prototype.getChildContext = function getChildContext() {
-    return {
-      gutter: this.props.gutter
-    };
-  };
-
-  Row.prototype.getStyle = function getStyle() {
-    var style = {};
-
-    if (this.props.gutter) {
-      style.marginLeft = '-' + this.props.gutter / 2 + 'px';
-      style.marginRight = style.marginLeft;
+  (0, _createClass3.default)(Row, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        gutter: this.props.gutter
+      };
     }
+  }, {
+    key: 'getStyle',
+    value: function getStyle() {
+      var style = {};
 
-    return style;
-  };
+      if (this.props.gutter) {
+        style.marginLeft = '-' + this.props.gutter / 2 + 'px';
+        style.marginRight = style.marginLeft;
+      }
 
-  Row.prototype.render = function render() {
-    return React.createElement(this.props.tag, {
-      className: this.className('el-row', this.props.justify !== 'start' && 'is-justify-' + this.props.justify, this.props.align !== 'top' && 'is-align-' + this.props.align, {
-        'el-row--flex': this.props.type === 'flex'
-      }),
-      style: this.style(this.getStyle())
-    }, this.props.children);
-  };
-
+      return style;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(this.props.tag, {
+        className: this.className('el-row', this.props.justify !== 'start' && 'is-justify-' + this.props.justify, this.props.align !== 'top' && 'is-align-' + this.props.align, {
+          'el-row--flex': this.props.type === 'flex'
+        }),
+        style: this.style(this.getStyle())
+      }, this.props.children);
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return Row;
-}(Component);
+}(_libs.Component);
 
-export default Row;
+var _default = Row;
+exports.default = _default;
 
 
 Row.childContextTypes = {
-  gutter: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  gutter: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string])
 };
 
 Row.propTypes = {
-  gutter: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  type: PropTypes.string,
-  justify: PropTypes.string,
-  align: PropTypes.string,
-  tag: PropTypes.string
+  gutter: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]),
+  type: _libs.PropTypes.string,
+  justify: _libs.PropTypes.string,
+  align: _libs.PropTypes.string,
+  tag: _libs.PropTypes.string
 };
 
 Row.defaultProps = {
@@ -62,3 +106,22 @@ Row.defaultProps = {
   align: 'top',
   tag: 'div'
 };
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Row, 'Row', 'src/layout/Row.jsx');
+  reactHotLoader.register(_default, 'default', 'src/layout/Row.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

@@ -40,6 +40,13 @@ export default class Form extends Component {
     });
   }
 
+  
+  resetErrors(): void {
+    this.state.fields.forEach(field => {
+      field.resetError();
+    });
+  }
+
   validate(callback: Function): void {
     let valid = true;
     let count = 0;

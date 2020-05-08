@@ -197,6 +197,19 @@ var FormItem = function (_Component) {
       }
     }
   }, {
+    key: 'resetError',
+    value: function resetError() {
+      var _state2 = this.state,
+          valid = _state2.valid,
+          error = _state2.error;
+
+
+      valid = true;
+      error = '';
+
+      this.setState({ valid: valid, error: error });
+    }
+  }, {
     key: 'getRules',
     value: function getRules() {
       var formRules = this.parent().props.rules;
@@ -264,9 +277,9 @@ var FormItem = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _state2 = this.state,
-          error = _state2.error,
-          validating = _state2.validating;
+      var _state3 = this.state,
+          error = _state3.error,
+          validating = _state3.validating;
       var _props = this.props,
           label = _props.label,
           required = _props.required;

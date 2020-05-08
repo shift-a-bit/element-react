@@ -1,16 +1,49 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import { Component, PropTypes } from '../../libs';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _libs = require('../../libs');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var Menu = function (_Component) {
-  _inherits(Menu, _Component);
+  (0, _inherits3.default)(Menu, _Component);
 
   function Menu(props) {
-    _classCallCheck(this, Menu);
+    (0, _classCallCheck3.default)(this, Menu);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this, props));
 
     _this.instanceType = 'Menu';
 
@@ -23,177 +56,197 @@ var Menu = function (_Component) {
     return _this;
   }
 
-  Menu.prototype.getChildContext = function getChildContext() {
-    return {
-      component: this
-    };
-  };
-
-  Menu.prototype.componentDidMount = function componentDidMount() {
-    this.openActiveItemMenus();
-  };
-
-  Menu.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
-    if (props.defaultActive != this.props.defaultActive || props.defaultActive != this.state.activeIndex) {
-      this.defaultActiveChanged(props.defaultActive);
+  (0, _createClass3.default)(Menu, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        component: this
+      };
     }
-
-    if (props.defaultOpeneds != this.props.defaultOpeneds) {
-      this.defaultOpenedsChanged(props.defaultOpeneds);
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.openActiveItemMenus();
     }
-  };
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
+      if (props.defaultActive != this.props.defaultActive || props.defaultActive != this.state.activeIndex) {
+        this.defaultActiveChanged(props.defaultActive);
+      }
 
-  Menu.prototype.openMenu = function openMenu(index, indexPath) {
-    var openedMenus = this.state.openedMenus;
+      if (props.defaultOpeneds != this.props.defaultOpeneds) {
+        this.defaultOpenedsChanged(props.defaultOpeneds);
+      }
+    }
+  }, {
+    key: 'openMenu',
+    value: function openMenu(index, indexPath) {
+      var openedMenus = this.state.openedMenus;
 
 
-    if (openedMenus.indexOf(index) !== -1) return;
-    // 将不在该菜单路径下的其余菜单收起
-    if (this.props.uniqueOpened) {
-      openedMenus = openedMenus.filter(function (index) {
-        return indexPath.indexOf(index) !== -1;
+      if (openedMenus.indexOf(index) !== -1) return;
+      // 将不在该菜单路径下的其余菜单收起
+      if (this.props.uniqueOpened) {
+        openedMenus = openedMenus.filter(function (index) {
+          return indexPath.indexOf(index) !== -1;
+        });
+      }
+
+      openedMenus.push(index);
+
+      this.setState({ openedMenus: openedMenus });
+    }
+  }, {
+    key: 'closeMenu',
+    value: function closeMenu(index) {
+      var openedMenus = this.state.openedMenus;
+
+
+      openedMenus.splice(openedMenus.indexOf(index), 1);
+
+      this.setState({ openedMenus: openedMenus });
+    }
+  }, {
+    key: 'handleSubmenuClick',
+    value: function handleSubmenuClick(index, indexPath) {
+      var isOpened = this.state.openedMenus.indexOf(index) !== -1;
+
+      if (isOpened) {
+        this.closeMenu(index);
+
+        if (this.props.onClose) {
+          this.props.onClose(index, indexPath);
+        }
+      } else {
+        this.openMenu(index, indexPath);
+
+        if (this.props.onOpen) {
+          this.props.onOpen(index, indexPath);
+        }
+      }
+    }
+  }, {
+    key: 'handleSelect',
+    value: function handleSelect(index, indexPath, instance) {
+      var _this2 = this;
+
+      var _state = this.state,
+          activeIndex = _state.activeIndex,
+          openedMenus = _state.openedMenus,
+          submenus = _state.submenus;
+
+
+      activeIndex = index;
+
+      if (this.props.onSelect) {
+        this.props.onSelect(index, indexPath, instance);
+      }
+
+      if (this.props.mode === 'horizontal') {
+        for (var key in submenus) {
+          submenus[key].onItemSelect(index, indexPath);
+        }
+
+        openedMenus = [];
+      }
+
+      this.setState({ activeIndex: activeIndex, openedMenus: openedMenus }, function () {
+        if (_this2.props.mode === 'vertical') {
+          _this2.openActiveItemMenus();
+        }
       });
     }
+  }, {
+    key: 'openActiveItemMenus',
+    value: function openActiveItemMenus() {
+      var _this3 = this;
 
-    openedMenus.push(index);
-
-    this.setState({ openedMenus: openedMenus });
-  };
-
-  Menu.prototype.closeMenu = function closeMenu(index) {
-    var openedMenus = this.state.openedMenus;
+      var _state2 = this.state,
+          activeIndex = _state2.activeIndex,
+          menuItems = _state2.menuItems,
+          submenus = _state2.submenus;
 
 
-    openedMenus.splice(openedMenus.indexOf(index), 1);
+      if (!menuItems[activeIndex]) return;
+      if (activeIndex && this.props.mode === 'vertical') {
+        var indexPath = menuItems[activeIndex].indexPath();
+        // 展开该菜单项的路径上所有子菜单
+        indexPath.forEach(function (index) {
+          var submenu = submenus[index];
 
-    this.setState({ openedMenus: openedMenus });
-  };
-
-  Menu.prototype.handleSubmenuClick = function handleSubmenuClick(index, indexPath) {
-    var isOpened = this.state.openedMenus.indexOf(index) !== -1;
-
-    if (isOpened) {
-      this.closeMenu(index);
-
-      if (this.props.onClose) {
-        this.props.onClose(index, indexPath);
-      }
-    } else {
-      this.openMenu(index, indexPath);
-
-      if (this.props.onOpen) {
-        this.props.onOpen(index, indexPath);
+          submenu && _this3.openMenu(index, submenu.indexPath());
+        });
       }
     }
-  };
+  }, {
+    key: 'defaultActiveChanged',
+    value: function defaultActiveChanged(value) {
+      var _this4 = this;
 
-  Menu.prototype.handleSelect = function handleSelect(index, indexPath, instance) {
-    var _this2 = this;
-
-    var _state = this.state,
-        activeIndex = _state.activeIndex,
-        openedMenus = _state.openedMenus,
-        submenus = _state.submenus;
+      var menuItems = this.state.menuItems;
 
 
-    activeIndex = index;
+      this.setState({ activeIndex: value }, function () {
+        if (!menuItems[value]) return;
 
-    if (this.props.onSelect) {
-      this.props.onSelect(index, indexPath, instance);
-    }
+        var menuItem = menuItems[value];
+        var indexPath = menuItem.indexPath();
 
-    if (this.props.mode === 'horizontal') {
-      for (var key in submenus) {
-        submenus[key].onItemSelect(index, indexPath);
-      }
-
-      openedMenus = [];
-    }
-
-    this.setState({ activeIndex: activeIndex, openedMenus: openedMenus }, function () {
-      if (_this2.props.mode === 'vertical') {
-        _this2.openActiveItemMenus();
-      }
-    });
-  };
-
-  Menu.prototype.openActiveItemMenus = function openActiveItemMenus() {
-    var _this3 = this;
-
-    var _state2 = this.state,
-        activeIndex = _state2.activeIndex,
-        menuItems = _state2.menuItems,
-        submenus = _state2.submenus;
-
-
-    if (!menuItems[activeIndex]) return;
-    if (activeIndex && this.props.mode === 'vertical') {
-      var indexPath = menuItems[activeIndex].indexPath();
-      // 展开该菜单项的路径上所有子菜单
-      indexPath.forEach(function (index) {
-        var submenu = submenus[index];
-
-        submenu && _this3.openMenu(index, submenu.indexPath());
+        _this4.handleSelect(value, indexPath, menuItem);
       });
     }
-  };
-
-  Menu.prototype.defaultActiveChanged = function defaultActiveChanged(value) {
-    var _this4 = this;
-
-    var menuItems = this.state.menuItems;
-
-
-    this.setState({ activeIndex: value }, function () {
-      if (!menuItems[value]) return;
-
-      var menuItem = menuItems[value];
-      var indexPath = menuItem.indexPath();
-
-      _this4.handleSelect(value, indexPath, menuItem);
-    });
-  };
-
-  Menu.prototype.defaultOpenedsChanged = function defaultOpenedsChanged(value) {
-    this.setState({
-      openedMenus: value
-    });
-  };
-
-  Menu.prototype.render = function render() {
-    return React.createElement(
-      'ul',
-      {
-        style: this.style(),
-        className: this.className("el-menu", {
-          'el-menu--horizontal': this.props.mode === 'horizontal',
-          'el-menu--dark': this.props.theme === 'dark'
-        })
-      },
-      this.props.children
-    );
-  };
-
+  }, {
+    key: 'defaultOpenedsChanged',
+    value: function defaultOpenedsChanged(value) {
+      this.setState({
+        openedMenus: value
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'ul',
+        {
+          style: this.style(),
+          className: this.className("el-menu", {
+            'el-menu--horizontal': this.props.mode === 'horizontal',
+            'el-menu--dark': this.props.theme === 'dark'
+          })
+        },
+        this.props.children
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return Menu;
-}(Component);
+}(_libs.Component);
 
-export default Menu;
+var _default = Menu;
+exports.default = _default;
 
 
 Menu.childContextTypes = {
-  component: PropTypes.any
+  component: _libs.PropTypes.any
 };
 
 Menu.propTypes = {
-  mode: PropTypes.string,
-  defaultActive: PropTypes.string,
-  defaultOpeneds: PropTypes.arrayOf(PropTypes.any),
-  theme: PropTypes.string,
-  uniqueOpened: PropTypes.bool,
-  menuTrigger: PropTypes.string,
-  onSelect: PropTypes.func,
-  onOpen: PropTypes.func,
-  onClose: PropTypes.func
+  mode: _libs.PropTypes.string,
+  defaultActive: _libs.PropTypes.string,
+  defaultOpeneds: _libs.PropTypes.arrayOf(_libs.PropTypes.any),
+  theme: _libs.PropTypes.string,
+  uniqueOpened: _libs.PropTypes.bool,
+  menuTrigger: _libs.PropTypes.string,
+  onSelect: _libs.PropTypes.func,
+  onOpen: _libs.PropTypes.func,
+  onClose: _libs.PropTypes.func
 };
 
 Menu.defaultProps = {
@@ -201,3 +254,22 @@ Menu.defaultProps = {
   theme: 'light',
   menuTrigger: 'hover'
 };
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Menu, 'Menu', 'src/menu/Menu.jsx');
+  reactHotLoader.register(_default, 'default', 'src/menu/Menu.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();

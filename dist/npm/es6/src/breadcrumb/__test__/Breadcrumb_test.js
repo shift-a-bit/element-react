@@ -1,20 +1,33 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
+'use strict';
 
-import Breadcrumb from '../';
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _enzyme = require('enzyme');
+
+var _ = require('../');
+
+var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 describe('Breadcrumb test', function () {
   it('basic usage', function () {
-    var w = shallow(React.createElement(
-      Breadcrumb,
+    var w = (0, _enzyme.shallow)(_react2.default.createElement(
+      _2.default,
       null,
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u9996\u9875'
       ),
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u6D3B\u52A8\u7BA1\u7406'
       )
@@ -23,26 +36,26 @@ describe('Breadcrumb test', function () {
   });
 
   it('test children', function () {
-    var w = mount(React.createElement(
-      Breadcrumb,
+    var w = (0, _enzyme.mount)(_react2.default.createElement(
+      _2.default,
       { separator: '' },
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u9996\u9875'
       ),
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u6D3B\u52A8\u7BA1\u7406'
       ),
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u6D3B\u52A8\u5217\u8868'
       ),
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u6D3B\u52A8\u8BE6\u60C5'
       )
@@ -51,26 +64,26 @@ describe('Breadcrumb test', function () {
   });
 
   it('test separator', function () {
-    var w = mount(React.createElement(
-      Breadcrumb,
+    var w = (0, _enzyme.mount)(_react2.default.createElement(
+      _2.default,
       { separator: '/' },
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u9996\u9875'
       ),
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u6D3B\u52A8\u7BA1\u7406'
       ),
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u6D3B\u52A8\u5217\u8868'
       ),
-      React.createElement(
-        Breadcrumb.Item,
+      _react2.default.createElement(
+        _2.default.Item,
         null,
         '\u6D3B\u52A8\u8BE6\u60C5'
       )

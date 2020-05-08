@@ -677,6 +677,7 @@ declare namespace ElementReact {
     validate(cb?: (valid: boolean) => void): void
     validateField(prop: string, cb?: () => void): void
     resetFields(): void
+    resetErrors(): void
   }
 
   // Upload

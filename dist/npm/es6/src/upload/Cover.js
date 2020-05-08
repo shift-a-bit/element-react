@@ -1,16 +1,49 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import { Component, PropTypes } from '../../libs';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _libs = require('../../libs');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var Cover = function (_Component) {
-  _inherits(Cover, _Component);
+  (0, _inherits3.default)(Cover, _Component);
 
   function Cover(props) {
-    _classCallCheck(this, Cover);
+    (0, _classCallCheck3.default)(this, Cover);
 
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Cover.__proto__ || Object.getPrototypeOf(Cover)).call(this, props));
 
     _this.state = {
       dragOver: false
@@ -18,61 +51,93 @@ var Cover = function (_Component) {
     return _this;
   }
 
-  Cover.prototype.handleDragover = function handleDragover(e) {
-    e.preventDefault();
-    if (!this.props.disabled) {
-      this.setState({ dragOver: true });
+  (0, _createClass3.default)(Cover, [{
+    key: 'handleDragover',
+    value: function handleDragover(e) {
+      e.preventDefault();
+      if (!this.props.disabled) {
+        this.setState({ dragOver: true });
+      }
     }
-  };
+  }, {
+    key: 'handleDragleave',
+    value: function handleDragleave(e) {
+      e.preventDefault();
+      this.setState({ dragOver: false });
+    }
+  }, {
+    key: 'onDrop',
+    value: function onDrop(e) {
+      if (this.props.disabled) return;
+      e.preventDefault();
+      this.setState({ dragOver: false });
+      this.props.onFile(e.dataTransfer.files);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
 
-  Cover.prototype.handleDragleave = function handleDragleave(e) {
-    e.preventDefault();
-    this.setState({ dragOver: false });
-  };
+      var dragOver = this.state.dragOver;
 
-  Cover.prototype.onDrop = function onDrop(e) {
-    if (this.props.disabled) return;
-    e.preventDefault();
-    this.setState({ dragOver: false });
-    this.props.onFile(e.dataTransfer.files);
-  };
-
-  Cover.prototype.render = function render() {
-    var _this2 = this;
-
-    var dragOver = this.state.dragOver;
-
-    return React.createElement(
-      'div',
-      {
-        className: this.classNames({
-          'el-upload-dragger': true,
-          'is-dragover': dragOver
-        }),
-        onDrop: function onDrop(e) {
-          return _this2.onDrop(e);
+      return _react2.default.createElement(
+        'div',
+        {
+          className: this.classNames({
+            'el-upload-dragger': true,
+            'is-dragover': dragOver
+          }),
+          onDrop: function onDrop(e) {
+            return _this2.onDrop(e);
+          },
+          onDragOver: function onDragOver(e) {
+            return _this2.handleDragover(e);
+          },
+          onDragLeave: function onDragLeave(e) {
+            return _this2.handleDragleave(e);
+          }
         },
-        onDragOver: function onDragOver(e) {
-          return _this2.handleDragover(e);
-        },
-        onDragLeave: function onDragLeave(e) {
-          return _this2.handleDragleave(e);
-        }
-      },
-      this.props.children
-    );
-  };
-
+        this.props.children
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
   return Cover;
-}(Component);
+}(_libs.Component);
 
 Cover.defaultProps = {
   onFile: Function
 };
-export default Cover;
+var _default = Cover;
+exports.default = _default;
 
 
 Cover.propTypes = {
-  onFile: PropTypes.func,
-  disabled: PropTypes.bool
+  onFile: _libs.PropTypes.func,
+  disabled: _libs.PropTypes.bool
 };
+;
+
+(function () {
+  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Cover, 'Cover', 'src/upload/Cover.jsx');
+  reactHotLoader.register(_default, 'default', 'src/upload/Cover.jsx');
+})();
+
+;
+
+(function () {
+  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
+  leaveModule && leaveModule(module);
+})();
