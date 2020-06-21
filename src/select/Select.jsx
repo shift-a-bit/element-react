@@ -431,15 +431,14 @@ class Select extends Component {
     let icon = this.refs.root.querySelector('.el-input__icon');
 
     if (icon) {
-      if (criteria) {
+      if (criteria) {        
         icon.addEventListener('click', this.deleteSelected.bind(this));
         icon.classList.add('is-show-close');
-      } else {
+      } else {        
         icon.removeEventListener('click', this.deleteSelected.bind(this));
         icon.classList.remove('is-show-close');
       }
     }
-
     return criteria;
   }
 
@@ -588,6 +587,7 @@ class Select extends Component {
     }
 
     if (!disabled) {
+      console.log("Toggle view ",visible);
       this.setState({
         visible: !visible
       });
@@ -686,6 +686,13 @@ class Select extends Component {
       if (this.props.onClear) {
         this.props.onClear();
       }
+
+      //ADD HANDELLER TO RE ATTACH FOR ICON CLICK
+      let icon = this.refs.root.querySelector('.el-input__icon');
+      if (icon) {        
+        icon.addEventListener('click', this.handleIconClick.bind(this));
+        //icon.classList.add('is-show-close');       
+      }
     }
   }
 
@@ -706,6 +713,8 @@ class Select extends Component {
   }
 
   handleIconClick(event) {
+    console.log("handleIconClick",this.iconClass().indexOf('circle-close'));
+    
     if (this.iconClass().indexOf('circle-close') > -1) {
       this.deleteSelected(event);
     } else {

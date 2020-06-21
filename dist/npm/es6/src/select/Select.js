@@ -536,7 +536,6 @@ var Select = function (_Component) {
           icon.classList.remove('is-show-close');
         }
       }
-
       return criteria;
     }
   }, {
@@ -729,6 +728,7 @@ var Select = function (_Component) {
       }
 
       if (!disabled) {
+        console.log("Toggle view ", visible);
         this.setState({
           visible: !visible
         });
@@ -838,6 +838,13 @@ var Select = function (_Component) {
         if (this.props.onClear) {
           this.props.onClear();
         }
+
+        //ADD HANDELLER TO RE ATTACH FOR ICON CLICK
+        var icon = this.refs.root.querySelector('.el-input__icon');
+        if (icon) {
+          icon.addEventListener('click', this.handleIconClick.bind(this));
+          //icon.classList.add('is-show-close');       
+        }
       }
     }
   }, {
@@ -862,6 +869,8 @@ var Select = function (_Component) {
   }, {
     key: 'handleIconClick',
     value: function handleIconClick(event) {
+      console.log("handleIconClick", this.iconClass().indexOf('circle-close'));
+
       if (this.iconClass().indexOf('circle-close') > -1) {
         this.deleteSelected(event);
       } else {
