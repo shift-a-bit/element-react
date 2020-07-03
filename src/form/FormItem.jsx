@@ -202,8 +202,13 @@ export default class FormItem extends Component {
   fieldValue(): mixed {
     const model = this.parent().props.model;
     if (!model || !this.props.prop) { return; }
-    const temp = this.props.prop.split(':');
-    return temp.length > 1 ? model[temp[0]][temp[1]] : model[this.props.prop];
+    let temp = this.props.prop.split(':');
+    let fval =  temp.length > 1 ? model[temp[0]][temp[1]] : model[this.props.prop];
+    temp = this.props.prop.split('-');
+    if(temp.length > 1 && fval[temp[1]]) {
+      fval = fval[temp[1]]      
+    }
+    return fval;
   }
 
   render(): React.DOM {

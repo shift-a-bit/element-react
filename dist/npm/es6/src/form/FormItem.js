@@ -272,7 +272,12 @@ var FormItem = function (_Component) {
         return;
       }
       var temp = this.props.prop.split(':');
-      return temp.length > 1 ? model[temp[0]][temp[1]] : model[this.props.prop];
+      var fval = temp.length > 1 ? model[temp[0]][temp[1]] : model[this.props.prop];
+      temp = this.props.prop.split('-');
+      if (temp.length > 1 && fval[temp[1]]) {
+        fval = fval[temp[1]];
+      }
+      return fval;
     }
   }, {
     key: 'render',
