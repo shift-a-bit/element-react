@@ -205,8 +205,19 @@ export default class FormItem extends Component {
     let temp = this.props.prop.split(':');
     let fval =  temp.length > 1 ? model[temp[0]][temp[1]] : model[this.props.prop];
     temp = this.props.prop.split('-');
-    if(temp.length > 1 && fval[temp[1]]) {
-      fval = fval[temp[1]]      
+
+    if (temp.length > 1 && fval[temp[1]]) {
+      fval = fval[temp[1]];
+      if (temp.length > 2) {        
+        let indexArr = temp[2].split(':');            
+        if(indexArr.length > 1) {          
+          var idx = parseInt(indexArr[1]);
+          fval = fval[indexArr[0]];                    
+          fval = fval[idx];                   
+        }  else {
+          fval = fval[temp[2]];
+        }              
+      }      
     }
     return fval;
   }

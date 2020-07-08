@@ -276,6 +276,9 @@ var FormItem = function (_Component) {
       temp = this.props.prop.split('-');
       if (temp.length > 1 && fval[temp[1]]) {
         fval = fval[temp[1]];
+        if (temp.length > 2) {
+          fval = fval[temp[2]];
+        }
       }
       return fval;
     }
