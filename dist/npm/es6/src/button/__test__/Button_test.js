@@ -1,29 +1,13 @@
-'use strict';
+import React from 'react';
+import { shallow, mount } from 'enzyme';
+import sinon from 'sinon';
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _enzyme = require('enzyme');
-
-var _sinon = require('sinon');
-
-var _sinon2 = _interopRequireDefault(_sinon);
-
-var _ = require('../');
-
-var _2 = _interopRequireDefault(_);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import Button from '../';
 
 describe('Button test', function () {
   it('create', function () {
-    var w = (0, _enzyme.shallow)(_react2.default.createElement(
-      _2.default,
+    var w = shallow(React.createElement(
+      Button,
       { type: 'primary' },
       'TEST'
     ));
@@ -31,24 +15,24 @@ describe('Button test', function () {
     expect(w.childAt(0).text()).toBe('TEST');
   });
   it('icon', function () {
-    var w = (0, _enzyme.shallow)(_react2.default.createElement(
-      _2.default,
+    var w = shallow(React.createElement(
+      Button,
       { icon: 'search' },
       'TEST'
     ));
     expect(w.childAt(0).hasClass('el-icon-search')).toBeTruthy();
   });
   it('nativeType', function () {
-    var w = (0, _enzyme.shallow)(_react2.default.createElement(
-      _2.default,
+    var w = shallow(React.createElement(
+      Button,
       { nativeType: 'submit' },
       'TEST'
     ));
     expect(w.prop('type')).toBe('submit');
   });
   it('loading', function () {
-    var w = (0, _enzyme.shallow)(_react2.default.createElement(
-      _2.default,
+    var w = shallow(React.createElement(
+      Button,
       { loading: true },
       'TEST'
     ));
@@ -56,33 +40,33 @@ describe('Button test', function () {
     expect(w.childAt(0).hasClass('el-icon-loading')).toBeTruthy();
   });
   it('disabled', function () {
-    var w = (0, _enzyme.shallow)(_react2.default.createElement(
-      _2.default,
+    var w = shallow(React.createElement(
+      Button,
       { disabled: true },
       'TEST'
     ));
     expect(w.hasClass('is-disabled')).toBeTruthy();
   });
   it('size', function () {
-    var w = (0, _enzyme.shallow)(_react2.default.createElement(
-      _2.default,
+    var w = shallow(React.createElement(
+      Button,
       { size: 'large' },
       'TEST'
     ));
     expect(w.hasClass('el-button--large')).toBeTruthy();
   });
   it('plain', function () {
-    var w = (0, _enzyme.shallow)(_react2.default.createElement(
-      _2.default,
+    var w = shallow(React.createElement(
+      Button,
       { plain: true },
       'TEST'
     ));
     expect(w.hasClass('is-plain')).toBeTruthy();
   });
   it('click', function () {
-    var fn = _sinon2.default.spy();
-    var w = (0, _enzyme.shallow)(_react2.default.createElement(
-      _2.default,
+    var fn = sinon.spy();
+    var w = shallow(React.createElement(
+      Button,
       { onClick: fn },
       'TEST'
     ));

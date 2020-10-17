@@ -1,36 +1,7 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _objectWithoutProperties2 = require('babel-runtime/helpers/objectWithoutProperties');
-
-var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-
-exports.PopperMixin = PopperMixin;
-exports.PopperReactMixin = PopperReactMixin;
-
-var _popper = require('popper.js');
-
-var _popper2 = _interopRequireDefault(_popper);
-
-var _assert = require('./assert');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _extends from 'babel-runtime/helpers/extends';
+import _objectWithoutProperties from 'babel-runtime/helpers/objectWithoutProperties';
+import PopperJS from 'popper.js';
+import { require_condition } from './assert';
 
 var mixinPrototype = {
   //---------- start: public methods
@@ -42,7 +13,7 @@ var mixinPrototype = {
   createPopper: function createPopper(popupElement, refElement, popperOptions) {
     var _this = this;
 
-    (0, _assert.require_condition)(popupElement && refElement);
+    require_condition(popupElement && refElement);
 
     var _popper_config = this._popper_config,
         visibleArrow = _popper_config.visibleArrow,
@@ -50,9 +21,9 @@ var mixinPrototype = {
         zIndex = _popper_config.zIndex,
         offset = _popper_config.offset,
         width = _popper_config.width,
-        others = (0, _objectWithoutProperties3.default)(_popper_config, ['visibleArrow', 'placement', 'zIndex', 'offset', 'width']);
+        others = _objectWithoutProperties(_popper_config, ['visibleArrow', 'placement', 'zIndex', 'offset', 'width']);
 
-    popperOptions = (0, _extends3.default)({}, popperOptions, others);
+    popperOptions = _extends({}, popperOptions, others);
 
     if (!/^(top|bottom|left|right)(-start|-end)?$/g.test(placement)) {
       return;
@@ -82,7 +53,7 @@ var mixinPrototype = {
       _this._poperJS.popper.style.width = width !== null ? width + 'px' : reference.getBoundingClientRect().width + 'px';
     };
 
-    this._poperJS = new _popper2.default(reference, popper, popperOptions);
+    this._poperJS = new PopperJS(reference, popper, popperOptions);
   },
   destroyPopper: function destroyPopper() {
     if (this._poperJS && this._popper_state.isCreated) {
@@ -126,7 +97,7 @@ var mixinPrototype = {
     * @param {Number} [boundariesPadding=5]
     * @param {Boolean} [visibleArrow=false] Visibility of the arrow, no style.
 */
-function PopperMixin(config) {
+export function PopperMixin(config) {
   this._popper_config = Object.assign({}, {
     width: null,
     zIndex: 1050,
@@ -148,8 +119,8 @@ var PopperReactMixinMethods = {
     this.componentDidMount = function () {
       var root = getPopperRootDom();
       var ref = getRefDom();
-      (0, _assert.require_condition)(root, 'method `getPopperRootDom()` require a HTMLElement instance when componentDidMount is called');
-      (0, _assert.require_condition)(ref, 'method `getRefDom()` require a HTMLElement instance when componentDidMount is called');
+      require_condition(root, 'method `getPopperRootDom()` require a HTMLElement instance when componentDidMount is called');
+      require_condition(ref, 'method `getRefDom()` require a HTMLElement instance when componentDidMount is called');
 
       this.createPopper(root, ref);
       this._animateRef = window.requestAnimationFrame(this.updatePopper.bind(this));
@@ -184,11 +155,11 @@ var PopperReactMixinMethods = {
  * @param getPopperRootDom: ()=>HTMLElement, return your popper root HTMLElement when componentDidMount is called
  * @param getRefDom: ()=>HTMLElement, ref node, the node that popper aligns its pop-up to, see the popperjs doc for more information
  */
-function PopperReactMixin(getPopperRootDom, getRefDom, config) {
+export function PopperReactMixin(getPopperRootDom, getRefDom, config) {
   var _this2 = this;
 
-  (0, _assert.require_condition)(typeof getPopperRootDom === 'function', '`getPopperRootDom` func is required!');
-  (0, _assert.require_condition)(typeof getRefDom === 'function', '`getRefDom` func is required!');
+  require_condition(typeof getPopperRootDom === 'function', '`getPopperRootDom` func is required!');
+  require_condition(typeof getRefDom === 'function', '`getRefDom` func is required!');
 
   PopperMixin.call(this, config);
   Object.keys(mixinPrototype).forEach(function (k) {
@@ -198,24 +169,3 @@ function PopperReactMixin(getPopperRootDom, getRefDom, config) {
 
   return this;
 }
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(mixinPrototype, 'mixinPrototype', 'libs/utils/popper-mixins.js');
-  reactHotLoader.register(PopperMixin, 'PopperMixin', 'libs/utils/popper-mixins.js');
-  reactHotLoader.register(PopperReactMixinMethods, 'PopperReactMixinMethods', 'libs/utils/popper-mixins.js');
-  reactHotLoader.register(PopperReactMixin, 'PopperReactMixin', 'libs/utils/popper-mixins.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

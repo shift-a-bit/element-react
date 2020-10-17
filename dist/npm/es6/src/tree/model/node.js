@@ -1,29 +1,6 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _util = require('./util');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _createClass from 'babel-runtime/helpers/createClass';
+import { markNodeData, NODE_KEY } from './util';
 
 var reInitChecked = function reInitChecked(node) {
   var siblings = node.childNodes;
@@ -68,7 +45,7 @@ var nodeIdSeed = 0;
 
 var Node = function () {
   function Node(options) {
-    (0, _classCallCheck3.default)(this, Node);
+    _classCallCheck(this, Node);
 
     this.id = nodeIdSeed++;
     this.text = null;
@@ -137,285 +114,263 @@ var Node = function () {
     this.updateLeafState();
   }
 
-  (0, _createClass3.default)(Node, [{
-    key: 'setData',
-    value: function setData(data) {
-      if (!Array.isArray(data)) {
-        (0, _util.markNodeData)(this, data);
-      }
-
-      this.data = data;
-      this.childNodes = [];
-
-      var children = void 0;
-      if (this.level === 0 && this.data instanceof Array) {
-        children = this.data;
-      } else {
-        children = getPropertyFromData(this, 'children') || [];
-      }
-
-      for (var i = 0, j = children.length; i < j; i++) {
-        this.insertChild({ data: children[i] });
-      }
+  Node.prototype.setData = function setData(data) {
+    if (!Array.isArray(data)) {
+      markNodeData(this, data);
     }
-  }, {
-    key: 'insertChild',
-    value: function insertChild(child, index) {
-      if (!child) throw new Error('insertChild error: child is required.');
 
-      if (!(child instanceof Node)) {
-        Object.assign(child, {
-          parent: this,
-          store: this.store
-        });
-        child = new Node(child);
-      }
+    this.data = data;
+    this.childNodes = [];
 
-      child.level = this.level + 1;
-
-      if (typeof index === 'undefined' || index < 0) {
-        this.childNodes.push(child);
-      } else {
-        this.childNodes.splice(index, 0, child);
-      }
-
-      this.updateLeafState();
+    var children = void 0;
+    if (this.level === 0 && this.data instanceof Array) {
+      children = this.data;
+    } else {
+      children = getPropertyFromData(this, 'children') || [];
     }
-  }, {
-    key: 'insertBefore',
-    value: function insertBefore(child, ref) {
-      var index = void 0;
-      if (ref) {
-        index = this.childNodes.indexOf(ref);
-      }
-      this.insertChild(child, index);
-    }
-  }, {
-    key: 'insertAfter',
-    value: function insertAfter(child, ref) {
-      var index = void 0;
-      if (ref) {
-        index = this.childNodes.indexOf(ref);
-        if (index !== -1) index += 1;
-      }
-      this.insertChild(child, index);
-    }
-  }, {
-    key: 'removeChild',
-    value: function removeChild(child) {
-      var index = this.childNodes.indexOf(child);
 
-      if (index > -1) {
-        this.store && this.store.deregisterNode(child);
-        child.parent = null;
-        this.childNodes.splice(index, 1);
-      }
-
-      this.updateLeafState();
+    for (var i = 0, j = children.length; i < j; i++) {
+      this.insertChild({ data: children[i] });
     }
-  }, {
-    key: 'removeChildByData',
-    value: function removeChildByData(data) {
-      var targetNode = null;
-      this.childNodes.forEach(function (node) {
-        if (node.data === data) {
-          targetNode = node;
+  };
+
+  Node.prototype.insertChild = function insertChild(child, index) {
+    if (!child) throw new Error('insertChild error: child is required.');
+
+    if (!(child instanceof Node)) {
+      Object.assign(child, {
+        parent: this,
+        store: this.store
+      });
+      child = new Node(child);
+    }
+
+    child.level = this.level + 1;
+
+    if (typeof index === 'undefined' || index < 0) {
+      this.childNodes.push(child);
+    } else {
+      this.childNodes.splice(index, 0, child);
+    }
+
+    this.updateLeafState();
+  };
+
+  Node.prototype.insertBefore = function insertBefore(child, ref) {
+    var index = void 0;
+    if (ref) {
+      index = this.childNodes.indexOf(ref);
+    }
+    this.insertChild(child, index);
+  };
+
+  Node.prototype.insertAfter = function insertAfter(child, ref) {
+    var index = void 0;
+    if (ref) {
+      index = this.childNodes.indexOf(ref);
+      if (index !== -1) index += 1;
+    }
+    this.insertChild(child, index);
+  };
+
+  Node.prototype.removeChild = function removeChild(child) {
+    var index = this.childNodes.indexOf(child);
+
+    if (index > -1) {
+      this.store && this.store.deregisterNode(child);
+      child.parent = null;
+      this.childNodes.splice(index, 1);
+    }
+
+    this.updateLeafState();
+  };
+
+  Node.prototype.removeChildByData = function removeChildByData(data) {
+    var targetNode = null;
+    this.childNodes.forEach(function (node) {
+      if (node.data === data) {
+        targetNode = node;
+      }
+    });
+
+    if (targetNode) {
+      this.removeChild(targetNode);
+    }
+  };
+
+  Node.prototype.expand = function expand(callback, expandParent) {
+    var _this = this;
+
+    var done = function done() {
+      if (expandParent) {
+        var parent = _this.parent;
+        while (parent.level > 0) {
+          parent.expanded = true;
+          parent = parent.parent;
+        }
+      }
+      _this.expanded = true;
+      if (callback) callback();
+    };
+
+    if (this.shouldLoadData()) {
+      this.loadData(function (data) {
+        if (data instanceof Array) {
+          done();
         }
       });
-
-      if (targetNode) {
-        this.removeChild(targetNode);
-      }
+    } else {
+      done();
     }
-  }, {
-    key: 'expand',
-    value: function expand(callback, expandParent) {
-      var _this = this;
+  };
 
-      var done = function done() {
-        if (expandParent) {
-          var parent = _this.parent;
-          while (parent.level > 0) {
-            parent.expanded = true;
-            parent = parent.parent;
-          }
+  Node.prototype.doCreateChildren = function doCreateChildren(array) {
+    var _this2 = this;
+
+    var defaultProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    array.forEach(function (item) {
+      _this2.insertChild(Object.assign({ data: item }, defaultProps));
+    });
+  };
+
+  Node.prototype.collapse = function collapse() {
+    this.expanded = false;
+  };
+
+  Node.prototype.shouldLoadData = function shouldLoadData() {
+    return this.store.lazy === true && this.store.load && !this.loaded;
+  };
+
+  Node.prototype.updateLeafState = function updateLeafState() {
+    if (this.store.lazy === true && this.loaded !== true && typeof this.isLeafByUser !== 'undefined') {
+      this.isLeaf = this.isLeafByUser;
+      return;
+    }
+    var childNodes = this.childNodes;
+    if (!this.store.lazy || this.store.lazy === true && this.loaded === true) {
+      this.isLeaf = !childNodes || childNodes.length === 0;
+      return;
+    }
+    this.isLeaf = false;
+  };
+
+  Node.prototype.setChecked = function setChecked(value, deep) {
+    var _this3 = this;
+
+    this.indeterminate = value === 'half';
+    this.checked = value === true;
+
+    var handleDescendants = function handleDescendants() {
+      if (deep) {
+        var childNodes = _this3.childNodes;
+        for (var i = 0, j = childNodes.length; i < j; i++) {
+          var child = childNodes[i];
+          child.setChecked(value !== false, deep);
         }
-        _this.expanded = true;
-        if (callback) callback();
-      };
-
-      if (this.shouldLoadData()) {
-        this.loadData(function (data) {
-          if (data instanceof Array) {
-            done();
-          }
-        });
-      } else {
-        done();
       }
-    }
-  }, {
-    key: 'doCreateChildren',
-    value: function doCreateChildren(array) {
-      var _this2 = this;
+    };
 
-      var defaultProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      array.forEach(function (item) {
-        _this2.insertChild(Object.assign({ data: item }, defaultProps));
-      });
-    }
-  }, {
-    key: 'collapse',
-    value: function collapse() {
-      this.expanded = false;
-    }
-  }, {
-    key: 'shouldLoadData',
-    value: function shouldLoadData() {
-      return this.store.lazy === true && this.store.load && !this.loaded;
-    }
-  }, {
-    key: 'updateLeafState',
-    value: function updateLeafState() {
-      if (this.store.lazy === true && this.loaded !== true && typeof this.isLeafByUser !== 'undefined') {
-        this.isLeaf = this.isLeafByUser;
-        return;
-      }
-      var childNodes = this.childNodes;
-      if (!this.store.lazy || this.store.lazy === true && this.loaded === true) {
-        this.isLeaf = !childNodes || childNodes.length === 0;
-        return;
-      }
-      this.isLeaf = false;
-    }
-  }, {
-    key: 'setChecked',
-    value: function setChecked(value, deep) {
-      var _this3 = this;
-
-      this.indeterminate = value === 'half';
-      this.checked = value === true;
-
-      var handleDescendants = function handleDescendants() {
-        if (deep) {
-          var childNodes = _this3.childNodes;
-          for (var i = 0, j = childNodes.length; i < j; i++) {
-            var child = childNodes[i];
-            child.setChecked(value !== false, deep);
-          }
-        }
-      };
-
-      if (!this.store.checkStrictly && this.shouldLoadData()) {
-        // Only work on lazy load data.
-        this.loadData(function () {
-          handleDescendants();
-        }, {
-          checked: value !== false
-        });
-      } else {
+    if (!this.store.checkStrictly && this.shouldLoadData()) {
+      // Only work on lazy load data.
+      this.loadData(function () {
         handleDescendants();
-      }
-
-      var parent = this.parent;
-      if (!parent || parent.level === 0) return;
-
-      if (!this.store.checkStrictly) {
-        reInitChecked(parent);
-      }
+      }, {
+        checked: value !== false
+      });
+    } else {
+      handleDescendants();
     }
-  }, {
-    key: 'getChildren',
-    value: function getChildren() {
-      // this is data
-      var data = this.data;
-      if (!data) return null;
 
-      var props = this.store.props;
-      var children = 'children';
-      if (props) {
-        children = props.children || 'children';
-      }
+    var parent = this.parent;
+    if (!parent || parent.level === 0) return;
 
-      if (data[children] === undefined) {
-        data[children] = null;
-      }
-
-      return data[children];
+    if (!this.store.checkStrictly) {
+      reInitChecked(parent);
     }
-  }, {
-    key: 'updateChildren',
-    value: function updateChildren() {
-      var _this4 = this;
+  };
 
-      var newData = this.getChildren() || [];
-      var oldData = this.childNodes.map(function (node) {
-        return node.data;
-      });
+  Node.prototype.getChildren = function getChildren() {
+    // this is data
+    var data = this.data;
+    if (!data) return null;
 
-      var newDataMap = {};
-      var newNodes = [];
-
-      newData.forEach(function (item, index) {
-        if (item[_util.NODE_KEY]) {
-          newDataMap[item[_util.NODE_KEY]] = { index: index, data: item };
-        } else {
-          newNodes.push({ index: index, data: item });
-        }
-      });
-
-      oldData.forEach(function (item) {
-        if (!newDataMap[item[_util.NODE_KEY]]) _this4.removeChildByData(item);
-      });
-
-      newNodes.forEach(function (_ref) {
-        var index = _ref.index,
-            data = _ref.data;
-
-        _this4.insertChild({ data: data }, index);
-      });
-
-      this.updateLeafState();
+    var props = this.store.props;
+    var children = 'children';
+    if (props) {
+      children = props.children || 'children';
     }
-  }, {
-    key: 'loadData',
-    value: function loadData(callback) {
-      var _this5 = this;
 
-      var defaultProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    if (data[children] === undefined) {
+      data[children] = null;
+    }
 
-      if (this.store.lazy === true && this.store.load && !this.loaded && !this.loading) {
-        this.loading = true;
+    return data[children];
+  };
 
-        var resolve = function resolve(children) {
-          _this5.loaded = true;
-          _this5.loading = false;
-          _this5.childNodes = [];
+  Node.prototype.updateChildren = function updateChildren() {
+    var _this4 = this;
 
-          _this5.doCreateChildren(children, defaultProps);
+    var newData = this.getChildren() || [];
+    var oldData = this.childNodes.map(function (node) {
+      return node.data;
+    });
 
-          _this5.updateLeafState();
-          if (callback) {
-            callback.call(_this5, children);
-          }
-        };
+    var newDataMap = {};
+    var newNodes = [];
 
-        this.store.load(this, resolve);
+    newData.forEach(function (item, index) {
+      if (item[NODE_KEY]) {
+        newDataMap[item[NODE_KEY]] = { index: index, data: item };
       } else {
+        newNodes.push({ index: index, data: item });
+      }
+    });
+
+    oldData.forEach(function (item) {
+      if (!newDataMap[item[NODE_KEY]]) _this4.removeChildByData(item);
+    });
+
+    newNodes.forEach(function (_ref) {
+      var index = _ref.index,
+          data = _ref.data;
+
+      _this4.insertChild({ data: data }, index);
+    });
+
+    this.updateLeafState();
+  };
+
+  Node.prototype.loadData = function loadData(callback) {
+    var _this5 = this;
+
+    var defaultProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    if (this.store.lazy === true && this.store.load && !this.loaded && !this.loading) {
+      this.loading = true;
+
+      var resolve = function resolve(children) {
+        _this5.loaded = true;
+        _this5.loading = false;
+        _this5.childNodes = [];
+
+        _this5.doCreateChildren(children, defaultProps);
+
+        _this5.updateLeafState();
         if (callback) {
-          callback.call(this);
+          callback.call(_this5, children);
         }
+      };
+
+      this.store.load(this, resolve);
+    } else {
+      if (callback) {
+        callback.call(this);
       }
     }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }, {
+  };
+
+  _createClass(Node, [{
     key: 'label',
     get: function get() {
       return getPropertyFromData(this, 'label');
@@ -433,30 +388,8 @@ var Node = function () {
       return null;
     }
   }]);
+
   return Node;
 }();
 
-var _default = Node;
-exports.default = _default;
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(reInitChecked, 'reInitChecked', 'src/tree/model/node.js');
-  reactHotLoader.register(getPropertyFromData, 'getPropertyFromData', 'src/tree/model/node.js');
-  reactHotLoader.register(nodeIdSeed, 'nodeIdSeed', 'src/tree/model/node.js');
-  reactHotLoader.register(Node, 'Node', 'src/tree/model/node.js');
-  reactHotLoader.register(_default, 'default', 'src/tree/model/node.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();
+export default Node;

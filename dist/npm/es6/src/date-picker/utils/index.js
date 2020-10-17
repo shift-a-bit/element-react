@@ -1,36 +1,11 @@
-'use strict';
+import { DateUtils } from '../../../libs/utils';
+import Locale from '../../locale';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SELECTION_MODES = exports.limitRange = exports.getRangeHours = exports.nextMonth = exports.prevMonth = exports.getWeekNumber = exports.getStartDateOfMonth = exports.DAY_DURATION = exports.getFirstDayOfMonth = exports.getDayCountOfMonth = exports.parseDate = exports.formatDate = exports.isDate = exports.toDate = exports.equalDate = undefined;
-exports.getOffsetToWeekOrigin = getOffsetToWeekOrigin;
-exports.getDateOfISOWeek = getDateOfISOWeek;
-exports.hasClass = hasClass;
-exports.deconstructDate = deconstructDate;
-
-var _utils = require('../../../libs/utils');
-
-var _locale = require('../../locale');
-
-var _locale2 = _interopRequireDefault(_locale);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var t = _locale2.default.t;
+var t = Locale.t;
 var weeks = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 var months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
-_utils.DateUtils.i18n = {
+DateUtils.i18n = {
   dayNamesShort: weeks.map(function (week) {
     return t('el.datepicker.weeks.' + week);
   }),
@@ -53,31 +28,31 @@ var newArray = function newArray(start, end) {
   return result;
 };
 
-var equalDate = exports.equalDate = function equalDate(dateA, dateB) {
+export var equalDate = function equalDate(dateA, dateB) {
   return dateA === dateB || new Date(dateA).getTime() === new Date(dateB).getTime();
 };
 
-var toDate = exports.toDate = function toDate(date) {
+export var toDate = function toDate(date) {
   return isDate(date) ? new Date(date) : null;
 };
 
-var isDate = exports.isDate = function isDate(date) {
+export var isDate = function isDate(date) {
   if (date === null || date === undefined) return false;
   if (isNaN(new Date(date).getTime())) return false;
   return true;
 };
 
-var formatDate = exports.formatDate = function formatDate(date, format) {
+export var formatDate = function formatDate(date, format) {
   date = toDate(date);
   if (!date) return '';
-  return _utils.DateUtils.format(date, format || 'yyyy-MM-dd');
+  return DateUtils.format(date, format || 'yyyy-MM-dd');
 };
 
-var parseDate = exports.parseDate = function parseDate(string, format) {
-  return _utils.DateUtils.parse(string, format || 'yyyy-MM-dd');
+export var parseDate = function parseDate(string, format) {
+  return DateUtils.parse(string, format || 'yyyy-MM-dd');
 };
 
-var getDayCountOfMonth = exports.getDayCountOfMonth = function getDayCountOfMonth(year, month) {
+export var getDayCountOfMonth = function getDayCountOfMonth(year, month) {
   if (month === 3 || month === 5 || month === 8 || month === 10) {
     return 30;
   }
@@ -93,16 +68,16 @@ var getDayCountOfMonth = exports.getDayCountOfMonth = function getDayCountOfMont
   return 31;
 };
 
-var getFirstDayOfMonth = exports.getFirstDayOfMonth = function getFirstDayOfMonth(date) {
+export var getFirstDayOfMonth = function getFirstDayOfMonth(date) {
   var temp = new Date(date.getTime());
   temp.setDate(1);
   return temp.getDay();
 };
 
-var DAY_DURATION = exports.DAY_DURATION = 86400000;
+export var DAY_DURATION = 86400000;
 
 // return date corresponding to the first cell on datetable 
-var getStartDateOfMonth = exports.getStartDateOfMonth = function getStartDateOfMonth(year, month) {
+export var getStartDateOfMonth = function getStartDateOfMonth(year, month) {
   var offsetWeek = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
   var result = new Date(year, month, 1);
@@ -125,7 +100,7 @@ var getStartDateOfMonth = exports.getStartDateOfMonth = function getStartDateOfM
  * @param {number} [offsetWeek=0, 0-6, 0 sunday, 6 saturday] 
  * @returns 
  */
-function getOffsetToWeekOrigin(day) {
+export function getOffsetToWeekOrigin(day) {
   var offsetWeek = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
   var offset = day >= offsetWeek ? day - offsetWeek : 7 + day - offsetWeek;
@@ -133,7 +108,7 @@ function getOffsetToWeekOrigin(day) {
   return offset;
 }
 
-var getWeekNumber = exports.getWeekNumber = function getWeekNumber(src) {
+export var getWeekNumber = function getWeekNumber(src) {
   var date = new Date(src.getTime());
   date.setHours(0, 0, 0, 0);
   // Thursday in current week decides the year.
@@ -145,7 +120,7 @@ var getWeekNumber = exports.getWeekNumber = function getWeekNumber(src) {
 };
 
 // http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-number
-function getDateOfISOWeek(w, y) {
+export function getDateOfISOWeek(w, y) {
   var simple = new Date(y, 0, 1 + (w - 1) * 7);
   var dow = simple.getDay();
   var ISOweekStart = simple;
@@ -153,7 +128,7 @@ function getDateOfISOWeek(w, y) {
   return ISOweekStart;
 }
 
-var prevMonth = exports.prevMonth = function prevMonth(src) {
+export var prevMonth = function prevMonth(src) {
   var year = src.getFullYear();
   var month = src.getMonth();
   var date = src.getDate();
@@ -172,7 +147,7 @@ var prevMonth = exports.prevMonth = function prevMonth(src) {
   return new Date(src.getTime());
 };
 
-var nextMonth = exports.nextMonth = function nextMonth(src) {
+export var nextMonth = function nextMonth(src) {
   var clone = new Date(src.getTime());
   var year = clone.getFullYear();
   var month = clone.getMonth();
@@ -191,7 +166,7 @@ var nextMonth = exports.nextMonth = function nextMonth(src) {
   return clone;
 };
 
-var getRangeHours = exports.getRangeHours = function getRangeHours(ranges) {
+export var getRangeHours = function getRangeHours(ranges) {
   var hours = [];
   var disabledHours = [];
 
@@ -216,14 +191,14 @@ var getRangeHours = exports.getRangeHours = function getRangeHours(ranges) {
   return hours;
 };
 
-var limitRange = exports.limitRange = function limitRange(date, ranges) {
+export var limitRange = function limitRange(date, ranges) {
   var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'yyyy-MM-dd HH:mm:ss';
 
   if (!ranges || !ranges.length) return date;
 
   var len = ranges.length;
 
-  date = _utils.DateUtils.parse(_utils.DateUtils.format(date, format), format);
+  date = DateUtils.parse(DateUtils.format(date, format), format);
   for (var i = 0; i < len; i++) {
     var range = ranges[i];
     if (date >= range[0] && date <= range[1]) {
@@ -242,11 +217,11 @@ var limitRange = exports.limitRange = function limitRange(date, ranges) {
   return date < minDate ? minDate : maxDate;
 };
 
-function hasClass(target, classname) {
+export function hasClass(target, classname) {
   return target.classList.contains(classname);
 }
 
-var SELECTION_MODES = exports.SELECTION_MODES = {
+export var SELECTION_MODES = {
   YEAR: 'year',
   MONTH: 'month',
   WEEK: 'week',
@@ -254,50 +229,10 @@ var SELECTION_MODES = exports.SELECTION_MODES = {
   RANGE: 'range'
 };
 
-function deconstructDate(date) {
+export function deconstructDate(date) {
   return {
     year: date.getFullYear(),
     month: date.getMonth(),
     week: getWeekNumber(date)
   };
 }
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(t, 't', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(weeks, 'weeks', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(months, 'months', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(newArray, 'newArray', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(equalDate, 'equalDate', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(toDate, 'toDate', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(isDate, 'isDate', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(formatDate, 'formatDate', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(parseDate, 'parseDate', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(getDayCountOfMonth, 'getDayCountOfMonth', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(getFirstDayOfMonth, 'getFirstDayOfMonth', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(DAY_DURATION, 'DAY_DURATION', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(getStartDateOfMonth, 'getStartDateOfMonth', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(getOffsetToWeekOrigin, 'getOffsetToWeekOrigin', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(getWeekNumber, 'getWeekNumber', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(getDateOfISOWeek, 'getDateOfISOWeek', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(prevMonth, 'prevMonth', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(nextMonth, 'nextMonth', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(getRangeHours, 'getRangeHours', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(limitRange, 'limitRange', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(hasClass, 'hasClass', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(SELECTION_MODES, 'SELECTION_MODES', 'src/date-picker/utils/index.js');
-  reactHotLoader.register(deconstructDate, 'deconstructDate', 'src/date-picker/utils/index.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

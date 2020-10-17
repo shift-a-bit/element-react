@@ -1,60 +1,18 @@
-'use strict';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _createClass from 'babel-runtime/helpers/createClass';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import { PropTypes } from '../../../libs';
+import { limitRange, parseDate } from '../utils';
+import TimeSpinner from '../basic/TimeSpinner';
+import Locale from '../../locale';
 
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+import { PopperBase } from './PopperBase';
 
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../../libs');
-
-var _utils = require('../utils');
-
-var _TimeSpinner = require('../basic/TimeSpinner');
-
-var _TimeSpinner2 = _interopRequireDefault(_TimeSpinner);
-
-var _locale = require('../../locale');
-
-var _locale2 = _interopRequireDefault(_locale);
-
-var _PopperBase2 = require('./PopperBase');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var MIN_TIME = (0, _utils.parseDate)('00:00:00', 'HH:mm:ss');
-var MAX_TIME = (0, _utils.parseDate)('23:59:59', 'HH:mm:ss');
+var MIN_TIME = parseDate('00:00:00', 'HH:mm:ss');
+var MAX_TIME = parseDate('23:59:59', 'HH:mm:ss');
 
 var isDisabled = function isDisabled(minTime, maxTime) {
   var minValue = minTime.getHours() * 3600 + minTime.getMinutes() * 60 + minTime.getSeconds();
@@ -96,25 +54,26 @@ var mapPropsToState = function mapPropsToState(props) {
 };
 
 var TimeRangePanel = function (_PopperBase) {
-  (0, _inherits3.default)(TimeRangePanel, _PopperBase);
-  (0, _createClass3.default)(TimeRangePanel, null, [{
+  _inherits(TimeRangePanel, _PopperBase);
+
+  _createClass(TimeRangePanel, null, [{
     key: 'propTypes',
     get: function get() {
       return Object.assign({
-        pickerWidth: _libs.PropTypes.number,
-        currentDates: _libs.PropTypes.arrayOf(_libs.PropTypes.instanceOf(Date)),
+        pickerWidth: PropTypes.number,
+        currentDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
         /*
         onPicked: (value, isKeepPannelOpen)=>()
           @param value: Date| Date[] |null
         @param isKeepPannelOpen:boolean, should parent close the pannel
         */
-        onPicked: _libs.PropTypes.func.isRequired,
+        onPicked: PropTypes.func.isRequired,
         // cancel btn is clicked
         //()=>()
-        onCancel: _libs.PropTypes.func.isRequired,
+        onCancel: PropTypes.func.isRequired,
         // (start, end)=>(), index range indicate which field [hours, minutes, seconds] changes
-        onSelectRangeChange: _TimeSpinner2.default.propTypes.onSelectRangeChange
-      }, _PopperBase2.PopperBase.propTypes);
+        onSelectRangeChange: TimeSpinner.propTypes.onSelectRangeChange
+      }, PopperBase.propTypes);
     }
   }, {
     key: 'defaultProps',
@@ -126,9 +85,9 @@ var TimeRangePanel = function (_PopperBase) {
   }]);
 
   function TimeRangePanel(props) {
-    (0, _classCallCheck3.default)(this, TimeRangePanel);
+    _classCallCheck(this, TimeRangePanel);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (TimeRangePanel.__proto__ || Object.getPrototypeOf(TimeRangePanel)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _PopperBase.call(this, props));
 
     _this.state = Object.assign({
       visible: false,
@@ -137,201 +96,166 @@ var TimeRangePanel = function (_PopperBase) {
     return _this;
   }
 
-  (0, _createClass3.default)(TimeRangePanel, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      this.setState(mapPropsToState(nextProps));
+  TimeRangePanel.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    this.setState(mapPropsToState(nextProps));
+  };
+
+  // type = hours | minutes | seconds
+  // date: {type: number}
+
+
+  TimeRangePanel.prototype.handleChange = function handleChange(date, field) {
+    var _state;
+
+    var ndate = this.state[field];
+
+    if (date.hours !== undefined) {
+      ndate.setHours(date.hours);
     }
 
-    // type = hours | minutes | seconds
-    // date: {type: number}
-
-  }, {
-    key: 'handleChange',
-    value: function handleChange(date, field) {
-      var ndate = this.state[field];
-
-      if (date.hours !== undefined) {
-        ndate.setHours(date.hours);
-      }
-
-      if (date.minutes !== undefined) {
-        ndate.setMinutes(date.minutes);
-      }
-
-      if (date.seconds !== undefined) {
-        ndate.setSeconds(date.seconds);
-      }
-
-      var state = (0, _defineProperty3.default)({}, field, ndate);
-
-      this.setState(state);
-      this.handleConfirm(true);
+    if (date.minutes !== undefined) {
+      ndate.setMinutes(date.minutes);
     }
-  }, {
-    key: 'handleConfirm',
-    value: function handleConfirm() {
-      var isKeepPannelOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      var _state2 = this.state,
-          minTime = _state2.minTime,
-          maxTime = _state2.maxTime;
-      var onPicked = this.props.onPicked;
 
-
-      onPicked([minTime, maxTime], isKeepPannelOpen);
+    if (date.seconds !== undefined) {
+      ndate.setSeconds(date.seconds);
     }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
 
-      var _state3 = this.state,
-          isShowSeconds = _state3.isShowSeconds,
-          minTime = _state3.minTime,
-          maxTime = _state3.maxTime,
-          btnDisabled = _state3.btnDisabled,
-          minSelectableRange = _state3.minSelectableRange,
-          maxSelectableRange = _state3.maxSelectableRange;
-      var _onSelectRangeChange = this.props.onSelectRangeChange;
+    var state = (_state = {}, _state[field] = ndate, _state);
 
-      var $t = _locale2.default.t;
+    this.setState(state);
+    this.handleConfirm(true);
+  };
 
-      var maxHours = maxTime.getHours();
-      var maxMinutes = maxTime.getMinutes();
-      var maxSeconds = maxTime.getSeconds();
-      var minHours = minTime.getHours();
-      var minMinutes = minTime.getMinutes();
-      var minSeconds = minTime.getSeconds();
-      return _react2.default.createElement(
+  TimeRangePanel.prototype.handleConfirm = function handleConfirm() {
+    var isKeepPannelOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+    var _state2 = this.state,
+        minTime = _state2.minTime,
+        maxTime = _state2.maxTime;
+    var onPicked = this.props.onPicked;
+
+
+    onPicked([minTime, maxTime], isKeepPannelOpen);
+  };
+
+  TimeRangePanel.prototype.render = function render() {
+    var _this2 = this;
+
+    var _state3 = this.state,
+        isShowSeconds = _state3.isShowSeconds,
+        minTime = _state3.minTime,
+        maxTime = _state3.maxTime,
+        btnDisabled = _state3.btnDisabled,
+        minSelectableRange = _state3.minSelectableRange,
+        maxSelectableRange = _state3.maxSelectableRange;
+    var _onSelectRangeChange = this.props.onSelectRangeChange;
+
+    var $t = Locale.t;
+
+    var maxHours = maxTime.getHours();
+    var maxMinutes = maxTime.getMinutes();
+    var maxSeconds = maxTime.getSeconds();
+    var minHours = minTime.getHours();
+    var minMinutes = minTime.getMinutes();
+    var minSeconds = minTime.getSeconds();
+    return React.createElement(
+      'div',
+      {
+        ref: 'root',
+        className: 'el-time-range-picker el-picker-panel',
+        style: { minWidth: '330px' }
+      },
+      React.createElement(
         'div',
-        {
-          ref: 'root',
-          className: 'el-time-range-picker el-picker-panel',
-          style: { minWidth: '330px' }
-        },
-        _react2.default.createElement(
+        { className: 'el-time-range-picker__content' },
+        React.createElement(
           'div',
-          { className: 'el-time-range-picker__content' },
-          _react2.default.createElement(
+          { className: 'el-time-range-picker__cell' },
+          React.createElement(
             'div',
-            { className: 'el-time-range-picker__cell' },
-            _react2.default.createElement(
-              'div',
-              { className: 'el-time-range-picker__header' },
-              $t('el.datepicker.startTime')
-            ),
-            _react2.default.createElement(
-              'div',
-              {
-                className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds })
-              },
-              _react2.default.createElement(_TimeSpinner2.default, {
-                ref: 'minSpinner',
-                onChange: function onChange(date) {
-                  return _this2.handleChange(date, 'minTime');
-                },
-                isShowSeconds: isShowSeconds,
-                hours: minHours,
-                minutes: minMinutes,
-                seconds: minSeconds,
-                selectableRange: minSelectableRange,
-                onSelectRangeChange: _onSelectRangeChange
-              })
-            )
+            { className: 'el-time-range-picker__header' },
+            $t('el.datepicker.startTime')
           ),
-          _react2.default.createElement(
+          React.createElement(
             'div',
-            { className: 'el-time-range-picker__cell' },
-            _react2.default.createElement(
-              'div',
-              { className: 'el-time-range-picker__header' },
-              $t('el.datepicker.endTime')
-            ),
-            _react2.default.createElement(
-              'div',
-              {
-                className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds })
+            {
+              className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds })
+            },
+            React.createElement(TimeSpinner, {
+              ref: 'minSpinner',
+              onChange: function onChange(date) {
+                return _this2.handleChange(date, 'minTime');
               },
-              _react2.default.createElement(_TimeSpinner2.default, {
-                ref: 'maxSpinner',
-                onChange: function onChange(date) {
-                  return _this2.handleChange(date, 'maxTime');
-                },
-                isShowSeconds: isShowSeconds,
-                hours: maxHours,
-                minutes: maxMinutes,
-                seconds: maxSeconds,
-                selectableRange: maxSelectableRange,
-                onSelectRangeChange: function onSelectRangeChange(start, end) {
-                  return _onSelectRangeChange(start + 11, end + 11);
-                }
-              })
-            )
+              isShowSeconds: isShowSeconds,
+              hours: minHours,
+              minutes: minMinutes,
+              seconds: minSeconds,
+              selectableRange: minSelectableRange,
+              onSelectRangeChange: _onSelectRangeChange
+            })
           )
         ),
-        _react2.default.createElement(
+        React.createElement(
           'div',
-          { className: 'el-time-panel__footer' },
-          _react2.default.createElement(
-            'button',
-            {
-              type: 'button',
-              className: 'el-time-panel__btn cancel',
-              onClick: function onClick() {
-                return _this2.props.onCancel();
-              }
-            },
-            $t('el.datepicker.cancel')
+          { className: 'el-time-range-picker__cell' },
+          React.createElement(
+            'div',
+            { className: 'el-time-range-picker__header' },
+            $t('el.datepicker.endTime')
           ),
-          _react2.default.createElement(
-            'button',
+          React.createElement(
+            'div',
             {
-              type: 'button',
-              className: 'el-time-panel__btn confirm',
-              onClick: function onClick() {
-                return _this2.handleConfirm();
-              },
-              disabled: btnDisabled
+              className: this.classNames('el-time-range-picker__body el-time-panel__content', { 'has-seconds': isShowSeconds })
             },
-            $t('el.datepicker.confirm')
+            React.createElement(TimeSpinner, {
+              ref: 'maxSpinner',
+              onChange: function onChange(date) {
+                return _this2.handleChange(date, 'maxTime');
+              },
+              isShowSeconds: isShowSeconds,
+              hours: maxHours,
+              minutes: maxMinutes,
+              seconds: maxSeconds,
+              selectableRange: maxSelectableRange,
+              onSelectRangeChange: function onSelectRangeChange(start, end) {
+                return _onSelectRangeChange(start + 11, end + 11);
+              }
+            })
           )
         )
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
+      ),
+      React.createElement(
+        'div',
+        { className: 'el-time-panel__footer' },
+        React.createElement(
+          'button',
+          {
+            type: 'button',
+            className: 'el-time-panel__btn cancel',
+            onClick: function onClick() {
+              return _this2.props.onCancel();
+            }
+          },
+          $t('el.datepicker.cancel')
+        ),
+        React.createElement(
+          'button',
+          {
+            type: 'button',
+            className: 'el-time-panel__btn confirm',
+            onClick: function onClick() {
+              return _this2.handleConfirm();
+            },
+            disabled: btnDisabled
+          },
+          $t('el.datepicker.confirm')
+        )
+      )
+    );
+  };
+
   return TimeRangePanel;
-}(_PopperBase2.PopperBase);
+}(PopperBase);
 
-var _default = TimeRangePanel;
-exports.default = _default;
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(MIN_TIME, 'MIN_TIME', 'src/date-picker/panel/TimeRangePanel.jsx');
-  reactHotLoader.register(MAX_TIME, 'MAX_TIME', 'src/date-picker/panel/TimeRangePanel.jsx');
-  reactHotLoader.register(isDisabled, 'isDisabled', 'src/date-picker/panel/TimeRangePanel.jsx');
-  reactHotLoader.register(calcTime, 'calcTime', 'src/date-picker/panel/TimeRangePanel.jsx');
-  reactHotLoader.register(mapPropsToState, 'mapPropsToState', 'src/date-picker/panel/TimeRangePanel.jsx');
-  reactHotLoader.register(TimeRangePanel, 'TimeRangePanel', 'src/date-picker/panel/TimeRangePanel.jsx');
-  reactHotLoader.register(_default, 'default', 'src/date-picker/panel/TimeRangePanel.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();
+export default TimeRangePanel;

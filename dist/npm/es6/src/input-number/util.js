@@ -1,21 +1,4 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.accSub = accSub;
-exports.accAdd = accAdd;
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-function accSub(arg1, arg2) {
+export function accSub(arg1, arg2) {
   var r1, r2, m, n;
   try {
     r1 = arg1.toString().split('.')[1].length;
@@ -32,7 +15,7 @@ function accSub(arg1, arg2) {
   return parseFloat(((arg1 * m - arg2 * m) / m).toFixed(n));
 }
 
-function accAdd(arg1, arg2) {
+export function accAdd(arg1, arg2) {
   var r1, r2, m, c;
   try {
     r1 = arg1.toString().split('.')[1].length;
@@ -61,22 +44,3 @@ function accAdd(arg1, arg2) {
   }
   return (arg1 + arg2) / m;
 }
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(accSub, 'accSub', 'src/input-number/util.js');
-  reactHotLoader.register(accAdd, 'accAdd', 'src/input-number/util.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

@@ -1,53 +1,19 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _throttleDebounce = require('throttle-debounce');
-
-var _libs = require('../../libs');
-
-var _resizeEvent = require('../../libs/utils/resize-event');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _createClass from 'babel-runtime/helpers/createClass';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { throttle } from 'throttle-debounce';
+import { Component, PropTypes, Transition, View } from '../../libs';
+import { addResizeListener, removeResizeListener } from '../../libs/utils/resize-event';
 
 var Carousel = function (_Component) {
-  (0, _inherits3.default)(Carousel, _Component);
+  _inherits(Carousel, _Component);
 
   function Carousel(props) {
-    (0, _classCallCheck3.default)(this, Carousel);
+    _classCallCheck(this, Carousel);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Carousel.__proto__ || Object.getPrototypeOf(Carousel)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.state = {
       items: [],
@@ -57,11 +23,11 @@ var Carousel = function (_Component) {
       hover: false
     };
 
-    _this.throttledArrowClick = (0, _throttleDebounce.throttle)(300, true, function (index) {
+    _this.throttledArrowClick = throttle(300, true, function (index) {
       _this.setActiveItem(index);
     });
 
-    _this.throttledIndicatorHover = (0, _throttleDebounce.throttle)(300, function (index) {
+    _this.throttledIndicatorHover = throttle(300, function (index) {
       _this.handleIndicatorHover(index);
     });
 
@@ -69,289 +35,261 @@ var Carousel = function (_Component) {
     return _this;
   }
 
-  (0, _createClass3.default)(Carousel, [{
-    key: 'getChildContext',
-    value: function getChildContext() {
-      return {
-        component: this
-      };
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
+  Carousel.prototype.getChildContext = function getChildContext() {
+    return {
+      component: this
+    };
+  };
 
-      if (this.props.initialIndex < this.state.items.length && this.props.initialIndex >= 0) {
-        this.setState({
-          activeIndex: this.props.initialIndex
-        });
-      }
+  Carousel.prototype.componentDidMount = function componentDidMount() {
 
-      this.startTimer();
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(props, state) {
-      (0, _resizeEvent.addResizeListener)(this.refs.root, this.resetItemPosition);
-
-      if (state.activeIndex != this.state.activeIndex) {
-        this.resetItemPosition(state.activeIndex);
-
-        if (this.props.onChange) {
-          this.props.onChange(this.state.activeIndex, state.activeIndex);
-        }
-      }
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      (0, _resizeEvent.removeResizeListener)(this.refs.root, this.resetItemPosition);
-      this.pauseTimer();
-    }
-  }, {
-    key: 'handleMouseEnter',
-    value: function handleMouseEnter() {
-      this.setState({ hover: true });
-      this.pauseTimer();
-    }
-  }, {
-    key: 'handleMouseLeave',
-    value: function handleMouseLeave() {
-      this.setState({ hover: false });
-      this.startTimer();
-    }
-  }, {
-    key: 'itemInStage',
-    value: function itemInStage(item, index) {
-      var length = this.state.items.length;
-
-      if (index === length - 1 && item.state.inStage && this.state.items[0].state.active || item.state.inStage && this.state.items[index + 1] && this.state.items[index + 1].state.active) {
-        return 'left';
-      } else if (index === 0 && item.state.inStage && this.state.items[length - 1].state.active || item.state.inStage && this.state.items[index - 1] && this.state.items[index - 1].state.active) {
-        return 'right';
-      }
-
-      return false;
-    }
-  }, {
-    key: 'handleButtonEnter',
-    value: function handleButtonEnter(arrow) {
-      var _this2 = this;
-
-      this.state.items.forEach(function (item, index) {
-        if (arrow === _this2.itemInStage(item, index)) {
-          item.setState({ hover: true });
-        }
+    if (this.props.initialIndex < this.state.items.length && this.props.initialIndex >= 0) {
+      this.setState({
+        activeIndex: this.props.initialIndex
       });
     }
-  }, {
-    key: 'handleButtonLeave',
-    value: function handleButtonLeave() {
-      this.state.items.forEach(function (item) {
-        item.setState({ hover: false });
+
+    this.startTimer();
+  };
+
+  Carousel.prototype.componentDidUpdate = function componentDidUpdate(props, state) {
+    addResizeListener(this.refs.root, this.resetItemPosition);
+
+    if (state.activeIndex != this.state.activeIndex) {
+      this.resetItemPosition(state.activeIndex);
+
+      if (this.props.onChange) {
+        this.props.onChange(this.state.activeIndex, state.activeIndex);
+      }
+    }
+  };
+
+  Carousel.prototype.componentWillUnmount = function componentWillUnmount() {
+    removeResizeListener(this.refs.root, this.resetItemPosition);
+    this.pauseTimer();
+  };
+
+  Carousel.prototype.handleMouseEnter = function handleMouseEnter() {
+    this.setState({ hover: true });
+    this.pauseTimer();
+  };
+
+  Carousel.prototype.handleMouseLeave = function handleMouseLeave() {
+    this.setState({ hover: false });
+    this.startTimer();
+  };
+
+  Carousel.prototype.itemInStage = function itemInStage(item, index) {
+    var length = this.state.items.length;
+
+    if (index === length - 1 && item.state.inStage && this.state.items[0].state.active || item.state.inStage && this.state.items[index + 1] && this.state.items[index + 1].state.active) {
+      return 'left';
+    } else if (index === 0 && item.state.inStage && this.state.items[length - 1].state.active || item.state.inStage && this.state.items[index - 1] && this.state.items[index - 1].state.active) {
+      return 'right';
+    }
+
+    return false;
+  };
+
+  Carousel.prototype.handleButtonEnter = function handleButtonEnter(arrow) {
+    var _this2 = this;
+
+    this.state.items.forEach(function (item, index) {
+      if (arrow === _this2.itemInStage(item, index)) {
+        item.setState({ hover: true });
+      }
+    });
+  };
+
+  Carousel.prototype.handleButtonLeave = function handleButtonLeave() {
+    this.state.items.forEach(function (item) {
+      item.setState({ hover: false });
+    });
+  };
+
+  Carousel.prototype._resetItemPosition = function _resetItemPosition(oldIndex) {
+    var _this3 = this;
+
+    this.state.items.forEach(function (item, index) {
+      item.translateItem(index, _this3.state.activeIndex, oldIndex);
+    });
+  };
+
+  Carousel.prototype.playSlides = function playSlides() {
+    var activeIndex = this.state.activeIndex;
+
+
+    if (activeIndex < this.state.items.length - 1) {
+      activeIndex++;
+    } else {
+      activeIndex = 0;
+    }
+
+    this.setState({ activeIndex: activeIndex });
+  };
+
+  Carousel.prototype.pauseTimer = function pauseTimer() {
+    clearInterval(this.timer);
+  };
+
+  Carousel.prototype.startTimer = function startTimer() {
+    if (this.props.interval <= 0 || !this.props.autoplay) return;
+    this.timer = setInterval(this.playSlides.bind(this), Number(this.props.interval));
+  };
+
+  Carousel.prototype.addItem = function addItem(item) {
+    this.state.items.push(item);
+    this.setActiveItem(0);
+  };
+
+  Carousel.prototype.removeItem = function removeItem(item) {
+    this.state.items.splice(this.state.items.indexOf(item), 1);
+    this.setActiveItem(0);
+  };
+
+  Carousel.prototype.setActiveItem = function setActiveItem(index) {
+    var activeIndex = this.state.activeIndex;
+
+
+    if (typeof index === 'string') {
+      var filteredItems = this.state.items.filter(function (item) {
+        return item.props.name === index;
       });
-    }
-  }, {
-    key: '_resetItemPosition',
-    value: function _resetItemPosition(oldIndex) {
-      var _this3 = this;
 
-      this.state.items.forEach(function (item, index) {
-        item.translateItem(index, _this3.state.activeIndex, oldIndex);
-      });
-    }
-  }, {
-    key: 'playSlides',
-    value: function playSlides() {
-      var activeIndex = this.state.activeIndex;
-
-
-      if (activeIndex < this.state.items.length - 1) {
-        activeIndex++;
-      } else {
-        activeIndex = 0;
+      if (filteredItems.length > 0) {
+        index = this.state.items.indexOf(filteredItems[0]);
       }
-
-      this.setState({ activeIndex: activeIndex });
     }
-  }, {
-    key: 'pauseTimer',
-    value: function pauseTimer() {
-      clearInterval(this.timer);
+
+    index = Number(index);
+
+    if (isNaN(index) || index !== Math.floor(index)) {
+      process.env.NODE_ENV !== 'production' && console.warn('[Element Warn][Carousel]index must be an integer.');
+      return;
     }
-  }, {
-    key: 'startTimer',
-    value: function startTimer() {
-      if (this.props.interval <= 0 || !this.props.autoplay) return;
-      this.timer = setInterval(this.playSlides.bind(this), Number(this.props.interval));
+
+    var length = this.state.items.length;
+
+    if (index < 0) {
+      activeIndex = length - 1;
+    } else if (index >= length) {
+      activeIndex = 0;
+    } else {
+      activeIndex = index;
     }
-  }, {
-    key: 'addItem',
-    value: function addItem(item) {
-      this.state.items.push(item);
-      this.setActiveItem(0);
-    }
-  }, {
-    key: 'removeItem',
-    value: function removeItem(item) {
-      this.state.items.splice(this.state.items.indexOf(item), 1);
-      this.setActiveItem(0);
-    }
-  }, {
-    key: 'setActiveItem',
-    value: function setActiveItem(index) {
-      var activeIndex = this.state.activeIndex;
 
+    this.setState({ activeIndex: activeIndex });
+  };
 
-      if (typeof index === 'string') {
-        var filteredItems = this.state.items.filter(function (item) {
-          return item.props.name === index;
-        });
+  Carousel.prototype.prev = function prev() {
+    this.setActiveItem(this.state.activeIndex - 1);
+  };
 
-        if (filteredItems.length > 0) {
-          index = this.state.items.indexOf(filteredItems[0]);
-        }
-      }
+  Carousel.prototype.next = function next() {
+    this.setActiveItem(this.state.activeIndex + 1);
+  };
 
-      index = Number(index);
+  Carousel.prototype.handleIndicatorClick = function handleIndicatorClick(index) {
+    this.setState({
+      activeIndex: index
+    });
+  };
 
-      if (isNaN(index) || index !== Math.floor(index)) {
-        process.env.NODE_ENV !== 'production' && console.warn('[Element Warn][Carousel]index must be an integer.');
-        return;
-      }
-
-      var length = this.state.items.length;
-
-      if (index < 0) {
-        activeIndex = length - 1;
-      } else if (index >= length) {
-        activeIndex = 0;
-      } else {
-        activeIndex = index;
-      }
-
-      this.setState({ activeIndex: activeIndex });
-    }
-  }, {
-    key: 'prev',
-    value: function prev() {
-      this.setActiveItem(this.state.activeIndex - 1);
-    }
-  }, {
-    key: 'next',
-    value: function next() {
-      this.setActiveItem(this.state.activeIndex + 1);
-    }
-  }, {
-    key: 'handleIndicatorClick',
-    value: function handleIndicatorClick(index) {
+  Carousel.prototype.handleIndicatorHover = function handleIndicatorHover(index) {
+    if (this.props.trigger === 'hover' && index !== this.state.activeIndex) {
       this.setState({
         activeIndex: index
       });
     }
-  }, {
-    key: 'handleIndicatorHover',
-    value: function handleIndicatorHover(index) {
-      if (this.props.trigger === 'hover' && index !== this.state.activeIndex) {
-        this.setState({
-          activeIndex: index
-        });
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this4 = this;
+  };
 
-      var _props = this.props,
-          height = _props.height,
-          arrow = _props.arrow,
-          indicatorPosition = _props.indicatorPosition;
-      var _state = this.state,
-          hover = _state.hover,
-          activeIndex = _state.activeIndex,
-          items = _state.items;
+  Carousel.prototype.render = function render() {
+    var _this4 = this;
 
-      return _react2.default.createElement(
+    var _props = this.props,
+        height = _props.height,
+        arrow = _props.arrow,
+        indicatorPosition = _props.indicatorPosition;
+    var _state = this.state,
+        hover = _state.hover,
+        activeIndex = _state.activeIndex,
+        items = _state.items;
+
+    return React.createElement(
+      'div',
+      {
+        ref: 'root',
+        className: this.className('el-carousel', { 'el-carousel--card': this.iscard }),
+        onMouseEnter: this.handleMouseEnter.bind(this),
+        onMouseLeave: this.handleMouseLeave.bind(this)
+      },
+      React.createElement(
         'div',
         {
-          ref: 'root',
-          className: this.className('el-carousel', { 'el-carousel--card': this.iscard }),
-          onMouseEnter: this.handleMouseEnter.bind(this),
-          onMouseLeave: this.handleMouseLeave.bind(this)
-        },
-        _react2.default.createElement(
-          'div',
-          {
-            className: 'el-carousel__container',
-            style: { height: height } },
-          _react2.default.createElement(
-            _libs.Transition,
-            { name: 'carousel-arrow-left' },
-            arrow !== 'never' && _react2.default.createElement(
-              _libs.View,
-              { show: arrow === 'always' || hover },
-              _react2.default.createElement(
-                'button',
-                {
-                  className: 'el-carousel__arrow el-carousel__arrow--left',
-                  onMouseEnter: this.handleButtonEnter.bind(this, 'left'),
-                  onMouseLeave: this.handleButtonLeave.bind(this),
-                  onClick: this.throttledArrowClick.bind(this, activeIndex - 1)
-                },
-                _react2.default.createElement('i', { className: 'el-icon-arrow-left' })
-              )
-            )
-          ),
-          _react2.default.createElement(
-            _libs.Transition,
-            { name: 'carousel-arrow-right' },
-            arrow !== 'never' && _react2.default.createElement(
-              _libs.View,
-              { show: arrow === 'always' || hover },
-              _react2.default.createElement(
-                'button',
-                {
-                  className: 'el-carousel__arrow el-carousel__arrow--right',
-                  onMouseEnter: this.handleButtonEnter.bind(this, 'right'),
-                  onMouseLeave: this.handleButtonLeave.bind(this),
-                  onClick: this.throttledArrowClick.bind(this, activeIndex + 1)
-                },
-                _react2.default.createElement('i', { className: 'el-icon-arrow-right' })
-              )
-            )
-          ),
-          this.props.children
-        ),
-        indicatorPosition !== 'none' && _react2.default.createElement(
-          'ul',
-          {
-            className: this.classNames('el-carousel__indicators', {
-              'el-carousel__indicators--outside': indicatorPosition === 'outside' || this.iscard
-            })
-          },
-          items.map(function (item, index) {
-            return _react2.default.createElement(
-              'li',
+          className: 'el-carousel__container',
+          style: { height: height } },
+        React.createElement(
+          Transition,
+          { name: 'carousel-arrow-left' },
+          arrow !== 'never' && React.createElement(
+            View,
+            { show: arrow === 'always' || hover },
+            React.createElement(
+              'button',
               {
-                key: index,
-                className: _this4.classNames('el-carousel__indicator', { 'is-active': index === activeIndex }),
-                onMouseEnter: _this4.throttledIndicatorHover.bind(_this4, index),
-                onClick: _this4.handleIndicatorClick.bind(_this4, index)
+                className: 'el-carousel__arrow el-carousel__arrow--left',
+                onMouseEnter: this.handleButtonEnter.bind(this, 'left'),
+                onMouseLeave: this.handleButtonLeave.bind(this),
+                onClick: this.throttledArrowClick.bind(this, activeIndex - 1)
               },
-              _react2.default.createElement('button', { className: 'el-carousel__button' })
-            );
+              React.createElement('i', { className: 'el-icon-arrow-left' })
+            )
+          )
+        ),
+        React.createElement(
+          Transition,
+          { name: 'carousel-arrow-right' },
+          arrow !== 'never' && React.createElement(
+            View,
+            { show: arrow === 'always' || hover },
+            React.createElement(
+              'button',
+              {
+                className: 'el-carousel__arrow el-carousel__arrow--right',
+                onMouseEnter: this.handleButtonEnter.bind(this, 'right'),
+                onMouseLeave: this.handleButtonLeave.bind(this),
+                onClick: this.throttledArrowClick.bind(this, activeIndex + 1)
+              },
+              React.createElement('i', { className: 'el-icon-arrow-right' })
+            )
+          )
+        ),
+        this.props.children
+      ),
+      indicatorPosition !== 'none' && React.createElement(
+        'ul',
+        {
+          className: this.classNames('el-carousel__indicators', {
+            'el-carousel__indicators--outside': indicatorPosition === 'outside' || this.iscard
           })
-        )
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }, {
+        },
+        items.map(function (item, index) {
+          return React.createElement(
+            'li',
+            {
+              key: index,
+              className: _this4.classNames('el-carousel__indicator', { 'is-active': index === activeIndex }),
+              onMouseEnter: _this4.throttledIndicatorHover.bind(_this4, index),
+              onClick: _this4.handleIndicatorClick.bind(_this4, index)
+            },
+            React.createElement('button', { className: 'el-carousel__button' })
+          );
+        })
+      )
+    );
+  };
+
+  _createClass(Carousel, [{
     key: 'iscard',
     get: function get() {
       var type = this.props.type;
@@ -362,28 +300,28 @@ var Carousel = function (_Component) {
       return false;
     }
   }]);
-  return Carousel;
-}(_libs.Component);
 
-var _default = Carousel;
-exports.default = _default;
+  return Carousel;
+}(Component);
+
+export default Carousel;
 
 
 Carousel.childContextTypes = {
-  component: _libs.PropTypes.any
+  component: PropTypes.any
 };
 
 Carousel.propTypes = {
-  initialIndex: _libs.PropTypes.number,
-  height: _libs.PropTypes.string,
-  trigger: _libs.PropTypes.string,
-  autoplay: _libs.PropTypes.bool,
-  interval: _libs.PropTypes.oneOfType([_libs.PropTypes.number, _libs.PropTypes.string]),
-  indicatorPosition: _libs.PropTypes.string,
-  indicator: _libs.PropTypes.bool,
-  arrow: _libs.PropTypes.string,
-  type: _libs.PropTypes.oneOf(['card', 'flatcard']),
-  onChange: _libs.PropTypes.func
+  initialIndex: PropTypes.number,
+  height: PropTypes.string,
+  trigger: PropTypes.string,
+  autoplay: PropTypes.bool,
+  interval: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  indicatorPosition: PropTypes.string,
+  indicator: PropTypes.bool,
+  arrow: PropTypes.string,
+  type: PropTypes.oneOf(['card', 'flatcard']),
+  onChange: PropTypes.func
 };
 
 Carousel.defaultProps = {
@@ -394,22 +332,3 @@ Carousel.defaultProps = {
   indicator: true,
   arrow: 'hover'
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Carousel, 'Carousel', 'src/carousel/Carousel.jsx');
-  reactHotLoader.register(_default, 'default', 'src/carousel/Carousel.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

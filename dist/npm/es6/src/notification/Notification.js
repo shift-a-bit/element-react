@@ -1,45 +1,10 @@
-'use strict';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import * as React from 'react';
+import { Component, PropTypes, Animate, View } from '../../libs';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var React = _interopRequireWildcard(_react);
-
-var _libs = require('../../libs');
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var Transition = _libs.Animate.Transition;
+var Transition = Animate.Transition;
 
 
 var typeMap = {
@@ -50,195 +15,157 @@ var typeMap = {
 };
 
 var Notification = function (_Component) {
-  (0, _inherits3.default)(Notification, _Component);
+  _inherits(Notification, _Component);
 
   function Notification(props) {
-    (0, _classCallCheck3.default)(this, Notification);
+    _classCallCheck(this, Notification);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Notification.__proto__ || Object.getPrototypeOf(Notification)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.state = { visible: true };
     return _this;
   }
 
-  (0, _createClass3.default)(Notification, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.startTimer();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.stopTimer();
-    }
-  }, {
-    key: 'onClick',
-    value: function onClick() {
-      if (this.props.onClick) {
-        this.props.onClick();
-      }
-    }
-  }, {
-    key: 'onClose',
-    value: function onClose() {
-      var _this2 = this;
+  Notification.prototype.componentDidMount = function componentDidMount() {
+    this.startTimer();
+  };
 
-      this.setState({ visible: false }, function () {
-        return _this2.stopTimer();
-      });
+  Notification.prototype.componentWillUnmount = function componentWillUnmount() {
+    this.stopTimer();
+  };
+
+  Notification.prototype.onClick = function onClick() {
+    if (this.props.onClick) {
+      this.props.onClick();
     }
-  }, {
-    key: 'startTimer',
-    value: function startTimer() {
-      var _this3 = this;
+  };
 
-      var duration = this.props.duration;
+  Notification.prototype.onClose = function onClose() {
+    var _this2 = this;
 
-      if (duration) {
-        this.timeout = setTimeout(function () {
-          return _this3.onClose();
-        }, duration);
-      }
+    this.setState({ visible: false }, function () {
+      return _this2.stopTimer();
+    });
+  };
+
+  Notification.prototype.startTimer = function startTimer() {
+    var _this3 = this;
+
+    var duration = this.props.duration;
+
+    if (duration) {
+      this.timeout = setTimeout(function () {
+        return _this3.onClose();
+      }, duration);
     }
-  }, {
-    key: 'stopTimer',
-    value: function stopTimer() {
-      clearTimeout(this.timeout);
-    }
-  }, {
-    key: 'typeClass',
-    value: function typeClass() {
-      var type = this.props.type;
+  };
 
-      return type && typeMap[type] ? 'el-icon-' + typeMap[type] : '';
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this4 = this;
+  Notification.prototype.stopTimer = function stopTimer() {
+    clearTimeout(this.timeout);
+  };
 
-      var visible = this.state.visible;
-      var _props = this.props,
-          _props$onClose = _props.onClose,
-          onClose = _props$onClose === undefined ? function () {
-        return false;
-      } : _props$onClose,
-          willUnmount = _props.willUnmount,
-          duration = _props.duration,
-          top = _props.top,
-          type = _props.type,
-          iconClass = _props.iconClass,
-          title = _props.title,
-          message = _props.message;
+  Notification.prototype.typeClass = function typeClass() {
+    var type = this.props.type;
 
-      return React.createElement(
-        Transition,
-        {
-          unmountOnExit: true,
-          transitionClass: {
-            exiting: 'el-notification-fade-leave-active',
-            exited: 'el-notification-fade-enter'
-          },
-          'in': visible,
-          onEnter: function onEnter() {
-            _this4.offsetHeight = _this4.rootDOM.offsetHeight;
-          },
-          onExit: function onExit() {
-            return willUnmount(_this4.offsetHeight, parseInt(_this4.rootDOM.style.top));
-          },
-          onExited: function onExited() {
-            return onClose();
-          }
+    return type && typeMap[type] ? 'el-icon-' + typeMap[type] : '';
+  };
+
+  Notification.prototype.render = function render() {
+    var _this4 = this;
+
+    var visible = this.state.visible;
+    var _props = this.props,
+        _props$onClose = _props.onClose,
+        onClose = _props$onClose === undefined ? function () {
+      return false;
+    } : _props$onClose,
+        willUnmount = _props.willUnmount,
+        duration = _props.duration,
+        top = _props.top,
+        type = _props.type,
+        iconClass = _props.iconClass,
+        title = _props.title,
+        message = _props.message;
+
+    return React.createElement(
+      Transition,
+      {
+        unmountOnExit: true,
+        transitionClass: {
+          exiting: 'el-notification-fade-leave-active',
+          exited: 'el-notification-fade-enter'
         },
+        'in': visible,
+        onEnter: function onEnter() {
+          _this4.offsetHeight = _this4.rootDOM.offsetHeight;
+        },
+        onExit: function onExit() {
+          return willUnmount(_this4.offsetHeight, parseInt(_this4.rootDOM.style.top));
+        },
+        onExited: function onExited() {
+          return onClose();
+        }
+      },
+      React.createElement(
+        View,
+        { show: visible },
         React.createElement(
-          _libs.View,
-          { show: visible },
+          'div',
+          {
+            ref: function ref(ele) {
+              _this4.rootDOM = ele;
+            },
+            className: 'el-notification',
+            style: {
+              top: top,
+              zIndex: 9999
+            },
+            onMouseEnter: this.stopTimer.bind(this),
+            onMouseLeave: this.startTimer.bind(this),
+            onClick: this.onClick.bind(this)
+          },
+          type && React.createElement('i', { className: this.classNames('el-notification__icon', this.typeClass(), iconClass) }),
           React.createElement(
             'div',
             {
-              ref: function ref(ele) {
-                _this4.rootDOM = ele;
-              },
-              className: 'el-notification',
-              style: {
-                top: top,
-                zIndex: 9999
-              },
-              onMouseEnter: this.stopTimer.bind(this),
-              onMouseLeave: this.startTimer.bind(this),
-              onClick: this.onClick.bind(this)
+              className: this.classNames('el-notification__group', {
+                'is-with-icon': this.typeClass() || iconClass
+              })
             },
-            type && React.createElement('i', { className: this.classNames('el-notification__icon', this.typeClass(), iconClass) }),
+            React.createElement(
+              'h2',
+              { className: 'el-notification__title' },
+              title
+            ),
             React.createElement(
               'div',
-              {
-                className: this.classNames('el-notification__group', {
-                  'is-with-icon': this.typeClass() || iconClass
-                })
-              },
-              React.createElement(
-                'h2',
-                { className: 'el-notification__title' },
-                title
-              ),
-              React.createElement(
-                'div',
-                { className: 'el-notification__content' },
-                message
-              ),
-              React.createElement('div', { className: 'el-notification__closeBtn el-icon-close', onClick: this.onClose.bind(this) })
-            )
+              { className: 'el-notification__content' },
+              message
+            ),
+            React.createElement('div', { className: 'el-notification__closeBtn el-icon-close', onClick: this.onClose.bind(this) })
           )
         )
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return Notification;
-}(_libs.Component);
+      )
+    );
+  };
 
-var _default = Notification;
-exports.default = _default;
+  return Notification;
+}(Component);
+
+export default Notification;
 
 
 Notification.propTypes = {
-  type: _libs.PropTypes.oneOf(['success', 'warning', 'info', 'error']),
-  title: _libs.PropTypes.string,
-  message: _libs.PropTypes.oneOfType([_libs.PropTypes.string, _libs.PropTypes.element]),
-  duration: _libs.PropTypes.number,
-  iconClass: _libs.PropTypes.string,
-  onClick: _libs.PropTypes.func,
-  top: _libs.PropTypes.number
+  type: PropTypes.oneOf(['success', 'warning', 'info', 'error']),
+  title: PropTypes.string,
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  duration: PropTypes.number,
+  iconClass: PropTypes.string,
+  onClick: PropTypes.func,
+  top: PropTypes.number
 };
 
 Notification.defaultProps = {
   duration: 4500,
   top: 16
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Transition, 'Transition', 'src/notification/Notification.jsx');
-  reactHotLoader.register(typeMap, 'typeMap', 'src/notification/Notification.jsx');
-  reactHotLoader.register(Notification, 'Notification', 'src/notification/Notification.jsx');
-  reactHotLoader.register(_default, 'default', 'src/notification/Notification.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

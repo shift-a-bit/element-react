@@ -1,141 +1,71 @@
-'use strict';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import CodeMirror from 'codemirror';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import 'codemirror/mode/jsx/jsx';
+import 'codemirror/keymap/sublime';
+import 'codemirror/addon/comment/comment';
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _codemirror = require('codemirror');
-
-var _codemirror2 = _interopRequireDefault(_codemirror);
-
-require('codemirror/mode/jsx/jsx');
-
-require('codemirror/keymap/sublime');
-
-require('codemirror/addon/comment/comment');
-
-require('codemirror/lib/codemirror.css');
-
-require('./style.scss');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import 'codemirror/lib/codemirror.css';
+import './style.scss';
 
 var Editor = function (_Component) {
-  (0, _inherits3.default)(Editor, _Component);
+  _inherits(Editor, _Component);
 
   function Editor() {
-    (0, _classCallCheck3.default)(this, Editor);
-    return (0, _possibleConstructorReturn3.default)(this, (Editor.__proto__ || Object.getPrototypeOf(Editor)).apply(this, arguments));
+    _classCallCheck(this, Editor);
+
+    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
   }
 
-  (0, _createClass3.default)(Editor, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
+  Editor.prototype.componentDidMount = function componentDidMount() {
+    var _this2 = this;
 
-      var _props = this.props,
-          onChange = _props.onChange,
-          value = _props.value;
+    var _props = this.props,
+        onChange = _props.onChange,
+        value = _props.value;
 
 
-      this.cm = (0, _codemirror2.default)(this.editor, {
-        mode: 'jsx',
-        theme: 'react',
-        keyMap: 'sublime',
-        viewportMargin: Infinity,
-        lineNumbers: false,
-        dragDrop: false
-      });
+    this.cm = CodeMirror(this.editor, {
+      mode: 'jsx',
+      theme: 'react',
+      keyMap: 'sublime',
+      viewportMargin: Infinity,
+      lineNumbers: false,
+      dragDrop: false
+    });
 
-      this.cm.setValue(value);
+    this.cm.setValue(value);
 
-      this.cm.on('changes', function (cm) {
-        if (onChange) {
-          clearTimeout(_this2.timeout);
+    this.cm.on('changes', function (cm) {
+      if (onChange) {
+        clearTimeout(_this2.timeout);
 
-          _this2.timeout = setTimeout(function () {
-            onChange(cm.getValue());
-          }, 300);
-        }
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this3 = this;
+        _this2.timeout = setTimeout(function () {
+          onChange(cm.getValue());
+        }, 300);
+      }
+    });
+  };
 
-      return _react2.default.createElement('div', { className: 'editor', ref: function ref(_ref) {
-          return _this3.editor = _ref;
-        } });
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
+  Editor.prototype.render = function render() {
+    var _this3 = this;
+
+    return React.createElement('div', { className: 'editor', ref: function ref(_ref) {
+        return _this3.editor = _ref;
+      } });
+  };
+
   return Editor;
-}(_react.Component);
+}(Component);
 
-var _default = Editor;
-exports.default = _default;
+export default Editor;
 
 
 Editor.propTypes = {
-  onChange: _propTypes2.default.func,
-  value: _propTypes2.default.string
+  onChange: PropTypes.func,
+  value: PropTypes.string
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Editor, 'Editor', 'libs/editor/index.jsx');
-  reactHotLoader.register(_default, 'default', 'libs/editor/index.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

@@ -1,63 +1,21 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../libs');
-
-var _utils = require('../../libs/utils');
-
-var _Node = require('./Node');
-
-var _Node2 = _interopRequireDefault(_Node);
-
-var _locale = require('../locale');
-
-var _locale2 = _interopRequireDefault(_locale);
-
-var _treeStore = require('./model/tree-store');
-
-var _treeStore2 = _interopRequireDefault(_treeStore);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _createClass from 'babel-runtime/helpers/createClass';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { PropTypes, Component } from '../../libs';
+import { require_condition } from '../../libs/utils';
+import Node from './Node';
+import Locale from '../locale';
+import TreeStore from './model/tree-store';
 
 var Tree = function (_Component) {
-  (0, _inherits3.default)(Tree, _Component);
+  _inherits(Tree, _Component);
 
   function Tree(props) {
-    (0, _classCallCheck3.default)(this, Tree);
+    _classCallCheck(this, Tree);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Tree.__proto__ || Object.getPrototypeOf(Tree)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     var _this$props = _this.props,
         data = _this$props.data,
@@ -74,7 +32,7 @@ var Tree = function (_Component) {
         filterNodeMethod = _this$props.filterNodeMethod;
 
     _this.state = {
-      store: new _treeStore2.default({
+      store: new TreeStore({
         key: nodeKey, data: data, lazy: lazy, props: options, load: load, currentNodeKey: currentNodeKey, checkStrictly: checkStrictly,
         defaultCheckedKeys: defaultCheckedKeys, defaultExpandedKeys: defaultExpandedKeys, autoExpandParent: autoExpandParent, defaultExpandAll: defaultExpandAll, filterNodeMethod: filterNodeMethod
       }),
@@ -84,164 +42,144 @@ var Tree = function (_Component) {
     return _this;
   }
 
-  (0, _createClass3.default)(Tree, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      if (nextProps.data instanceof Array && this.props.data !== nextProps.data) {
-        this.root.setData(nextProps.data);
-        this.setState({}); //force update
-      }
+  Tree.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    if (nextProps.data instanceof Array && this.props.data !== nextProps.data) {
+      this.root.setData(nextProps.data);
+      this.setState({}); //force update
     }
-  }, {
-    key: 'filter',
-    value: function filter(value) {
-      if (!this.props.filterNodeMethod) throw new Error('[Tree] filterNodeMethod is required when filter');
-      this.store.filter(value);
-      this.refresh();
-    }
-  }, {
-    key: 'refresh',
-    value: function refresh() {
-      this.setState({});
-    }
-  }, {
-    key: 'getNodeKey',
-    value: function getNodeKey(node, otherwise) {
-      var nodeKey = this.props.nodeKey;
-      if (nodeKey && node) {
-        return node.data[nodeKey];
-      }
-      return otherwise;
-    }
-  }, {
-    key: 'getCheckedNodes',
-    value: function getCheckedNodes(leafOnly) {
-      return this.store.getCheckedNodes(leafOnly);
-    }
-  }, {
-    key: 'getCheckedKeys',
-    value: function getCheckedKeys(leafOnly) {
-      return this.store.getCheckedKeys(leafOnly);
-    }
-  }, {
-    key: 'setCheckedNodes',
-    value: function setCheckedNodes(nodes, leafOnly) {
-      if (!this.props.nodeKey) throw new Error('[Tree] nodeKey is required in setCheckedNodes');
-      this.store.setCheckedNodes(nodes, leafOnly);
-    }
-  }, {
-    key: 'setCheckedKeys',
-    value: function setCheckedKeys(keys, leafOnly) {
-      if (!this.props.nodeKey) throw new Error('[Tree] nodeKey is required in setCheckedNodes');
-      this.store.setCheckedKeys(keys, leafOnly);
-    }
-  }, {
-    key: 'setChecked',
-    value: function setChecked(data, checked, deep) {
-      this.store.setChecked(data, checked, deep);
-    }
+  };
 
-    // used by child nodes, use tree store to store this info?
+  Tree.prototype.filter = function filter(value) {
+    if (!this.props.filterNodeMethod) throw new Error('[Tree] filterNodeMethod is required when filter');
+    this.store.filter(value);
+    this.refresh();
+  };
 
-  }, {
-    key: 'getCurrentNode',
-    value: function getCurrentNode() {
-      return this.state.currentNode;
+  Tree.prototype.refresh = function refresh() {
+    this.setState({});
+  };
+
+  Tree.prototype.getNodeKey = function getNodeKey(node, otherwise) {
+    var nodeKey = this.props.nodeKey;
+    if (nodeKey && node) {
+      return node.data[nodeKey];
     }
-  }, {
-    key: 'setCurrentNode',
-    value: function setCurrentNode(node) {
-      (0, _utils.require_condition)(node != null);
+    return otherwise;
+  };
 
-      var _props = this.props,
-          onCurrentChange = _props.onCurrentChange,
-          onNodeClicked = _props.onNodeClicked;
+  Tree.prototype.getCheckedNodes = function getCheckedNodes(leafOnly) {
+    return this.store.getCheckedNodes(leafOnly);
+  };
 
-      this.store.setCurrentNode(node);
-      this.setState({
-        currentNode: node
-      }, function () {
-        var nodeModel = node.props.nodeModel;
-        onCurrentChange(nodeModel.data, node);
-        onNodeClicked(nodeModel.data, node);
-      });
-    }
-  }, {
-    key: 'closeSiblings',
-    value: function closeSiblings(exclude) {
-      var accordion = this.props.accordion;
+  Tree.prototype.getCheckedKeys = function getCheckedKeys(leafOnly) {
+    return this.store.getCheckedKeys(leafOnly);
+  };
 
-      if (!accordion) return;
-      if (!this.root.childNodes || !this.root.childNodes.length) return;
+  Tree.prototype.setCheckedNodes = function setCheckedNodes(nodes, leafOnly) {
+    if (!this.props.nodeKey) throw new Error('[Tree] nodeKey is required in setCheckedNodes');
+    this.store.setCheckedNodes(nodes, leafOnly);
+  };
 
-      this.root.childNodes.filter(function (e) {
-        return e !== exclude;
-      }).forEach(function (e) {
-        return e.collapse();
-      });
-      this.refresh();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
+  Tree.prototype.setCheckedKeys = function setCheckedKeys(keys, leafOnly) {
+    if (!this.props.nodeKey) throw new Error('[Tree] nodeKey is required in setCheckedNodes');
+    this.store.setCheckedKeys(keys, leafOnly);
+  };
 
-      var _props2 = this.props,
-          options = _props2.options,
-          renderContent = _props2.renderContent,
-          highlightCurrent = _props2.highlightCurrent,
-          isShowCheckbox = _props2.isShowCheckbox,
-          onCheckChange = _props2.onCheckChange,
-          onNodeClicked = _props2.onNodeClicked,
-          emptyText = _props2.emptyText;
+  Tree.prototype.setChecked = function setChecked(data, checked, deep) {
+    this.store.setChecked(data, checked, deep);
+  };
+
+  // used by child nodes, use tree store to store this info?
 
 
-      var renderEmptyText = function renderEmptyText() {
-        if (!_this2.root.childNodes || _this2.root.childNodes.length === 0) {
-          return _react2.default.createElement(
-            'div',
-            { className: 'el-tree__empty-block' },
-            _react2.default.createElement(
-              'span',
-              { className: 'el-tree__empty-text' },
-              emptyText
-            )
-          );
-        } else return null;
-      };
+  Tree.prototype.getCurrentNode = function getCurrentNode() {
+    return this.state.currentNode;
+  };
 
-      return _react2.default.createElement(
-        'div',
-        {
-          style: this.style(),
-          className: this.className('el-tree', {
-            'el-tree--highlight-current': highlightCurrent
-          })
-        },
-        this.root.childNodes.map(function (e, idx) {
-          return _react2.default.createElement(_Node2.default, {
-            ref: 'cnode',
-            key: _this2.getNodeKey(e, idx),
-            nodeModel: e,
-            options: options,
-            renderContent: renderContent,
-            treeNode: _this2,
-            parent: _this2,
-            isShowCheckbox: isShowCheckbox,
-            onCheckChange: onCheckChange
-          });
-        }),
-        renderEmptyText()
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }, {
+  Tree.prototype.setCurrentNode = function setCurrentNode(node) {
+    require_condition(node != null);
+
+    var _props = this.props,
+        onCurrentChange = _props.onCurrentChange,
+        onNodeClicked = _props.onNodeClicked;
+
+    this.store.setCurrentNode(node);
+    this.setState({
+      currentNode: node
+    }, function () {
+      var nodeModel = node.props.nodeModel;
+      onCurrentChange(nodeModel.data, node);
+      onNodeClicked(nodeModel.data, node);
+    });
+  };
+
+  Tree.prototype.closeSiblings = function closeSiblings(exclude) {
+    var accordion = this.props.accordion;
+
+    if (!accordion) return;
+    if (!this.root.childNodes || !this.root.childNodes.length) return;
+
+    this.root.childNodes.filter(function (e) {
+      return e !== exclude;
+    }).forEach(function (e) {
+      return e.collapse();
+    });
+    this.refresh();
+  };
+
+  Tree.prototype.render = function render() {
+    var _this2 = this;
+
+    var _props2 = this.props,
+        options = _props2.options,
+        renderContent = _props2.renderContent,
+        highlightCurrent = _props2.highlightCurrent,
+        isShowCheckbox = _props2.isShowCheckbox,
+        onCheckChange = _props2.onCheckChange,
+        onNodeClicked = _props2.onNodeClicked,
+        emptyText = _props2.emptyText;
+
+
+    var renderEmptyText = function renderEmptyText() {
+      if (!_this2.root.childNodes || _this2.root.childNodes.length === 0) {
+        return React.createElement(
+          'div',
+          { className: 'el-tree__empty-block' },
+          React.createElement(
+            'span',
+            { className: 'el-tree__empty-text' },
+            emptyText
+          )
+        );
+      } else return null;
+    };
+
+    return React.createElement(
+      'div',
+      {
+        style: this.style(),
+        className: this.className('el-tree', {
+          'el-tree--highlight-current': highlightCurrent
+        })
+      },
+      this.root.childNodes.map(function (e, idx) {
+        return React.createElement(Node, {
+          ref: 'cnode',
+          key: _this2.getNodeKey(e, idx),
+          nodeModel: e,
+          options: options,
+          renderContent: renderContent,
+          treeNode: _this2,
+          parent: _this2,
+          isShowCheckbox: isShowCheckbox,
+          onCheckChange: onCheckChange
+        });
+      }),
+      renderEmptyText()
+    );
+  };
+
+  _createClass(Tree, [{
     key: 'root',
     get: function get() {
       return this.state.store.root;
@@ -252,48 +190,48 @@ var Tree = function (_Component) {
       return this.state.store;
     }
   }]);
-  return Tree;
-}(_libs.Component);
 
-var _default = Tree;
-exports.default = _default;
+  return Tree;
+}(Component);
+
+export default Tree;
 
 
 Tree.propTypes = {
-  autoExpandParent: _libs.PropTypes.bool,
-  checkStrictly: _libs.PropTypes.bool,
-  currentNodeKey: _libs.PropTypes.any,
-  defaultCheckedKeys: _libs.PropTypes.array,
-  defaultExpandedKeys: _libs.PropTypes.array,
-  defaultExpandAll: _libs.PropTypes.bool,
-  data: _libs.PropTypes.array,
-  emptyText: _libs.PropTypes.string,
-  expandOnClickNode: _libs.PropTypes.bool,
-  filterNodeMethod: _libs.PropTypes.func,
-  renderContent: _libs.PropTypes.func,
-  isShowCheckbox: _libs.PropTypes.bool,
-  accordion: _libs.PropTypes.bool,
-  indent: _libs.PropTypes.number,
-  nodeKey: _libs.PropTypes.string,
-  options: _libs.PropTypes.shape({
-    children: _libs.PropTypes.string,
-    label: _libs.PropTypes.string,
-    icon: _libs.PropTypes.string
+  autoExpandParent: PropTypes.bool,
+  checkStrictly: PropTypes.bool,
+  currentNodeKey: PropTypes.any,
+  defaultCheckedKeys: PropTypes.array,
+  defaultExpandedKeys: PropTypes.array,
+  defaultExpandAll: PropTypes.bool,
+  data: PropTypes.array,
+  emptyText: PropTypes.string,
+  expandOnClickNode: PropTypes.bool,
+  filterNodeMethod: PropTypes.func,
+  renderContent: PropTypes.func,
+  isShowCheckbox: PropTypes.bool,
+  accordion: PropTypes.bool,
+  indent: PropTypes.number,
+  nodeKey: PropTypes.string,
+  options: PropTypes.shape({
+    children: PropTypes.string,
+    label: PropTypes.string,
+    icon: PropTypes.string
   }), //equal to props in vue element
-  lazy: _libs.PropTypes.bool, //todo: check this
-  highlightCurrent: _libs.PropTypes.bool,
+  lazy: PropTypes.bool, //todo: check this
+  highlightCurrent: PropTypes.bool,
   // (f:(resolve, reject)=>Unit)=>Unit
-  load: _libs.PropTypes.func,
+  load: PropTypes.func,
   //
-  onCheckChange: _libs.PropTypes.func,
+  onCheckChange: PropTypes.func,
   // todo: 这个地方需要改下， 现在是current和nodeclick一起被设置上了
   // (nodeModel.data, node)=>Unit
-  onNodeClicked: _libs.PropTypes.func,
+  onNodeClicked: PropTypes.func,
   // (nodeModel.data, node)=>Unit
-  onCurrentChange: _libs.PropTypes.func,
+  onCurrentChange: PropTypes.func,
   // (nodeModel.data, nodeModel, Node)=>Unit
-  onNodeExpand: _libs.PropTypes.func,
-  onNodeCollapse: _libs.PropTypes.func
+  onNodeExpand: PropTypes.func,
+  onNodeCollapse: PropTypes.func
 };
 
 Tree.defaultProps = {
@@ -302,7 +240,7 @@ Tree.defaultProps = {
   defaultExpandedKeys: [],
   data: [],
   expandOnClickNode: true,
-  emptyText: _locale2.default.t('el.tree.emptyText'),
+  emptyText: Locale.t('el.tree.emptyText'),
   indent: 16,
   options: { children: 'children', label: 'label', icon: 'icon' },
   onCheckChange: function onCheckChange() {},
@@ -311,22 +249,3 @@ Tree.defaultProps = {
   onNodeExpand: function onNodeExpand() {},
   onNodeCollapse: function onNodeCollapse() {}
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Tree, 'Tree', 'src/tree/Tree.jsx');
-  reactHotLoader.register(_default, 'default', 'src/tree/Tree.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

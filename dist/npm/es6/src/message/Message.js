@@ -1,34 +1,9 @@
-'use strict';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = Message;
+import Toast from './Toast';
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _Toast = require('./Toast');
-
-var _Toast2 = _interopRequireDefault(_Toast);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-function Message() {
+export default function Message() {
   var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var type = arguments[1];
 
@@ -44,7 +19,7 @@ function Message() {
     document.body.appendChild(_messageBox);
   }
 
-  if (typeof props === 'string' || _react2.default.isValidElement(props)) {
+  if (typeof props === 'string' || React.isValidElement(props)) {
     props = {
       message: props
     };
@@ -54,10 +29,10 @@ function Message() {
     props.type = type;
   }
 
-  var component = _react2.default.createElement(_Toast2.default, Object.assign(props, {
+  var component = React.createElement(Toast, Object.assign(props, {
     willUnmount: function willUnmount() {
       var messageBox = document.getElementsByClassName('el-message-content')[0];
-      _reactDom2.default.unmountComponentAtNode(div);
+      ReactDOM.unmountComponentAtNode(div);
       messageBox.removeChild(div);
 
       if (props.onClose instanceof Function) {
@@ -66,7 +41,7 @@ function Message() {
     }
   }));
 
-  _reactDom2.default.render(component, div);
+  ReactDOM.render(component, div);
 }
 
 /* eslint-disable */
@@ -78,22 +53,3 @@ function Message() {
   };
 });
 /* eslint-enable */
-
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Message, 'Message', 'src/message/Message.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

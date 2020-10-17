@@ -1,210 +1,146 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../libs');
-
-var _src = require('../../src');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { Component, PropTypes, Transition, View } from '../../libs';
+import { Progress } from '../../src';
 
 var UploadList = function (_Component) {
-  (0, _inherits3.default)(UploadList, _Component);
+  _inherits(UploadList, _Component);
 
   function UploadList(props) {
-    (0, _classCallCheck3.default)(this, UploadList);
-    return (0, _possibleConstructorReturn3.default)(this, (UploadList.__proto__ || Object.getPrototypeOf(UploadList)).call(this, props));
+    _classCallCheck(this, UploadList);
+
+    return _possibleConstructorReturn(this, _Component.call(this, props));
   }
 
-  (0, _createClass3.default)(UploadList, [{
-    key: 'uploadList',
-    value: function uploadList() {
-      var _this2 = this;
+  UploadList.prototype.uploadList = function uploadList() {
+    var _classNames,
+        _this2 = this;
 
-      var _context = this.context,
-          onPreview = _context.onPreview,
-          onRemove = _context.onRemove;
-      var _props = this.props,
-          listType = _props.listType,
-          fileList = _props.fileList;
+    var _context = this.context,
+        onPreview = _context.onPreview,
+        onRemove = _context.onRemove;
+    var _props = this.props,
+        listType = _props.listType,
+        fileList = _props.fileList;
 
-      var isFinished = function isFinished(status) {
-        return status === 'success';
-      };
-      if (listType === 'none') return null;
-      return _react2.default.createElement(
-        'ul',
-        {
-          className: this.classNames((0, _defineProperty3.default)({
-            'el-upload-list': true
-          }, 'el-upload-list--' + listType, true))
-        },
-        fileList.map(function (file) {
-          return _react2.default.createElement(
-            'li',
+    var isFinished = function isFinished(status) {
+      return status === 'success';
+    };
+    if (listType === 'none') return null;
+    return React.createElement(
+      'ul',
+      {
+        className: this.classNames((_classNames = {
+          'el-upload-list': true
+        }, _classNames['el-upload-list--' + listType] = true, _classNames))
+      },
+      fileList.map(function (file) {
+        var _this2$classNames;
+
+        return React.createElement(
+          'li',
+          {
+            className: _this2.classNames((_this2$classNames = {
+              'el-upload-list__item': true
+            }, _this2$classNames['is-' + file.status] = true, _this2$classNames)),
+            key: file.uid
+          },
+          ['picture-card', 'picture'].includes(listType) && isFinished(file.status) && React.createElement('img', {
+            className: 'el-upload-list__item-thumbnail',
+            src: file.url,
+            alt: ''
+          }),
+          React.createElement(
+            'a',
             {
-              className: _this2.classNames((0, _defineProperty3.default)({
-                'el-upload-list__item': true
-              }, 'is-' + file.status, true)),
-              key: file.uid
+              className: 'el-upload-list__item-name',
+              onClick: function onClick() {
+                return onPreview(file);
+              }
             },
-            ['picture-card', 'picture'].includes(listType) && isFinished(file.status) && _react2.default.createElement('img', {
-              className: 'el-upload-list__item-thumbnail',
-              src: file.url,
-              alt: ''
-            }),
-            _react2.default.createElement(
-              'a',
-              {
-                className: 'el-upload-list__item-name',
-                onClick: function onClick() {
-                  return onPreview(file);
-                }
-              },
-              _react2.default.createElement('i', { className: 'el-icon-document' }),
-              file.name
-            ),
-            _react2.default.createElement(
-              'label',
-              {
-                className: 'el-upload-list__item-status-label'
-              },
-              _react2.default.createElement('i', {
-                className: _this2.classNames({
-                  'el-icon-upload-success': true,
-                  'el-icon-circle-check': listType === 'text',
-                  'el-icon-check': ['picture-card', 'picture'].includes(listType)
-                })
+            React.createElement('i', { className: 'el-icon-document' }),
+            file.name
+          ),
+          React.createElement(
+            'label',
+            {
+              className: 'el-upload-list__item-status-label'
+            },
+            React.createElement('i', {
+              className: _this2.classNames({
+                'el-icon-upload-success': true,
+                'el-icon-circle-check': listType === 'text',
+                'el-icon-check': ['picture-card', 'picture'].includes(listType)
               })
-            ),
-            _react2.default.createElement('i', { className: 'el-icon-close', onClick: function onClick() {
-                return onRemove(file);
-              } }),
-            _react2.default.createElement(
-              _libs.View,
-              {
-                className: 'el-upload-list__item-actions',
-                show: listType === 'picture-card' && isFinished(file.status)
-              },
-              _react2.default.createElement(
-                'span',
-                null,
-                _react2.default.createElement(
-                  'span',
-                  {
-                    onClick: function onClick() {
-                      return onPreview(file);
-                    },
-                    className: 'el-upload-list__item-preview'
-                  },
-                  _react2.default.createElement('i', { className: 'el-icon-view' })
-                ),
-                _react2.default.createElement(
-                  'span',
-                  {
-                    className: 'el-upload-list__item-delete',
-                    onClick: function onClick() {
-                      return onRemove(file);
-                    }
-                  },
-                  _react2.default.createElement('i', { className: 'el-icon-delete2' })
-                )
-              )
-            ),
-            file.status === 'uploading' && _react2.default.createElement(_src.Progress, {
-              strokeWidth: listType === 'picture-card' ? 6 : 2,
-              type: listType === 'picture-card' ? 'circle' : 'line',
-              percentage: parseInt(file.percentage, 10),
-              status: isFinished(file.status) && file.showProgress ? 'success' : ''
             })
-          );
-        })
-      );
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        _libs.Transition,
-        { name: 'list' },
-        this.uploadList()
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return UploadList;
-}(_libs.Component);
+          ),
+          React.createElement('i', { className: 'el-icon-close', onClick: function onClick() {
+              return onRemove(file);
+            } }),
+          React.createElement(
+            View,
+            {
+              className: 'el-upload-list__item-actions',
+              show: listType === 'picture-card' && isFinished(file.status)
+            },
+            React.createElement(
+              'span',
+              null,
+              React.createElement(
+                'span',
+                {
+                  onClick: function onClick() {
+                    return onPreview(file);
+                  },
+                  className: 'el-upload-list__item-preview'
+                },
+                React.createElement('i', { className: 'el-icon-view' })
+              ),
+              React.createElement(
+                'span',
+                {
+                  className: 'el-upload-list__item-delete',
+                  onClick: function onClick() {
+                    return onRemove(file);
+                  }
+                },
+                React.createElement('i', { className: 'el-icon-delete2' })
+              )
+            )
+          ),
+          file.status === 'uploading' && React.createElement(Progress, {
+            strokeWidth: listType === 'picture-card' ? 6 : 2,
+            type: listType === 'picture-card' ? 'circle' : 'line',
+            percentage: parseInt(file.percentage, 10),
+            status: isFinished(file.status) && file.showProgress ? 'success' : ''
+          })
+        );
+      })
+    );
+  };
 
-var _default = UploadList;
-exports.default = _default;
+  UploadList.prototype.render = function render() {
+    return React.createElement(
+      Transition,
+      { name: 'list' },
+      this.uploadList()
+    );
+  };
+
+  return UploadList;
+}(Component);
+
+export default UploadList;
 
 
 UploadList.contextTypes = {
-  onPreview: _libs.PropTypes.func,
-  onRemove: _libs.PropTypes.func
+  onPreview: PropTypes.func,
+  onRemove: PropTypes.func
 };
 
 UploadList.propTypes = {
-  listType: _libs.PropTypes.string,
-  fileList: _libs.PropTypes.array
+  listType: PropTypes.string,
+  fileList: PropTypes.array
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(UploadList, 'UploadList', 'src/upload/UploadList.jsx');
-  reactHotLoader.register(_default, 'default', 'src/upload/UploadList.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

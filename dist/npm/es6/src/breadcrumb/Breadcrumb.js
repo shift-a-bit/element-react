@@ -1,108 +1,46 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../libs');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { Component, PropTypes } from '../../libs';
 
 var Breadcrumb = function (_Component) {
-  (0, _inherits3.default)(Breadcrumb, _Component);
+  _inherits(Breadcrumb, _Component);
 
   function Breadcrumb() {
-    (0, _classCallCheck3.default)(this, Breadcrumb);
-    return (0, _possibleConstructorReturn3.default)(this, (Breadcrumb.__proto__ || Object.getPrototypeOf(Breadcrumb)).apply(this, arguments));
+    _classCallCheck(this, Breadcrumb);
+
+    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
   }
 
-  (0, _createClass3.default)(Breadcrumb, [{
-    key: 'getChildContext',
-    value: function getChildContext() {
-      return {
-        separator: this.props.separator
-      };
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { style: this.style(), className: this.className('el-breadcrumb') },
-        this.props.children
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return Breadcrumb;
-}(_libs.Component);
+  Breadcrumb.prototype.getChildContext = function getChildContext() {
+    return {
+      separator: this.props.separator
+    };
+  };
 
-var _default = Breadcrumb;
-exports.default = _default;
+  Breadcrumb.prototype.render = function render() {
+    return React.createElement(
+      'div',
+      { style: this.style(), className: this.className('el-breadcrumb') },
+      this.props.children
+    );
+  };
+
+  return Breadcrumb;
+}(Component);
+
+export default Breadcrumb;
 
 
 Breadcrumb.childContextTypes = {
-  separator: _libs.PropTypes.string
+  separator: PropTypes.string
 };
 
 Breadcrumb.propTypes = {
-  separator: _libs.PropTypes.string
+  separator: PropTypes.string
 };
 
 Breadcrumb.defaultProps = {
   separator: '/'
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Breadcrumb, 'Breadcrumb', 'src/breadcrumb/Breadcrumb.jsx');
-  reactHotLoader.register(_default, 'default', 'src/breadcrumb/Breadcrumb.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

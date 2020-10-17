@@ -7,19 +7,6 @@
  * @class fecha
  */
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
 var fecha = {};
 var token = /d{1,4}|M{1,4}|yy(?:yy)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
 var twoDigits = /\d\d?/;
@@ -317,39 +304,4 @@ fecha.parse = function (dateStr, format, i18nSettings) {
   return date;
 };
 
-var _default = fecha;
-exports.default = _default;
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(fecha, 'fecha', 'libs/utils/date.js');
-  reactHotLoader.register(token, 'token', 'libs/utils/date.js');
-  reactHotLoader.register(twoDigits, 'twoDigits', 'libs/utils/date.js');
-  reactHotLoader.register(threeDigits, 'threeDigits', 'libs/utils/date.js');
-  reactHotLoader.register(fourDigits, 'fourDigits', 'libs/utils/date.js');
-  reactHotLoader.register(word, 'word', 'libs/utils/date.js');
-  reactHotLoader.register(noop, 'noop', 'libs/utils/date.js');
-  reactHotLoader.register(shorten, 'shorten', 'libs/utils/date.js');
-  reactHotLoader.register(monthUpdate, 'monthUpdate', 'libs/utils/date.js');
-  reactHotLoader.register(pad, 'pad', 'libs/utils/date.js');
-  reactHotLoader.register(dayNames, 'dayNames', 'libs/utils/date.js');
-  reactHotLoader.register(monthNames, 'monthNames', 'libs/utils/date.js');
-  reactHotLoader.register(monthNamesShort, 'monthNamesShort', 'libs/utils/date.js');
-  reactHotLoader.register(dayNamesShort, 'dayNamesShort', 'libs/utils/date.js');
-  reactHotLoader.register(formatFlags, 'formatFlags', 'libs/utils/date.js');
-  reactHotLoader.register(parseFlags, 'parseFlags', 'libs/utils/date.js');
-  reactHotLoader.register(_default, 'default', 'libs/utils/date.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();
+export default fecha;

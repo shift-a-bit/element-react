@@ -1,20 +1,4 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.renderThumbStyle = renderThumbStyle;
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var BAR_MAP = exports.BAR_MAP = {
+export var BAR_MAP = {
   vertical: {
     offset: 'offsetHeight',
     scroll: 'scrollTop',
@@ -37,7 +21,7 @@ var BAR_MAP = exports.BAR_MAP = {
   }
 };
 
-function renderThumbStyle(_ref) {
+export function renderThumbStyle(_ref) {
   var move = _ref.move,
       size = _ref.size,
       bar = _ref.bar;
@@ -52,22 +36,3 @@ function renderThumbStyle(_ref) {
 
   return style;
 }
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(BAR_MAP, 'BAR_MAP', 'src/scrollbar/util.js');
-  reactHotLoader.register(renderThumbStyle, 'renderThumbStyle', 'src/scrollbar/util.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

@@ -1,53 +1,17 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../libs');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _extends from 'babel-runtime/helpers/extends';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { Component, PropTypes, Transition, View } from '../../libs';
 
 var CascaderMenu = function (_Component) {
-  (0, _inherits3.default)(CascaderMenu, _Component);
+  _inherits(CascaderMenu, _Component);
 
   function CascaderMenu(props) {
-    (0, _classCallCheck3.default)(this, CascaderMenu);
+    _classCallCheck(this, CascaderMenu);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (CascaderMenu.__proto__ || Object.getPrototypeOf(CascaderMenu)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.state = {
       inputWidth: 0,
@@ -63,217 +27,180 @@ var CascaderMenu = function (_Component) {
     return _this;
   }
 
-  (0, _createClass3.default)(CascaderMenu, [{
-    key: 'parent',
-    value: function parent() {
-      return this.context.component;
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.parent().initMenu(this);
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(props, state) {
-      if (state.value !== this.state.value || state.visible !== this.state.visible) {
-        this.setState({ activeValue: this.state.value });
-      }
-    }
-  }, {
-    key: 'select',
-    value: function select(item, menuIndex) {
-      var activeValue = this.state.activeValue;
+  CascaderMenu.prototype.parent = function parent() {
+    return this.context.component;
+  };
 
-      if (item.__IS__FLAT__OPTIONS) {
-        activeValue = item.value;
+  CascaderMenu.prototype.componentDidMount = function componentDidMount() {
+    this.parent().initMenu(this);
+  };
+
+  CascaderMenu.prototype.componentDidUpdate = function componentDidUpdate(props, state) {
+    if (state.value !== this.state.value || state.visible !== this.state.visible) {
+      this.setState({ activeValue: this.state.value });
+    }
+  };
+
+  CascaderMenu.prototype.select = function select(item, menuIndex) {
+    var activeValue = this.state.activeValue;
+
+    if (item.__IS__FLAT__OPTIONS) {
+      activeValue = item.value;
+    } else {
+      if (!menuIndex) {
+        activeValue = [item.value];
       } else {
-        if (!menuIndex) {
-          activeValue = [item.value];
-        } else {
-          activeValue.splice(menuIndex, activeValue.length - 1, item.value);
-        }
-      }
-
-      this.forceUpdate();
-      this.parent().handlePick(activeValue);
-    }
-  }, {
-    key: 'handleMenuLeave',
-    value: function handleMenuLeave() {}
-  }, {
-    key: 'activeItem',
-    value: function activeItem(item, menuIndex) {
-      var activeOptions = this.activeOptions();
-
-      this.state.activeValue.splice(menuIndex, activeOptions.length, item.value);
-
-      this.forceUpdate();
-
-      if (this.parent().props.changeOnSelect) {
-        this.parent().handlePick(this.state.activeValue, false);
-      } else {
-        this.parent().handleActiveItemChange(this.state.activeValue);
+        activeValue.splice(menuIndex, activeValue.length - 1, item.value);
       }
     }
 
-    /* Computed Methods */
+    this.forceUpdate();
+    this.parent().handlePick(activeValue);
+  };
 
-  }, {
-    key: 'activeOptions',
-    value: function activeOptions() {
-      var _this2 = this;
+  CascaderMenu.prototype.handleMenuLeave = function handleMenuLeave() {};
 
-      var activeValue = this.state.activeValue;
-      var configurableProps = ['label', 'value', 'children', 'disabled'];
-      var formatOptions = function formatOptions(options) {
-        options.forEach(function (option) {
-          if (option.__IS__FLAT__OPTIONS) return;
-          configurableProps.forEach(function (prop) {
-            var value = option[_this2.parent().props.props[prop] || prop];
-            if (value) option[prop] = value;
-          });
-          if (Array.isArray(option.children)) {
-            formatOptions(option.children);
-          }
-        });
-      };
-      var loadActiveOptions = function loadActiveOptions(options) {
-        var activeOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  CascaderMenu.prototype.activeItem = function activeItem(item, menuIndex) {
+    var activeOptions = this.activeOptions();
 
-        var level = activeOptions.length;
-        activeOptions[level] = options;
-        var active = activeValue[level];
-        if (active) {
-          options = options.filter(function (option) {
-            return option.value === active;
-          })[0];
-          if (options && options.children) {
-            loadActiveOptions(options.children, activeOptions);
-          }
-        }
-        return activeOptions;
-      };
+    this.state.activeValue.splice(menuIndex, activeOptions.length, item.value);
 
-      formatOptions(this.state.options);
+    this.forceUpdate();
 
-      return loadActiveOptions(this.state.options);
+    if (this.parent().props.changeOnSelect) {
+      this.parent().handlePick(this.state.activeValue, false);
+    } else {
+      this.parent().handleActiveItemChange(this.state.activeValue);
     }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this3 = this;
+  };
 
-      var _parent$props = this.parent().props,
-          expandTrigger = _parent$props.expandTrigger,
-          popperClass = _parent$props.popperClass;
-      var _state = this.state,
-          activeValue = _state.activeValue,
-          visible = _state.visible;
+  /* Computed Methods */
 
-      var activeOptions = this.activeOptions();
+  CascaderMenu.prototype.activeOptions = function activeOptions() {
+    var _this2 = this;
 
-      var menus = activeOptions.map(function (menu, menuIndex) {
-        var isFlat = false;
-
-        var items = menu.map(function (item, index) {
-          var events = {};
-
-          if (item.__IS__FLAT__OPTIONS) isFlat = true;
-
-          if (!item.disabled) {
-            if (item.children) {
-              var triggerEvent = {
-                click: 'onClick',
-                hover: 'onMouseEnter'
-              }[expandTrigger];
-              events[triggerEvent] = function () {
-                _this3.activeItem(item, menuIndex);
-              };
-            } else {
-              events.onClick = function () {
-                _this3.select(item, menuIndex);
-              };
-            }
-          }
-
-          return _react2.default.createElement(
-            'li',
-            (0, _extends3.default)({ key: index, className: _this3.classNames({
-                'el-cascader-menu__item': true,
-                'el-cascader-menu__item--extensible': item.children,
-                'is-active': item.value === activeValue[menuIndex],
-                'is-disabled': item.disabled
-              })
-            }, events),
-            item.label
-          );
+    var activeValue = this.state.activeValue;
+    var configurableProps = ['label', 'value', 'children', 'disabled'];
+    var formatOptions = function formatOptions(options) {
+      options.forEach(function (option) {
+        if (option.__IS__FLAT__OPTIONS) return;
+        configurableProps.forEach(function (prop) {
+          var value = option[_this2.parent().props.props[prop] || prop];
+          if (value) option[prop] = value;
         });
+        if (Array.isArray(option.children)) {
+          formatOptions(option.children);
+        }
+      });
+    };
+    var loadActiveOptions = function loadActiveOptions(options) {
+      var activeOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-        var menuStyle = {};
+      var level = activeOptions.length;
+      activeOptions[level] = options;
+      var active = activeValue[level];
+      if (active) {
+        options = options.filter(function (option) {
+          return option.value === active;
+        })[0];
+        if (options && options.children) {
+          loadActiveOptions(options.children, activeOptions);
+        }
+      }
+      return activeOptions;
+    };
 
-        if (isFlat) {
-          menuStyle.minWidth = _this3.inputWidth + 'px';
+    formatOptions(this.state.options);
+
+    return loadActiveOptions(this.state.options);
+  };
+
+  CascaderMenu.prototype.render = function render() {
+    var _this3 = this;
+
+    var _parent$props = this.parent().props,
+        expandTrigger = _parent$props.expandTrigger,
+        popperClass = _parent$props.popperClass;
+    var _state = this.state,
+        activeValue = _state.activeValue,
+        visible = _state.visible;
+
+    var activeOptions = this.activeOptions();
+
+    var menus = activeOptions.map(function (menu, menuIndex) {
+      var isFlat = false;
+
+      var items = menu.map(function (item, index) {
+        var events = {};
+
+        if (item.__IS__FLAT__OPTIONS) isFlat = true;
+
+        if (!item.disabled) {
+          if (item.children) {
+            var triggerEvent = {
+              click: 'onClick',
+              hover: 'onMouseEnter'
+            }[expandTrigger];
+            events[triggerEvent] = function () {
+              _this3.activeItem(item, menuIndex);
+            };
+          } else {
+            events.onClick = function () {
+              _this3.select(item, menuIndex);
+            };
+          }
         }
 
-        return _react2.default.createElement(
-          'ul',
-          { key: menuIndex, className: _this3.classNames({
-              'el-cascader-menu': true,
-              'el-cascader-menu--flexible': isFlat
-            }), style: menuStyle },
-          items
+        return React.createElement(
+          'li',
+          _extends({ key: index, className: _this3.classNames({
+              'el-cascader-menu__item': true,
+              'el-cascader-menu__item--extensible': item.children,
+              'is-active': item.value === activeValue[menuIndex],
+              'is-disabled': item.disabled
+            })
+          }, events),
+          item.label
         );
       });
 
-      return _react2.default.createElement(
-        _libs.Transition,
-        { name: 'el-zoom-in-top' },
-        _react2.default.createElement(
-          _libs.View,
-          { show: visible },
-          _react2.default.createElement(
-            'div',
-            { className: this.classNames('el-cascader-menus', popperClass) },
-            menus
-          )
-        )
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return CascaderMenu;
-}(_libs.Component);
+      var menuStyle = {};
 
-var _default = CascaderMenu;
-exports.default = _default;
+      if (isFlat) {
+        menuStyle.minWidth = _this3.inputWidth + 'px';
+      }
+
+      return React.createElement(
+        'ul',
+        { key: menuIndex, className: _this3.classNames({
+            'el-cascader-menu': true,
+            'el-cascader-menu--flexible': isFlat
+          }), style: menuStyle },
+        items
+      );
+    });
+
+    return React.createElement(
+      Transition,
+      { name: 'el-zoom-in-top' },
+      React.createElement(
+        View,
+        { show: visible },
+        React.createElement(
+          'div',
+          { className: this.classNames('el-cascader-menus', popperClass) },
+          menus
+        )
+      )
+    );
+  };
+
+  return CascaderMenu;
+}(Component);
+
+export default CascaderMenu;
 
 
 CascaderMenu.contextTypes = {
-  component: _libs.PropTypes.any
+  component: PropTypes.any
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(CascaderMenu, 'CascaderMenu', 'src/cascader/Menu.jsx');
-  reactHotLoader.register(_default, 'default', 'src/cascader/Menu.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

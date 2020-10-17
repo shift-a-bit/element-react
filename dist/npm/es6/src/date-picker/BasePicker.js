@@ -1,69 +1,24 @@
-'use strict';
+import _extends from 'babel-runtime/helpers/extends';
+import _objectWithoutProperties from 'babel-runtime/helpers/objectWithoutProperties';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _createClass from 'babel-runtime/helpers/createClass';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import { PropTypes, Component } from '../../libs';
+import { EventRegister } from '../../libs/internal';
 
-var _extends2 = require('babel-runtime/helpers/extends');
+import Input from '../input';
+import { PLACEMENT_MAP, HAVE_TRIGGER_TYPES, TYPE_VALUE_RESOLVER_MAP, DEFAULT_FORMATS } from './constants';
+import { Errors, require_condition, IDGenerator } from '../../libs/utils';
+import { MountBody } from './MountBody';
 
-var _extends3 = _interopRequireDefault(_extends2);
 
-var _objectWithoutProperties2 = require('babel-runtime/helpers/objectWithoutProperties');
-
-var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _libs = require('../../libs');
-
-var _internal = require('../../libs/internal');
-
-var _input = require('../input');
-
-var _input2 = _interopRequireDefault(_input);
-
-var _constants = require('./constants');
-
-var _utils = require('../../libs/utils');
-
-var _MountBody = require('./MountBody');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var idGen = new _utils.IDGenerator();
+var idGen = new IDGenerator();
 var haveTriggerType = function haveTriggerType(type) {
-  return _constants.HAVE_TRIGGER_TYPES.indexOf(type) !== -1;
+  return HAVE_TRIGGER_TYPES.indexOf(type) !== -1;
 };
 
 var isValidValue = function isValidValue(value) {
@@ -94,24 +49,25 @@ var valueEquals = function valueEquals(a, b) {
 };
 
 var BasePicker = function (_Component) {
-  (0, _inherits3.default)(BasePicker, _Component);
-  (0, _createClass3.default)(BasePicker, null, [{
+  _inherits(BasePicker, _Component);
+
+  _createClass(BasePicker, null, [{
     key: 'propTypes',
     get: function get() {
       return {
-        align: _libs.PropTypes.oneOf(['left', 'center', 'right']),
-        className: _libs.PropTypes.string,
-        format: _libs.PropTypes.string,
-        isShowTrigger: _libs.PropTypes.bool,
-        isReadOnly: _libs.PropTypes.bool,
-        isDisabled: _libs.PropTypes.bool,
-        placeholder: _libs.PropTypes.string,
-        onFocus: _libs.PropTypes.func,
-        onBlur: _libs.PropTypes.func,
+        align: PropTypes.oneOf(['left', 'center', 'right']),
+        className: PropTypes.string,
+        format: PropTypes.string,
+        isShowTrigger: PropTypes.bool,
+        isReadOnly: PropTypes.bool,
+        isDisabled: PropTypes.bool,
+        placeholder: PropTypes.string,
+        onFocus: PropTypes.func,
+        onBlur: PropTypes.func,
         // (Date|Date[]|null)=>(), null when click on clear icon
-        onChange: _libs.PropTypes.func,
+        onChange: PropTypes.func,
         // time select pannel:
-        value: _libs.PropTypes.oneOfType([_libs.PropTypes.instanceOf(Date), _libs.PropTypes.arrayOf(_libs.PropTypes.instanceOf(Date))])
+        value: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.arrayOf(PropTypes.instanceOf(Date))])
       };
     }
   }, {
@@ -128,11 +84,12 @@ var BasePicker = function (_Component) {
 
   function BasePicker(props, _type) {
     var state = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    (0, _classCallCheck3.default)(this, BasePicker);
 
-    (0, _utils.require_condition)(typeof _type === 'string');
+    _classCallCheck(this, BasePicker);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (BasePicker.__proto__ || Object.getPrototypeOf(BasePicker)).call(this, props));
+    require_condition(typeof _type === 'string');
+
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.type = _type; // type need to be set first
     _this.state = Object.assign({}, state, {
@@ -147,358 +104,307 @@ var BasePicker = function (_Component) {
   // (state, props)=>ReactElement
 
 
-  (0, _createClass3.default)(BasePicker, [{
-    key: 'pickerPanel',
-    value: function pickerPanel(state, props) {
-      throw new _utils.Errors.MethodImplementationRequiredError(props);
-    }
-  }, {
-    key: 'getFormatSeparator',
-    value: function getFormatSeparator() {
-      return undefined;
-    }
-    // ---: end, abstract methods
+  BasePicker.prototype.pickerPanel = function pickerPanel(state, props) {
+    throw new Errors.MethodImplementationRequiredError(props);
+  };
 
-  }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      this.setState(this.propsToState(nextProps));
+  BasePicker.prototype.getFormatSeparator = function getFormatSeparator() {
+    return undefined;
+  };
+  // ---: end, abstract methods
+
+  BasePicker.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    this.setState(this.propsToState(nextProps));
+  };
+
+  /**
+   * onPicked should only be called from picker pannel instance
+   * and should never return a null date instance
+   *
+   * @param value: Date|Date[]|null
+   * @param isKeepPannel: boolean = false
+   */
+
+
+  BasePicker.prototype.onPicked = function onPicked(value) {
+    var isKeepPannel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    //only change input value on picked triggered
+    var hasChanged = !valueEquals(this.state.value, value);
+    this.setState({
+      pickerVisible: isKeepPannel,
+      value: value,
+      text: this.dateToStr(value)
+    });
+
+    if (hasChanged) {
+      this.props.onChange(value);
+      this.context.form && this.context.form.onFieldChange();
+    }
+  };
+
+  BasePicker.prototype.dateToStr = function dateToStr(date) {
+    if (!isValidValue(date)) return '';
+
+    var tdate = date;
+    var formatter = (TYPE_VALUE_RESOLVER_MAP[this.type] || TYPE_VALUE_RESOLVER_MAP['default']).formatter;
+    var result = formatter(tdate, this.getFormat(), this.getFormatSeparator());
+
+    return result;
+  };
+
+  // (string) => Date | null
+
+
+  BasePicker.prototype.parseDate = function parseDate(dateStr) {
+    if (!dateStr) return null;
+    var type = this.type;
+    var parser = (TYPE_VALUE_RESOLVER_MAP[type] || TYPE_VALUE_RESOLVER_MAP['default']).parser;
+    return parser(dateStr, this.getFormat(), this.getFormatSeparator());
+  };
+
+  BasePicker.prototype.getFormat = function getFormat() {
+    return this.props.format || DEFAULT_FORMATS[this.type];
+  };
+
+  BasePicker.prototype.propsToState = function propsToState(props) {
+    var state = {};
+    if (this.isDateValid(props.value)) {
+      state.text = this.dateToStr(props.value);
+      state.value = props.value;
+    } else {
+      state.text = '';
+      state.value = null;
     }
 
-    /**
-     * onPicked should only be called from picker pannel instance
-     * and should never return a null date instance
-     *
-     * @param value: Date|Date[]|null
-     * @param isKeepPannel: boolean = false
-     */
+    // if (state.value == null) {
+    //   state.value = new Date()
+    // }
 
-  }, {
-    key: 'onPicked',
-    value: function onPicked(value) {
-      var isKeepPannel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      //only change input value on picked triggered
-      var hasChanged = !valueEquals(this.state.value, value);
-      this.setState({
-        pickerVisible: isKeepPannel,
-        value: value,
-        text: this.dateToStr(value)
-      });
+    return state;
+  };
 
-      if (hasChanged) {
-        this.props.onChange(value);
-        this.context.form && this.context.form.onFieldChange();
-      }
-    }
-  }, {
-    key: 'dateToStr',
-    value: function dateToStr(date) {
-      if (!isValidValue(date)) return '';
+  BasePicker.prototype.triggerClass = function triggerClass() {
+    return this.type.includes('time') ? 'el-icon-time' : 'el-icon-date';
+  };
 
-      var tdate = date;
-      var formatter = (_constants.TYPE_VALUE_RESOLVER_MAP[this.type] || _constants.TYPE_VALUE_RESOLVER_MAP['default']).formatter;
-      var result = formatter(tdate, this.getFormat(), this.getFormatSeparator());
+  BasePicker.prototype.calcIsShowTrigger = function calcIsShowTrigger() {
+    if (this.props.isShowTrigger != null) {
+      return !!this.props.isShowTrigger;
+    } else {
+      return haveTriggerType(this.type);
+    }
+  };
 
-      return result;
-    }
+  BasePicker.prototype.handleFocus = function handleFocus() {
+    var _this2 = this;
 
-    // (string) => Date | null
-
-  }, {
-    key: 'parseDate',
-    value: function parseDate(dateStr) {
-      if (!dateStr) return null;
-      var type = this.type;
-      var parser = (_constants.TYPE_VALUE_RESOLVER_MAP[type] || _constants.TYPE_VALUE_RESOLVER_MAP['default']).parser;
-      return parser(dateStr, this.getFormat(), this.getFormatSeparator());
-    }
-  }, {
-    key: 'getFormat',
-    value: function getFormat() {
-      return this.props.format || _constants.DEFAULT_FORMATS[this.type];
-    }
-  }, {
-    key: 'propsToState',
-    value: function propsToState(props) {
-      var state = {};
-      if (this.isDateValid(props.value)) {
-        state.text = this.dateToStr(props.value);
-        state.value = props.value;
-      } else {
-        state.text = '';
-        state.value = null;
-      }
-
-      // if (state.value == null) {
-      //   state.value = new Date()
-      // }
-
-      return state;
-    }
-  }, {
-    key: 'triggerClass',
-    value: function triggerClass() {
-      return this.type.includes('time') ? 'el-icon-time' : 'el-icon-date';
-    }
-  }, {
-    key: 'calcIsShowTrigger',
-    value: function calcIsShowTrigger() {
-      if (this.props.isShowTrigger != null) {
-        return !!this.props.isShowTrigger;
-      } else {
-        return haveTriggerType(this.type);
-      }
-    }
-  }, {
-    key: 'handleFocus',
-    value: function handleFocus() {
-      var _this2 = this;
-
-      this.isInputFocus = true;
-      if (haveTriggerType(this.type) && !this.state.pickerVisible) {
-        this.setState({ pickerVisible: true }, function () {
-          _this2.props.onFocus(_this2);
-        });
-      }
-    }
-  }, {
-    key: 'handleBlur',
-    value: function handleBlur() {
-      this.isInputFocus = false;
-      this.props.onBlur(this);
-    }
-  }, {
-    key: 'handleKeydown',
-    value: function handleKeydown(evt) {
-      var keyCode = evt.keyCode;
-      // tab
-      if (keyCode === 9 || keyCode === 27) {
-        this.setState({ pickerVisible: false });
-        evt.stopPropagation();
-      }
-    }
-  }, {
-    key: 'togglePickerVisible',
-    value: function togglePickerVisible() {
-      this.setState({
-        pickerVisible: !this.state.pickerVisible
+    this.isInputFocus = true;
+    if (haveTriggerType(this.type) && !this.state.pickerVisible) {
+      this.setState({ pickerVisible: true }, function () {
+        _this2.props.onFocus(_this2);
       });
     }
-  }, {
-    key: 'isDateValid',
-    value: function isDateValid(date) {
-      return date == null || isValidValue(date);
+  };
+
+  BasePicker.prototype.handleBlur = function handleBlur() {
+    this.isInputFocus = false;
+    this.props.onBlur(this);
+  };
+
+  BasePicker.prototype.handleKeydown = function handleKeydown(evt) {
+    var keyCode = evt.keyCode;
+    // tab
+    if (keyCode === 9 || keyCode === 27) {
+      this.setState({ pickerVisible: false });
+      evt.stopPropagation();
+    }
+  };
+
+  BasePicker.prototype.togglePickerVisible = function togglePickerVisible() {
+    this.setState({
+      pickerVisible: !this.state.pickerVisible
+    });
+  };
+
+  BasePicker.prototype.isDateValid = function isDateValid(date) {
+    return date == null || isValidValue(date);
+  };
+
+  // return true on condition
+  //  * input is parsable to date
+  //  * also meet your other condition
+
+
+  BasePicker.prototype.isInputValid = function isInputValid(value) {
+    var parseable = this.parseDate(value);
+    if (!parseable) {
+      return false;
     }
 
-    // return true on condition
-    //  * input is parsable to date
-    //  * also meet your other condition
-
-  }, {
-    key: 'isInputValid',
-    value: function isInputValid(value) {
-      var parseable = this.parseDate(value);
-      if (!parseable) {
-        return false;
-      }
-
-      var isdatevalid = this.isDateValid(parseable);
-      if (!isdatevalid) {
-        return false;
-      }
-      return true;
+    var isdatevalid = this.isDateValid(parseable);
+    if (!isdatevalid) {
+      return false;
     }
-  }, {
-    key: 'handleClickOutside',
-    value: function handleClickOutside(evt) {
-      var _state = this.state,
-          value = _state.value,
-          pickerVisible = _state.pickerVisible;
+    return true;
+  };
 
-      if (!this.isInputFocus && !pickerVisible) {
-        return;
-      }
-      if (this.domRoot.contains(evt.target)) return;
-      if (this.pickerProxy && this.pickerProxy.contains(evt)) return;
-      if (this.isDateValid(value)) {
-        this.setState({ pickerVisible: false });
-        this.props.onChange(value);
-        this.context.form && this.context.form.onFieldChange();
-      } else {
-        this.setState({ pickerVisible: false, text: this.dateToStr(value) });
-      }
+  BasePicker.prototype.handleClickOutside = function handleClickOutside(evt) {
+    var _state = this.state,
+        value = _state.value,
+        pickerVisible = _state.pickerVisible;
+
+    if (!this.isInputFocus && !pickerVisible) {
+      return;
     }
-  }, {
-    key: 'handleClickIcon',
-    value: function handleClickIcon() {
-      var _props = this.props,
-          isReadOnly = _props.isReadOnly,
-          isDisabled = _props.isDisabled;
-      var text = this.state.text;
-
-
-      if (isReadOnly || isDisabled) return;
-      if (!text) {
-        this.togglePickerVisible();
-      } else {
-        this.setState({ text: '', value: null, pickerVisible: false });
-        this.props.onChange(null);
-        this.context.form && this.context.form.onFieldChange();
-      }
+    if (this.domRoot.contains(evt.target)) return;
+    if (this.pickerProxy && this.pickerProxy.contains(evt)) return;
+    if (this.isDateValid(value)) {
+      this.setState({ pickerVisible: false });
+      this.props.onChange(value);
+      this.context.form && this.context.form.onFieldChange();
+    } else {
+      this.setState({ pickerVisible: false, text: this.dateToStr(value) });
     }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this3 = this;
+  };
 
-      var _props2 = this.props,
-          isReadOnly = _props2.isReadOnly,
-          placeholder = _props2.placeholder,
-          isDisabled = _props2.isDisabled,
-          className = _props2.className;
-      var _state2 = this.state,
-          pickerVisible = _state2.pickerVisible,
-          value = _state2.value,
-          text = _state2.text,
-          isShowClose = _state2.isShowClose;
+  BasePicker.prototype.handleClickIcon = function handleClickIcon() {
+    var _props = this.props,
+        isReadOnly = _props.isReadOnly,
+        isDisabled = _props.isDisabled;
+    var text = this.state.text;
 
 
-      var createIconSlot = function createIconSlot() {
-        if (_this3.calcIsShowTrigger()) {
-          var cls = isShowClose ? 'el-icon-close' : _this3.triggerClass();
-          return _react2.default.createElement('i', {
-            className: _this3.classNames('el-input__icon', cls),
-            onClick: _this3.handleClickIcon.bind(_this3),
-            onMouseEnter: function onMouseEnter() {
-              if (isReadOnly || isDisabled) return;
-              if (text) {
-                _this3.setState({ isShowClose: true });
-              }
-            },
-            onMouseLeave: function onMouseLeave() {
-              _this3.setState({ isShowClose: false });
+    if (isReadOnly || isDisabled) return;
+    if (!text) {
+      this.togglePickerVisible();
+    } else {
+      this.setState({ text: '', value: null, pickerVisible: false });
+      this.props.onChange(null);
+      this.context.form && this.context.form.onFieldChange();
+    }
+  };
+
+  BasePicker.prototype.render = function render() {
+    var _this3 = this;
+
+    var _props2 = this.props,
+        isReadOnly = _props2.isReadOnly,
+        placeholder = _props2.placeholder,
+        isDisabled = _props2.isDisabled,
+        className = _props2.className;
+    var _state2 = this.state,
+        pickerVisible = _state2.pickerVisible,
+        value = _state2.value,
+        text = _state2.text,
+        isShowClose = _state2.isShowClose;
+
+
+    var createIconSlot = function createIconSlot() {
+      if (_this3.calcIsShowTrigger()) {
+        var cls = isShowClose ? 'el-icon-close' : _this3.triggerClass();
+        return React.createElement('i', {
+          className: _this3.classNames('el-input__icon', cls),
+          onClick: _this3.handleClickIcon.bind(_this3),
+          onMouseEnter: function onMouseEnter() {
+            if (isReadOnly || isDisabled) return;
+            if (text) {
+              _this3.setState({ isShowClose: true });
             }
-          });
-        } else {
-          return null;
-        }
-      };
-
-      var createPickerPanel = function createPickerPanel() {
-        if (pickerVisible) {
-          /* eslint-disable */
-          var _props3 = _this3.props,
-              _placeholder = _props3.placeholder,
-              onFocus = _props3.onFocus,
-              onBlur = _props3.onBlur,
-              onChange = _props3.onChange,
-              others = (0, _objectWithoutProperties3.default)(_props3, ['placeholder', 'onFocus', 'onBlur', 'onChange']);
-          /* eslint-enable */
-
-          return _react2.default.createElement(
-            _MountBody.MountBody,
-            { ref: function ref(e) {
-                return _this3.pickerProxy = e;
-              } },
-            _this3.pickerPanel(_this3.state, (0, _extends3.default)({}, others, {
-              getPopperRefElement: function getPopperRefElement() {
-                return _reactDom2.default.findDOMNode(_this3.refs.inputRoot);
-              },
-              popperMixinOption: {
-                placement: _constants.PLACEMENT_MAP[_this3.props.align] || _constants.PLACEMENT_MAP.left
-              }
-            }))
-          );
-        } else {
-          return null;
-        }
-      };
-
-      return _react2.default.createElement(
-        'span',
-        {
-          className: this.classNames('el-date-editor', className, {
-            'is-have-trigger': this.calcIsShowTrigger(),
-            'is-active': pickerVisible,
-            'is-filled': !!value
-          }),
-
-          ref: function ref(v) {
-            return _this3.domRoot = v;
-          }
-        },
-        _react2.default.createElement(_internal.EventRegister, {
-          id: this.clickOutsideId,
-          target: document,
-          eventName: 'click',
-          func: this.handleClickOutside.bind(this) }),
-        _react2.default.createElement(_input2.default, {
-          className: this.classNames('el-date-editor el-date-editor--' + this.type),
-          readOnly: isReadOnly,
-          disabled: isDisabled,
-          type: 'text',
-          placeholder: placeholder,
-          onFocus: this.handleFocus.bind(this),
-          onBlur: this.handleBlur.bind(this),
-          onKeyDown: this.handleKeydown.bind(this),
-          onChange: function onChange(value) {
-            var iptxt = value;
-            var nstate = { text: iptxt };
-
-            if (iptxt.trim() === '' || !_this3.isInputValid(iptxt)) {
-              nstate.value = null;
-            } else {
-              //only set value on a valid date input
-              nstate.value = _this3.parseDate(iptxt);
-            }
-
-            _this3.setState(nstate);
           },
-          ref: 'inputRoot',
-          value: text,
-          icon: createIconSlot()
-        }),
-        createPickerPanel()
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return BasePicker;
-}(_libs.Component);
+          onMouseLeave: function onMouseLeave() {
+            _this3.setState({ isShowClose: false });
+          }
+        });
+      } else {
+        return null;
+      }
+    };
 
-var _default = BasePicker;
-exports.default = _default;
+    var createPickerPanel = function createPickerPanel() {
+      if (pickerVisible) {
+        /* eslint-disable */
+        var _props3 = _this3.props,
+            _placeholder = _props3.placeholder,
+            onFocus = _props3.onFocus,
+            onBlur = _props3.onBlur,
+            onChange = _props3.onChange,
+            others = _objectWithoutProperties(_props3, ['placeholder', 'onFocus', 'onBlur', 'onChange']);
+        /* eslint-enable */
+
+
+        return React.createElement(
+          MountBody,
+          { ref: function ref(e) {
+              return _this3.pickerProxy = e;
+            } },
+          _this3.pickerPanel(_this3.state, _extends({}, others, {
+            getPopperRefElement: function getPopperRefElement() {
+              return ReactDOM.findDOMNode(_this3.refs.inputRoot);
+            },
+            popperMixinOption: {
+              placement: PLACEMENT_MAP[_this3.props.align] || PLACEMENT_MAP.left
+            }
+          }))
+        );
+      } else {
+        return null;
+      }
+    };
+
+    return React.createElement(
+      'span',
+      {
+        className: this.classNames('el-date-editor', className, {
+          'is-have-trigger': this.calcIsShowTrigger(),
+          'is-active': pickerVisible,
+          'is-filled': !!value
+        }),
+
+        ref: function ref(v) {
+          return _this3.domRoot = v;
+        }
+      },
+      React.createElement(EventRegister, {
+        id: this.clickOutsideId,
+        target: document,
+        eventName: 'click',
+        func: this.handleClickOutside.bind(this) }),
+      React.createElement(Input, {
+        className: this.classNames('el-date-editor el-date-editor--' + this.type),
+        readOnly: isReadOnly,
+        disabled: isDisabled,
+        type: 'text',
+        placeholder: placeholder,
+        onFocus: this.handleFocus.bind(this),
+        onBlur: this.handleBlur.bind(this),
+        onKeyDown: this.handleKeydown.bind(this),
+        onChange: function onChange(value) {
+          var iptxt = value;
+          var nstate = { text: iptxt };
+
+          if (iptxt.trim() === '' || !_this3.isInputValid(iptxt)) {
+            nstate.value = null;
+          } else {
+            //only set value on a valid date input
+            nstate.value = _this3.parseDate(iptxt);
+          }
+
+          _this3.setState(nstate);
+        },
+        ref: 'inputRoot',
+        value: text,
+        icon: createIconSlot()
+      }),
+      createPickerPanel()
+    );
+  };
+
+  return BasePicker;
+}(Component);
+
+export default BasePicker;
 
 
 BasePicker.contextTypes = {
-  form: _libs.PropTypes.any
+  form: PropTypes.any
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(idGen, 'idGen', 'src/date-picker/BasePicker.jsx');
-  reactHotLoader.register(haveTriggerType, 'haveTriggerType', 'src/date-picker/BasePicker.jsx');
-  reactHotLoader.register(isValidValue, 'isValidValue', 'src/date-picker/BasePicker.jsx');
-  reactHotLoader.register(valueEquals, 'valueEquals', 'src/date-picker/BasePicker.jsx');
-  reactHotLoader.register(BasePicker, 'BasePicker', 'src/date-picker/BasePicker.jsx');
-  reactHotLoader.register(_default, 'default', 'src/date-picker/BasePicker.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

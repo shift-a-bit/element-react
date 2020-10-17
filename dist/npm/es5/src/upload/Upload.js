@@ -42,6 +42,8 @@ var _AjaxUpload = require('./AjaxUpload');
 
 var _AjaxUpload2 = _interopRequireDefault(_AjaxUpload);
 
+var _nodeSass = require('node-sass');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (function () {
@@ -214,6 +216,15 @@ var Upload = function (_Component) {
       this.setState({
         fileList: []
       });
+    }
+  }, {
+    key: 'isFileSelected',
+    value: function isFileSelected() {
+      if (this.state.fileList && this.state.fileList.length) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }, {
     key: 'submit',

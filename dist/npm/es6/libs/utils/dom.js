@@ -1,20 +1,4 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.scrollIntoView = scrollIntoView;
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var loadStyleString = exports.loadStyleString = function loadStyleString(css) {
+export var loadStyleString = function loadStyleString(css) {
   var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
   if (document.getElementById(id)) return;
@@ -32,7 +16,7 @@ var loadStyleString = exports.loadStyleString = function loadStyleString(css) {
 
 var isServer = false;
 /* istanbul ignore next */
-var on = exports.on = function () {
+export var on = function () {
   if (!isServer && document.addEventListener) {
     return function (element, event, handler) {
       if (element && event && handler) {
@@ -49,7 +33,7 @@ var on = exports.on = function () {
 }();
 
 /* istanbul ignore next */
-var off = exports.off = function () {
+export var off = function () {
   if (!isServer && document.removeEventListener) {
     return function (element, event, handler) {
       if (element && event) {
@@ -65,7 +49,7 @@ var off = exports.off = function () {
   }
 }();
 
-function scrollIntoView(container, selected) {
+export function scrollIntoView(container, selected) {
   if (isServer) return;
 
   if (!selected) {
@@ -84,25 +68,3 @@ function scrollIntoView(container, selected) {
     container.scrollTop = bottom - container.clientHeight;
   }
 }
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(loadStyleString, 'loadStyleString', 'libs/utils/dom.js');
-  reactHotLoader.register(isServer, 'isServer', 'libs/utils/dom.js');
-  reactHotLoader.register(on, 'on', 'libs/utils/dom.js');
-  reactHotLoader.register(off, 'off', 'libs/utils/dom.js');
-  reactHotLoader.register(scrollIntoView, 'scrollIntoView', 'libs/utils/dom.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

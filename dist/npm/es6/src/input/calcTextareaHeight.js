@@ -1,19 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = calcTextareaHeight;
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
 var hiddenTextarea = void 0;
 
 var HIDDEN_STYLE = '\n  height:0 !important;\n  visibility:hidden !important;\n  overflow:hidden !important;\n  position:absolute !important;\n  z-index:-1000 !important;\n  top:0 !important;\n  right:0 !important\n';
@@ -36,7 +20,7 @@ function calculateNodeStyling(node) {
   return { contextStyle: contextStyle, paddingSize: paddingSize, borderSize: borderSize, boxSizing: boxSizing };
 }
 
-function calcTextareaHeight(targetNode) {
+export default function calcTextareaHeight(targetNode) {
   var minRows = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   var maxRows = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
@@ -82,25 +66,3 @@ function calcTextareaHeight(targetNode) {
 
   return { height: height + 'px' };
 }
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(hiddenTextarea, 'hiddenTextarea', 'src/input/calcTextareaHeight.js');
-  reactHotLoader.register(HIDDEN_STYLE, 'HIDDEN_STYLE', 'src/input/calcTextareaHeight.js');
-  reactHotLoader.register(CONTEXT_STYLE, 'CONTEXT_STYLE', 'src/input/calcTextareaHeight.js');
-  reactHotLoader.register(calculateNodeStyling, 'calculateNodeStyling', 'src/input/calcTextareaHeight.js');
-  reactHotLoader.register(calcTextareaHeight, 'calcTextareaHeight', 'src/input/calcTextareaHeight.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

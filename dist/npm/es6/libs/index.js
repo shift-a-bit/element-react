@@ -1,65 +1,11 @@
-'use strict';
+/*
+ *  Only exposing the libraries for the public components,
+ *  Internal components such as Markdown shouldn't be here.
+ */
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _collapse = require('./collapse');
-
-Object.defineProperty(exports, 'CollapseTransition', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_collapse).default;
-  }
-});
-
-var _transition = require('./transition');
-
-Object.defineProperty(exports, 'Transition', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_transition).default;
-  }
-});
-
-var _component = require('./component');
-
-Object.defineProperty(exports, 'Component', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_component).default;
-  }
-});
-
-var _props = require('./props');
-
-Object.defineProperty(exports, 'PropTypes', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_props).default;
-  }
-});
-
-var _view = require('./view');
-
-Object.defineProperty(exports, 'View', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_view).default;
-  }
-});
-
-var _animate = require('./animate');
-
-Object.defineProperty(exports, 'Animate', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_animate).default;
-  }
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+export { default as CollapseTransition } from './collapse';
+export { default as Transition } from './transition';
+export { default as Component } from './component';
+export { default as PropTypes } from './props';
+export { default as View } from './view';
+export { default as Animate } from './animate';

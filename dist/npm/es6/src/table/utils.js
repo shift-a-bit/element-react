@@ -1,43 +1,11 @@
-'use strict';
+import * as React from 'react';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.checkType = exports.deepCompare = exports.cleanScrollBar = undefined;
-
-var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
-
-var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
-
-exports.getScrollBarWidth = getScrollBarWidth;
-exports.getValueByPath = getValueByPath;
-exports.getRowIdentity = getRowIdentity;
-exports.getLeafColumns = getLeafColumns;
-exports.getColumns = getColumns;
-exports.convertToRows = convertToRows;
-
-var _react = require('react');
-
-var React = _interopRequireWildcard(_react);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
 
 var _document = document;
 
 var scrollBarWidth = void 0;
 
-var cleanScrollBar = exports.cleanScrollBar = function cleanScrollBar() {
+export var cleanScrollBar = function cleanScrollBar() {
   document.querySelectorAll('.el-table__body-wrapper').forEach(function (el) {
     setTimeout(function () {
       el.style.overflow = 'hidden';
@@ -48,7 +16,7 @@ var cleanScrollBar = exports.cleanScrollBar = function cleanScrollBar() {
   });
 };
 
-function getScrollBarWidth() {
+export function getScrollBarWidth() {
   if (scrollBarWidth !== undefined) return scrollBarWidth;
   var dom = _document.createElement('div');
   var body = _document.body || dom;
@@ -69,14 +37,14 @@ function getScrollBarWidth() {
   return totalWidth - widthWithoutScroll;
 }
 
-function getValueByPath(data, path) {
+export function getValueByPath(data, path) {
   if (typeof path !== 'string') return null;
   return path.split('.').reduce(function (pre, cur) {
     return (pre || {})[cur];
   }, data);
 }
 
-function getRowIdentity(row, rowKey) {
+export function getRowIdentity(row, rowKey) {
   if (typeof rowKey === 'string') {
     return getValueByPath(row, rowKey);
   } else if (typeof rowKey === 'function') {
@@ -84,11 +52,11 @@ function getRowIdentity(row, rowKey) {
   }
 }
 
-function getLeafColumns(columns) {
+export function getLeafColumns(columns) {
   var result = [];
   columns.forEach(function (column) {
     if (column.subColumns) {
-      result.push.apply(result, (0, _toConsumableArray3.default)(getLeafColumns(column.subColumns)));
+      result.push.apply(result, getLeafColumns(column.subColumns));
     } else {
       result.push(column);
     }
@@ -112,11 +80,11 @@ function convertChildrenToColumns(children) {
   });
 }
 
-function getColumns(props) {
+export function getColumns(props) {
   return props.children ? convertChildrenToColumns(props.children) : props.columns || [];
 }
 
-function convertToRows(columns) {
+export function convertToRows(columns) {
   var maxLevel = 1;
 
   function traverse(column, parent) {
@@ -154,7 +122,7 @@ function convertToRows(columns) {
   var queue = columns.slice();
   for (var _i = 0; queue[_i]; _i++) {
     allColumns.push(queue[_i]);
-    if (queue[_i].subColumns) queue.push.apply(queue, (0, _toConsumableArray3.default)(queue[_i].subColumns));
+    if (queue[_i].subColumns) queue.push.apply(queue, queue[_i].subColumns);
   }
 
   allColumns.forEach(function (column) {
@@ -193,34 +161,4 @@ var deepCompare = function deepCompare(obj1, obj2) {
   return Object.is(obj1, obj2);
 };
 
-exports.deepCompare = deepCompare;
-exports.checkType = checkType;
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(_document, '_document', 'src/table/utils.js');
-  reactHotLoader.register(scrollBarWidth, 'scrollBarWidth', 'src/table/utils.js');
-  reactHotLoader.register(cleanScrollBar, 'cleanScrollBar', 'src/table/utils.js');
-  reactHotLoader.register(getScrollBarWidth, 'getScrollBarWidth', 'src/table/utils.js');
-  reactHotLoader.register(getValueByPath, 'getValueByPath', 'src/table/utils.js');
-  reactHotLoader.register(getRowIdentity, 'getRowIdentity', 'src/table/utils.js');
-  reactHotLoader.register(getLeafColumns, 'getLeafColumns', 'src/table/utils.js');
-  reactHotLoader.register(convertChildrenToColumns, 'convertChildrenToColumns', 'src/table/utils.js');
-  reactHotLoader.register(getColumns, 'getColumns', 'src/table/utils.js');
-  reactHotLoader.register(convertToRows, 'convertToRows', 'src/table/utils.js');
-  reactHotLoader.register(checkType, 'checkType', 'src/table/utils.js');
-  reactHotLoader.register(deepCompare, 'deepCompare', 'src/table/utils.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();
+export { deepCompare, checkType };

@@ -1,160 +1,115 @@
-'use strict';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _createClass from 'babel-runtime/helpers/createClass';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import { PropTypes } from '../../../libs';
+import { scrollIntoView } from '../../../libs/utils/dom';
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+import { Scrollbar } from '../../scrollbar';
 
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../../libs');
-
-var _dom = require('../../../libs/utils/dom');
-
-var _scrollbar = require('../../scrollbar');
-
-var _PopperBase2 = require('./PopperBase');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import { PopperBase } from './PopperBase';
 
 var TimeSelectPanel = function (_PopperBase) {
-  (0, _inherits3.default)(TimeSelectPanel, _PopperBase);
-  (0, _createClass3.default)(TimeSelectPanel, null, [{
+  _inherits(TimeSelectPanel, _PopperBase);
+
+  _createClass(TimeSelectPanel, null, [{
     key: 'propTypes',
     get: function get() {
       return Object.assign({
-        start: _libs.PropTypes.string,
-        end: _libs.PropTypes.string,
-        step: _libs.PropTypes.string,
-        minTime: _libs.PropTypes.string,
-        maxTime: _libs.PropTypes.string,
-        value: _libs.PropTypes.string,
-        onPicked: _libs.PropTypes.func,
+        start: PropTypes.string,
+        end: PropTypes.string,
+        step: PropTypes.string,
+        minTime: PropTypes.string,
+        maxTime: PropTypes.string,
+        value: PropTypes.string,
+        onPicked: PropTypes.func,
         //(string)=>date
-        dateParser: _libs.PropTypes.func.isRequired,
+        dateParser: PropTypes.func.isRequired,
         //()=>HtmlElement
-        getPopperRefElement: _libs.PropTypes.func,
-        popperMixinOption: _libs.PropTypes.object
-      }, _PopperBase2.PopperBase.propTypes);
+        getPopperRefElement: PropTypes.func,
+        popperMixinOption: PropTypes.object
+      }, PopperBase.propTypes);
     }
   }]);
 
   function TimeSelectPanel(props) {
-    (0, _classCallCheck3.default)(this, TimeSelectPanel);
-    return (0, _possibleConstructorReturn3.default)(this, (TimeSelectPanel.__proto__ || Object.getPrototypeOf(TimeSelectPanel)).call(this, props));
+    _classCallCheck(this, TimeSelectPanel);
+
+    return _possibleConstructorReturn(this, _PopperBase.call(this, props));
   }
 
-  (0, _createClass3.default)(TimeSelectPanel, [{
-    key: 'handleClick',
-    value: function handleClick(item) {
-      var _props = this.props,
-          onPicked = _props.onPicked,
-          dateParser = _props.dateParser;
+  TimeSelectPanel.prototype.handleClick = function handleClick(item) {
+    var _props = this.props,
+        onPicked = _props.onPicked,
+        dateParser = _props.dateParser;
 
-      if (!item.disabled) {
-        onPicked(dateParser(item.value));
-      }
+    if (!item.disabled) {
+      onPicked(dateParser(item.value));
     }
-  }, {
-    key: 'items',
-    value: function items() {
-      return TimeSelectPanel.items(this.props);
-    }
-  }, {
-    key: 'scrollToOption',
-    value: function scrollToOption() {
-      var className = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'selected';
+  };
 
-      var menu = this.refs.root.querySelector('.el-picker-panel__content');
-      (0, _dom.scrollIntoView)(menu, menu.getElementsByClassName(className)[0]);
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.scrollToOption();
-    }
-  }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      var _this2 = this;
+  TimeSelectPanel.prototype.items = function items() {
+    return TimeSelectPanel.items(this.props);
+  };
 
-      clearTimeout(this._timer);
-      if (nextProps.value !== this.props.value) {
-        this._timer = setTimeout(function () {
-          return _this2.scrollToOption();
-        }, 0);
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this3 = this;
+  TimeSelectPanel.prototype.scrollToOption = function scrollToOption() {
+    var className = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'selected';
 
-      var value = this.props.value;
+    var menu = this.refs.root.querySelector('.el-picker-panel__content');
+    scrollIntoView(menu, menu.getElementsByClassName(className)[0]);
+  };
+
+  TimeSelectPanel.prototype.componentDidMount = function componentDidMount() {
+    this.scrollToOption();
+  };
+
+  TimeSelectPanel.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    var _this2 = this;
+
+    clearTimeout(this._timer);
+    if (nextProps.value !== this.props.value) {
+      this._timer = setTimeout(function () {
+        return _this2.scrollToOption();
+      }, 0);
+    }
+  };
+
+  TimeSelectPanel.prototype.render = function render() {
+    var _this3 = this;
+
+    var value = this.props.value;
 
 
-      return _react2.default.createElement(
-        'div',
-        {
-          ref: 'root',
-          className: 'el-picker-panel time-select' },
-        _react2.default.createElement(
-          _scrollbar.Scrollbar,
-          { wrapClass: 'el-picker-panel__content', noresize: true },
-          this.items().map(function (item, idx) {
-            return _react2.default.createElement(
-              'div',
-              { key: idx,
-                className: _this3.classNames('time-select-item', { selected: value === item.value, disabled: item.disabled }),
-                disabled: item.disabled,
-                onClick: function onClick() {
-                  return _this3.handleClick(item);
-                } },
-              item.value
-            );
-          })
-        )
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
+    return React.createElement(
+      'div',
+      {
+        ref: 'root',
+        className: 'el-picker-panel time-select' },
+      React.createElement(
+        Scrollbar,
+        { wrapClass: 'el-picker-panel__content', noresize: true },
+        this.items().map(function (item, idx) {
+          return React.createElement(
+            'div',
+            { key: idx,
+              className: _this3.classNames('time-select-item', { selected: value === item.value, disabled: item.disabled }),
+              disabled: item.disabled,
+              onClick: function onClick() {
+                return _this3.handleClick(item);
+              } },
+            item.value
+          );
+        })
+      )
+    );
+  };
+
   return TimeSelectPanel;
-}(_PopperBase2.PopperBase);
+}(PopperBase);
 
-var _default = TimeSelectPanel;
-exports.default = _default;
+export default TimeSelectPanel;
 
 
 TimeSelectPanel.isValid = function (value, _ref) {
@@ -254,26 +209,3 @@ var nextTime = function nextTime(time, step) {
 
   return formatTime(next);
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(TimeSelectPanel, 'TimeSelectPanel', 'src/date-picker/panel/TimeSelectPanel.jsx');
-  reactHotLoader.register(parseTime, 'parseTime', 'src/date-picker/panel/TimeSelectPanel.jsx');
-  reactHotLoader.register(compareTime, 'compareTime', 'src/date-picker/panel/TimeSelectPanel.jsx');
-  reactHotLoader.register(formatTime, 'formatTime', 'src/date-picker/panel/TimeSelectPanel.jsx');
-  reactHotLoader.register(nextTime, 'nextTime', 'src/date-picker/panel/TimeSelectPanel.jsx');
-  reactHotLoader.register(_default, 'default', 'src/date-picker/panel/TimeSelectPanel.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

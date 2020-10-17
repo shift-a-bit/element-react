@@ -1,46 +1,35 @@
-'use strict';
+import React from 'react';
+import { mount } from 'enzyme';
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _enzyme = require('enzyme');
-
-var _src = require('../../../src');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import { Tabs, Icon, Button } from '../../../src';
 
 test('Basic usage', function () {
   var state = {
     name: ''
   };
 
-  var tabs = (0, _enzyme.mount)(_react2.default.createElement(
-    _src.Tabs,
+  var tabs = mount(React.createElement(
+    Tabs,
     { activeName: '2', onTabClick: function onTabClick(tab) {
         return state.name = tab.props.name;
       } },
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u7528\u6237\u7BA1\u7406', name: '1' },
       '\u7528\u6237\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u914D\u7F6E\u7BA1\u7406', name: '2' },
       '\u914D\u7F6E\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u89D2\u8272\u7BA1\u7406', name: '3' },
       '\u89D2\u8272\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u5B9A\u65F6\u8865\u507F\u4EFB\u52A1', name: '4' },
       '\u5B9A\u65F6\u8865\u507F\u4EFB\u52A1'
     )
@@ -66,26 +55,26 @@ test('Basic usage', function () {
 });
 
 test('Card Style', function () {
-  var tabs = (0, _enzyme.mount)(_react2.default.createElement(
-    _src.Tabs,
+  var tabs = mount(React.createElement(
+    Tabs,
     { type: 'card', value: '1' },
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u7528\u6237\u7BA1\u7406', name: '1' },
       '\u7528\u6237\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u914D\u7F6E\u7BA1\u7406', name: '2' },
       '\u914D\u7F6E\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u89D2\u8272\u7BA1\u7406', name: '3' },
       '\u89D2\u8272\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u5B9A\u65F6\u8865\u507F\u4EFB\u52A1', name: '4' },
       '\u5B9A\u65F6\u8865\u507F\u4EFB\u52A1'
     )
@@ -95,26 +84,26 @@ test('Card Style', function () {
 });
 
 test('Border card', function () {
-  var tabs = (0, _enzyme.mount)(_react2.default.createElement(
-    _src.Tabs,
+  var tabs = mount(React.createElement(
+    Tabs,
     { type: 'border-card', activeName: '1' },
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u7528\u6237\u7BA1\u7406', name: '1' },
       '\u7528\u6237\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u914D\u7F6E\u7BA1\u7406', name: '2' },
       '\u914D\u7F6E\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u89D2\u8272\u7BA1\u7406', name: '3' },
       '\u89D2\u8272\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u5B9A\u65F6\u8865\u507F\u4EFB\u52A1', name: '4' },
       '\u5B9A\u65F6\u8865\u507F\u4EFB\u52A1'
     )
@@ -124,32 +113,32 @@ test('Border card', function () {
 });
 
 test('Custom Tab', function () {
-  var label = _react2.default.createElement(
+  var label = React.createElement(
     'span',
     null,
-    _react2.default.createElement(_src.Icon, { name: 'date' }),
+    React.createElement(Icon, { name: 'date' }),
     ' \u7528\u6237\u7BA1\u7406'
   );
-  var tabs = (0, _enzyme.mount)(_react2.default.createElement(
-    _src.Tabs,
+  var tabs = mount(React.createElement(
+    Tabs,
     { type: 'border-card', activeName: '1' },
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: label, name: '1' },
       '\u7528\u6237\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u914D\u7F6E\u7BA1\u7406', name: '2' },
       '\u914D\u7F6E\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u89D2\u8272\u7BA1\u7406', name: '3' },
       '\u89D2\u8272\u7BA1\u7406'
     ),
-    _react2.default.createElement(
-      _src.Tabs.Pane,
+    React.createElement(
+      Tabs.Pane,
       { label: '\u5B9A\u65F6\u8865\u507F\u4EFB\u52A1', name: '4' },
       '\u5B9A\u65F6\u8865\u507F\u4EFB\u52A1'
     )
@@ -197,14 +186,14 @@ test('Add & Close tab', function () {
     }
   };
 
-  var tabs = (0, _enzyme.mount)(_react2.default.createElement(
-    _src.Tabs,
+  var tabs = mount(React.createElement(
+    Tabs,
     { type: 'card', value: 'Tab 2', editable: true, onTabEdit: function onTabEdit(action, tab) {
         return editTab(action, tab);
       } },
     state.tabs.map(function (item, index) {
-      return _react2.default.createElement(
-        _src.Tabs.Pane,
+      return React.createElement(
+        Tabs.Pane,
         { key: index, closable: true, label: item.title, name: item.name },
         item.content
       );
@@ -217,8 +206,8 @@ test('Add & Close tab', function () {
   tabs.find('.el-tabs__new-tab').simulate('click');
   tabs.setProps({
     children: state.tabs.map(function (item, index) {
-      return _react2.default.createElement(
-        _src.Tabs.Pane,
+      return React.createElement(
+        Tabs.Pane,
         { key: index, closable: true, label: item.title, name: item.name },
         item.content
       );
@@ -229,8 +218,8 @@ test('Add & Close tab', function () {
   tabs.find('.el-tabs .el-tabs__item').at(1).find('.el-icon-close').simulate('click');
   tabs.setProps({
     children: state.tabs.map(function (item, index) {
-      return _react2.default.createElement(
-        _src.Tabs.Pane,
+      return React.createElement(
+        Tabs.Pane,
         { key: index, closable: true, label: item.title, name: item.name },
         item.content
       );
@@ -276,22 +265,22 @@ test('Customized trigger button of new tab', function () {
     state.tabs = tabs;
   };
 
-  var button = (0, _enzyme.mount)(_react2.default.createElement(
-    _src.Button,
+  var button = mount(React.createElement(
+    Button,
     { size: 'small', onClick: function onClick() {
         return addTab();
       } },
     'add tab'
   ));
 
-  var tabs = (0, _enzyme.mount)(_react2.default.createElement(
-    _src.Tabs,
+  var tabs = mount(React.createElement(
+    Tabs,
     { type: 'card', value: 'Tab 2', onTabRemove: function onTabRemove(tab) {
         return removeTab(tab);
       } },
     state.tabs.map(function (item, index) {
-      return _react2.default.createElement(
-        _src.Tabs.Pane,
+      return React.createElement(
+        Tabs.Pane,
         { key: index, closable: true, label: item.title, name: item.name },
         item.content
       );
@@ -301,8 +290,8 @@ test('Customized trigger button of new tab', function () {
   button.simulate('click');
   tabs.setProps({
     children: state.tabs.map(function (item, index) {
-      return _react2.default.createElement(
-        _src.Tabs.Pane,
+      return React.createElement(
+        Tabs.Pane,
         { key: index, closable: true, label: item.title, name: item.name },
         item.content
       );
@@ -313,8 +302,8 @@ test('Customized trigger button of new tab', function () {
   tabs.find('.el-tabs .el-tabs__item').at(1).find('.el-icon-close').simulate('click');
   tabs.setProps({
     children: state.tabs.map(function (item, index) {
-      return _react2.default.createElement(
-        _src.Tabs.Pane,
+      return React.createElement(
+        Tabs.Pane,
         { key: index, closable: true, label: item.title, name: item.name },
         item.content
       );
