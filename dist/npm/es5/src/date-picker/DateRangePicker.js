@@ -1,124 +1,56 @@
-'use strict';
+import _extends from 'babel-runtime/helpers/extends';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _createClass from 'babel-runtime/helpers/createClass';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+import { pick } from '../../libs/utils';
+import { PropTypes } from '../../libs';
 
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _utils = require('../../libs/utils');
-
-var _libs = require('../../libs');
-
-var _BasePicker2 = require('./BasePicker');
-
-var _BasePicker3 = _interopRequireDefault(_BasePicker2);
-
-var _DateRangePanel = require('./panel/DateRangePanel');
-
-var _DateRangePanel2 = _interopRequireDefault(_DateRangePanel);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import BasePicker from './BasePicker';
+import DateRangePanel from './panel/DateRangePanel';
 
 var DateRangePicker = function (_BasePicker) {
-  (0, _inherits3.default)(DateRangePicker, _BasePicker);
-  (0, _createClass3.default)(DateRangePicker, null, [{
+  _inherits(DateRangePicker, _BasePicker);
+
+  _createClass(DateRangePicker, null, [{
     key: 'propTypes',
     get: function get() {
-      return Object.assign({}, { rangeSeparator: _libs.PropTypes.string }, _BasePicker3.default.propTypes,
+      return Object.assign({}, { rangeSeparator: PropTypes.string }, BasePicker.propTypes,
       // default value is been defined in ./constants file
-      (0, _utils.pick)(_DateRangePanel2.default.propTypes, ['value', 'isShowTime', 'shortcuts', 'firstDayOfWeek']));
+      pick(DateRangePanel.propTypes, ['value', 'isShowTime', 'shortcuts', 'firstDayOfWeek']));
     }
   }, {
     key: 'defaultProps',
     get: function get() {
-      var result = Object.assign({}, _BasePicker3.default.defaultProps);
+      var result = Object.assign({}, BasePicker.defaultProps);
       return result;
     }
   }]);
 
   function DateRangePicker(props) {
-    (0, _classCallCheck3.default)(this, DateRangePicker);
-    return (0, _possibleConstructorReturn3.default)(this, (DateRangePicker.__proto__ || Object.getPrototypeOf(DateRangePicker)).call(this, props, 'daterange', {}));
+    _classCallCheck(this, DateRangePicker);
+
+    return _possibleConstructorReturn(this, _BasePicker.call(this, props, 'daterange', {}));
   }
 
-  (0, _createClass3.default)(DateRangePicker, [{
-    key: 'getFormatSeparator',
-    value: function getFormatSeparator() {
-      return this.props.rangeSeparator;
+  DateRangePicker.prototype.getFormatSeparator = function getFormatSeparator() {
+    return this.props.rangeSeparator;
+  };
+
+  DateRangePicker.prototype.pickerPanel = function pickerPanel(state, props) {
+    var value = state.value;
+    if (value instanceof Date) {
+      value = [value, null];
     }
-  }, {
-    key: 'pickerPanel',
-    value: function pickerPanel(state, props) {
-      var value = state.value;
-      if (value instanceof Date) {
-        value = [value, null];
-      }
-      return _react2.default.createElement(_DateRangePanel2.default, (0, _extends3.default)({}, props, {
-        value: value,
-        onPick: this.onPicked.bind(this)
-      }));
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
+    return React.createElement(DateRangePanel, _extends({}, props, {
+      value: value,
+      onPick: this.onPicked.bind(this)
+    }));
+  };
+
   return DateRangePicker;
-}(_BasePicker3.default);
+}(BasePicker);
 
-var _default = DateRangePicker;
-exports.default = _default;
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(DateRangePicker, 'DateRangePicker', 'src/date-picker/DateRangePicker.jsx');
-  reactHotLoader.register(_default, 'default', 'src/date-picker/DateRangePicker.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();
+export default DateRangePicker;

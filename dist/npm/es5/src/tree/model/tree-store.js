@@ -1,43 +1,13 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof2 = require('babel-runtime/helpers/typeof');
-
-var _typeof3 = _interopRequireDefault(_typeof2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _node = require('./node');
-
-var _node2 = _interopRequireDefault(_node);
-
-var _util = require('./util');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _typeof from 'babel-runtime/helpers/typeof';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import Node from './node';
+import { getNodeKey } from './util';
 
 var TreeStore = function () {
   function TreeStore(options) {
     var _this = this;
 
-    (0, _classCallCheck3.default)(this, TreeStore);
+    _classCallCheck(this, TreeStore);
 
     this.currentNode = null;
     this.currentNodeKey = null;
@@ -50,7 +20,7 @@ var TreeStore = function () {
 
     this.nodesMap = {};
 
-    this.root = new _node2.default({
+    this.root = new Node({
       data: this.data,
       store: this
     });
@@ -66,345 +36,294 @@ var TreeStore = function () {
     }
   }
 
-  (0, _createClass3.default)(TreeStore, [{
-    key: 'filter',
-    value: function filter(value) {
-      var filterNodeMethod = this.filterNodeMethod;
-      var traverse = function traverse(node) {
-        var childNodes = node.root ? node.root.childNodes : node.childNodes;
+  TreeStore.prototype.filter = function filter(value) {
+    var filterNodeMethod = this.filterNodeMethod;
+    var traverse = function traverse(node) {
+      var childNodes = node.root ? node.root.childNodes : node.childNodes;
+
+      childNodes.forEach(function (child) {
+        child.visible = filterNodeMethod.call(child, value, child.data, child);
+
+        traverse(child);
+      });
+
+      if (!node.visible && childNodes.length) {
+        var allHidden = true;
 
         childNodes.forEach(function (child) {
-          child.visible = filterNodeMethod.call(child, value, child.data, child);
-
-          traverse(child);
+          if (child.visible) allHidden = false;
         });
 
-        if (!node.visible && childNodes.length) {
-          var allHidden = true;
-
-          childNodes.forEach(function (child) {
-            if (child.visible) allHidden = false;
-          });
-
-          if (node.root) {
-            node.root.visible = allHidden === false;
-          } else {
-            node.visible = allHidden === false;
-          }
+        if (node.root) {
+          node.root.visible = allHidden === false;
+        } else {
+          node.visible = allHidden === false;
         }
-
-        if (node.visible && !node.isLeaf) node.expand();
-      };
-      traverse(this);
-    }
-  }, {
-    key: 'setData',
-    value: function setData(newVal) {
-      var instanceChanged = newVal !== this.root.data;
-      this.root.setData(newVal);
-      if (instanceChanged) {
-        this._initDefaultCheckedNodes();
       }
+
+      if (node.visible && !node.isLeaf) node.expand();
+    };
+    traverse(this);
+  };
+
+  TreeStore.prototype.setData = function setData(newVal) {
+    var instanceChanged = newVal !== this.root.data;
+    this.root.setData(newVal);
+    if (instanceChanged) {
+      this._initDefaultCheckedNodes();
     }
-  }, {
-    key: 'getNode',
-    value: function getNode(data) {
-      var key = (typeof data === 'undefined' ? 'undefined' : (0, _typeof3.default)(data)) !== 'object' ? data : (0, _util.getNodeKey)(this.key, data);
-      return this.nodesMap[key];
+  };
+
+  TreeStore.prototype.getNode = function getNode(data) {
+    var key = (typeof data === 'undefined' ? 'undefined' : _typeof(data)) !== 'object' ? data : getNodeKey(this.key, data);
+    return this.nodesMap[key];
+  };
+
+  TreeStore.prototype.insertBefore = function insertBefore(data, refData) {
+    var refNode = this.getNode(refData);
+    refNode.parent.insertBefore({ data: data }, refNode);
+  };
+
+  TreeStore.prototype.insertAfter = function insertAfter(data, refData) {
+    var refNode = this.getNode(refData);
+    refNode.parent.insertAfter({ data: data }, refNode);
+  };
+
+  TreeStore.prototype.remove = function remove(data) {
+    var node = this.getNode(data);
+    if (node) {
+      node.parent.removeChild(node);
     }
-  }, {
-    key: 'insertBefore',
-    value: function insertBefore(data, refData) {
-      var refNode = this.getNode(refData);
-      refNode.parent.insertBefore({ data: data }, refNode);
+  };
+
+  TreeStore.prototype.append = function append(data, parentData) {
+    var parentNode = parentData ? this.getNode(parentData) : this.root;
+
+    if (parentNode) {
+      parentNode.insertChild({ data: data });
     }
-  }, {
-    key: 'insertAfter',
-    value: function insertAfter(data, refData) {
-      var refNode = this.getNode(refData);
-      refNode.parent.insertAfter({ data: data }, refNode);
-    }
-  }, {
-    key: 'remove',
-    value: function remove(data) {
-      var node = this.getNode(data);
+  };
+
+  TreeStore.prototype._initDefaultCheckedNodes = function _initDefaultCheckedNodes() {
+    var _this2 = this;
+
+    var defaultCheckedKeys = this.defaultCheckedKeys || [];
+    var nodesMap = this.nodesMap;
+
+    defaultCheckedKeys.forEach(function (checkedKey) {
+      var node = nodesMap[checkedKey];
+
       if (node) {
-        node.parent.removeChild(node);
+        node.setChecked(true, !_this2.checkStrictly);
       }
+    });
+  };
+
+  TreeStore.prototype._initDefaultCheckedNode = function _initDefaultCheckedNode(node) {
+    var defaultCheckedKeys = this.defaultCheckedKeys || [];
+
+    if (defaultCheckedKeys.indexOf(node.key) !== -1) {
+      node.setChecked(true, !this.checkStrictly);
     }
-  }, {
-    key: 'append',
-    value: function append(data, parentData) {
-      var parentNode = parentData ? this.getNode(parentData) : this.root;
+  };
 
-      if (parentNode) {
-        parentNode.insertChild({ data: data });
-      }
+  TreeStore.prototype.setDefaultCheckedKey = function setDefaultCheckedKey(newVal) {
+    if (newVal !== this.defaultCheckedKeys) {
+      this.defaultCheckedKeys = newVal;
+      this._initDefaultCheckedNodes();
     }
-  }, {
-    key: '_initDefaultCheckedNodes',
-    value: function _initDefaultCheckedNodes() {
-      var _this2 = this;
+  };
 
-      var defaultCheckedKeys = this.defaultCheckedKeys || [];
-      var nodesMap = this.nodesMap;
+  TreeStore.prototype.registerNode = function registerNode(node) {
+    var key = this.key;
+    if (!key || !node || !node.data) return;
 
-      defaultCheckedKeys.forEach(function (checkedKey) {
-        var node = nodesMap[checkedKey];
+    var nodeKey = node.key;
+    if (nodeKey !== undefined) this.nodesMap[node.key] = node;
+  };
 
-        if (node) {
-          node.setChecked(true, !_this2.checkStrictly);
+  TreeStore.prototype.deregisterNode = function deregisterNode(node) {
+    var key = this.key;
+    if (!key || !node || !node.data) return;
+
+    delete this.nodesMap[node.key];
+  };
+
+  TreeStore.prototype.getCheckedNodes = function getCheckedNodes() {
+    var leafOnly = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+    var checkedNodes = [];
+    var traverse = function traverse(node) {
+      var childNodes = node.root ? node.root.childNodes : node.childNodes;
+
+      childNodes.forEach(function (child) {
+        if (!leafOnly && child.checked || leafOnly && child.isLeaf && child.checked) {
+          checkedNodes.push(child.data);
         }
+
+        traverse(child);
       });
-    }
-  }, {
-    key: '_initDefaultCheckedNode',
-    value: function _initDefaultCheckedNode(node) {
-      var defaultCheckedKeys = this.defaultCheckedKeys || [];
+    };
 
-      if (defaultCheckedKeys.indexOf(node.key) !== -1) {
-        node.setChecked(true, !this.checkStrictly);
-      }
-    }
-  }, {
-    key: 'setDefaultCheckedKey',
-    value: function setDefaultCheckedKey(newVal) {
-      if (newVal !== this.defaultCheckedKeys) {
-        this.defaultCheckedKeys = newVal;
-        this._initDefaultCheckedNodes();
-      }
-    }
-  }, {
-    key: 'registerNode',
-    value: function registerNode(node) {
-      var key = this.key;
-      if (!key || !node || !node.data) return;
+    traverse(this);
 
-      var nodeKey = node.key;
-      if (nodeKey !== undefined) this.nodesMap[node.key] = node;
-    }
-  }, {
-    key: 'deregisterNode',
-    value: function deregisterNode(node) {
-      var key = this.key;
-      if (!key || !node || !node.data) return;
+    return checkedNodes;
+  };
 
-      delete this.nodesMap[node.key];
-    }
-  }, {
-    key: 'getCheckedNodes',
-    value: function getCheckedNodes() {
-      var leafOnly = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  TreeStore.prototype.getCheckedKeys = function getCheckedKeys() {
+    var leafOnly = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-      var checkedNodes = [];
-      var traverse = function traverse(node) {
-        var childNodes = node.root ? node.root.childNodes : node.childNodes;
-
-        childNodes.forEach(function (child) {
-          if (!leafOnly && child.checked || leafOnly && child.isLeaf && child.checked) {
-            checkedNodes.push(child.data);
-          }
-
-          traverse(child);
-        });
-      };
-
-      traverse(this);
-
-      return checkedNodes;
-    }
-  }, {
-    key: 'getCheckedKeys',
-    value: function getCheckedKeys() {
-      var leafOnly = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
-      var key = this.key;
-      var allNodes = this._getAllNodes();
-      var keys = [];
-      allNodes.forEach(function (node) {
-        if (!leafOnly || leafOnly && node.isLeaf) {
-          if (node.checked) {
-            keys.push((node.data || {})[key]);
-          }
-        }
-      });
-      return keys;
-    }
-  }, {
-    key: '_getAllNodes',
-    value: function _getAllNodes() {
-      var allNodes = [];
-      var nodesMap = this.nodesMap;
-      for (var nodeKey in nodesMap) {
-        if (nodesMap.hasOwnProperty(nodeKey)) {
-          allNodes.push(nodesMap[nodeKey]);
+    var key = this.key;
+    var allNodes = this._getAllNodes();
+    var keys = [];
+    allNodes.forEach(function (node) {
+      if (!leafOnly || leafOnly && node.isLeaf) {
+        if (node.checked) {
+          keys.push((node.data || {})[key]);
         }
       }
+    });
+    return keys;
+  };
 
-      return allNodes;
+  TreeStore.prototype._getAllNodes = function _getAllNodes() {
+    var allNodes = [];
+    var nodesMap = this.nodesMap;
+    for (var nodeKey in nodesMap) {
+      if (nodesMap.hasOwnProperty(nodeKey)) {
+        allNodes.push(nodesMap[nodeKey]);
+      }
     }
-  }, {
-    key: '_setCheckedKeys',
-    value: function _setCheckedKeys(key) {
-      var _this3 = this;
 
-      var leafOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var checkedKeys = arguments[2];
+    return allNodes;
+  };
 
-      var allNodes = this._getAllNodes();
-      allNodes.sort(function (a, b) {
-        return b.level - a.level;
-      });
+  TreeStore.prototype._setCheckedKeys = function _setCheckedKeys(key) {
+    var _this3 = this;
 
-      var keys = Object.keys(checkedKeys);
-      allNodes.forEach(function (node) {
-        var checked = keys.indexOf(node.data[key] + '') > -1;
+    var leafOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    var checkedKeys = arguments[2];
 
-        if (!node.isLeaf) {
-          if (!_this3.checkStrictly) {
-            var childNodes = node.childNodes;
+    var allNodes = this._getAllNodes();
+    allNodes.sort(function (a, b) {
+      return b.level - a.level;
+    });
 
-            var all = true;
-            var none = true;
+    var keys = Object.keys(checkedKeys);
+    allNodes.forEach(function (node) {
+      var checked = keys.indexOf(node.data[key] + '') > -1;
 
-            for (var i = 0, j = childNodes.length; i < j; i++) {
-              var child = childNodes[i];
-              if (child.checked !== true || child.indeterminate) {
-                all = false;
-              }
-              if (child.checked !== false || child.indeterminate) {
-                none = false;
-              }
+      if (!node.isLeaf) {
+        if (!_this3.checkStrictly) {
+          var childNodes = node.childNodes;
+
+          var all = true;
+          var none = true;
+
+          for (var i = 0, j = childNodes.length; i < j; i++) {
+            var child = childNodes[i];
+            if (child.checked !== true || child.indeterminate) {
+              all = false;
             }
-
-            if (all) {
-              node.setChecked(true, !_this3.checkStrictly);
-            } else if (!all && !none) {
-              checked = checked ? true : 'half';
-              node.setChecked(checked, !_this3.checkStrictly && checked === true);
-            } else if (none) {
-              node.setChecked(checked, !_this3.checkStrictly);
+            if (child.checked !== false || child.indeterminate) {
+              none = false;
             }
-          } else {
-            node.setChecked(checked, false);
           }
 
-          if (leafOnly) {
-            node.setChecked(false, false);
-            var traverse = function traverse(node) {
-              var childNodes = node.childNodes;
-
-              childNodes.forEach(function (child) {
-                if (!child.isLeaf) {
-                  child.setChecked(false, false);
-                }
-                traverse(child);
-              });
-            };
-
-            traverse(node);
+          if (all) {
+            node.setChecked(true, !_this3.checkStrictly);
+          } else if (!all && !none) {
+            checked = checked ? true : 'half';
+            node.setChecked(checked, !_this3.checkStrictly && checked === true);
+          } else if (none) {
+            node.setChecked(checked, !_this3.checkStrictly);
           }
         } else {
           node.setChecked(checked, false);
         }
-      });
-    }
-  }, {
-    key: 'setCheckedNodes',
-    value: function setCheckedNodes(array) {
-      var leafOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-      var key = this.key;
-      var checkedKeys = {};
-      array.forEach(function (item) {
-        checkedKeys[(item || {})[key]] = true;
-      });
+        if (leafOnly) {
+          node.setChecked(false, false);
+          var traverse = function traverse(node) {
+            var childNodes = node.childNodes;
 
-      this._setCheckedKeys(key, leafOnly, checkedKeys);
-    }
-  }, {
-    key: 'setCheckedKeys',
-    value: function setCheckedKeys(keys) {
-      var leafOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+            childNodes.forEach(function (child) {
+              if (!child.isLeaf) {
+                child.setChecked(false, false);
+              }
+              traverse(child);
+            });
+          };
 
-      this.defaultCheckedKeys = keys;
-      var key = this.key;
-      var checkedKeys = {};
-      keys.forEach(function (key) {
-        checkedKeys[key] = true;
-      });
-
-      this._setCheckedKeys(key, leafOnly, checkedKeys);
-    }
-  }, {
-    key: 'setDefaultExpandedKeys',
-    value: function setDefaultExpandedKeys(keys) {
-      var _this4 = this;
-
-      keys = keys || [];
-      this.defaultExpandedKeys = keys;
-
-      keys.forEach(function (key) {
-        var node = _this4.getNode(key);
-        if (node) node.expand(null, _this4.autoExpandParent);
-      });
-    }
-  }, {
-    key: 'setChecked',
-    value: function setChecked(data, checked, deep) {
-      var node = this.getNode(data);
-
-      if (node) {
-        node.setChecked(!!checked, deep);
+          traverse(node);
+        }
+      } else {
+        node.setChecked(checked, false);
       }
+    });
+  };
+
+  TreeStore.prototype.setCheckedNodes = function setCheckedNodes(array) {
+    var leafOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    var key = this.key;
+    var checkedKeys = {};
+    array.forEach(function (item) {
+      checkedKeys[(item || {})[key]] = true;
+    });
+
+    this._setCheckedKeys(key, leafOnly, checkedKeys);
+  };
+
+  TreeStore.prototype.setCheckedKeys = function setCheckedKeys(keys) {
+    var leafOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    this.defaultCheckedKeys = keys;
+    var key = this.key;
+    var checkedKeys = {};
+    keys.forEach(function (key) {
+      checkedKeys[key] = true;
+    });
+
+    this._setCheckedKeys(key, leafOnly, checkedKeys);
+  };
+
+  TreeStore.prototype.setDefaultExpandedKeys = function setDefaultExpandedKeys(keys) {
+    var _this4 = this;
+
+    keys = keys || [];
+    this.defaultExpandedKeys = keys;
+
+    keys.forEach(function (key) {
+      var node = _this4.getNode(key);
+      if (node) node.expand(null, _this4.autoExpandParent);
+    });
+  };
+
+  TreeStore.prototype.setChecked = function setChecked(data, checked, deep) {
+    var node = this.getNode(data);
+
+    if (node) {
+      node.setChecked(!!checked, deep);
     }
-  }, {
-    key: 'getCurrentNode',
-    value: function getCurrentNode() {
-      return this.currentNode;
-    }
-  }, {
-    key: 'setCurrentNode',
-    value: function setCurrentNode(node) {
+  };
+
+  TreeStore.prototype.getCurrentNode = function getCurrentNode() {
+    return this.currentNode;
+  };
+
+  TreeStore.prototype.setCurrentNode = function setCurrentNode(node) {
+    this.currentNode = node;
+  };
+
+  TreeStore.prototype.setCurrentNodeKey = function setCurrentNodeKey(key) {
+    var node = this.getNode(key);
+    if (node) {
       this.currentNode = node;
     }
-  }, {
-    key: 'setCurrentNodeKey',
-    value: function setCurrentNodeKey(key) {
-      var node = this.getNode(key);
-      if (node) {
-        this.currentNode = node;
-      }
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
+  };
+
   return TreeStore;
 }();
 
-var _default = TreeStore;
-exports.default = _default;
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(TreeStore, 'TreeStore', 'src/tree/model/tree-store.js');
-  reactHotLoader.register(_default, 'default', 'src/tree/model/tree-store.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();
+export default TreeStore;

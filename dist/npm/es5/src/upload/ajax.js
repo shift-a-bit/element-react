@@ -1,19 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = upload;
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
 function getError(action, option, xhr) {
   var msg = void 0;
   if (xhr.response) {
@@ -44,7 +28,7 @@ function getBody(xhr) {
   }
 }
 
-function upload(option) {
+export default function upload(option) {
   if (typeof XMLHttpRequest === 'undefined') {
     return;
   }
@@ -99,23 +83,3 @@ function upload(option) {
   xhr.send(formData);
   return xhr;
 }
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(getError, 'getError', 'src/upload/ajax.js');
-  reactHotLoader.register(getBody, 'getBody', 'src/upload/ajax.js');
-  reactHotLoader.register(upload, 'upload', 'src/upload/ajax.js');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

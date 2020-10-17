@@ -1,29 +1,8 @@
-'use strict';
+import React from 'react';
+import { mount } from 'enzyme';
+import sinon from 'sinon';
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _enzyme = require('enzyme');
-
-var _sinon = require('sinon');
-
-var _sinon2 = _interopRequireDefault(_sinon);
-
-var _ = require('../');
-
-var _2 = _interopRequireDefault(_);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import Cascader from '../';
 
 var options = [{
   value: 'zhinan',
@@ -43,7 +22,7 @@ function clickShowPopper(wrap) {
 }
 
 test('basic usage', function () {
-  var component = (0, _enzyme.mount)(_react2.default.createElement(_2.default, {
+  var component = mount(React.createElement(Cascader, {
     options: options,
     popperClass: 'popper-class',
     placeholder: 'enter',
@@ -73,7 +52,7 @@ test('basic usage', function () {
 });
 
 test('hover expand', function () {
-  var component = (0, _enzyme.mount)(_react2.default.createElement(_2.default, { options: options, expandTrigger: 'hover' }));
+  var component = mount(React.createElement(Cascader, { options: options, expandTrigger: 'hover' }));
 
   clickShowPopper(component);
   component.find('.el-cascader-menu').childAt(0).simulate('mouseEnter');
@@ -96,7 +75,7 @@ test('disabled', function () {
       }]
     }]
   }];
-  var component = (0, _enzyme.mount)(_react2.default.createElement(_2.default, { options: options }));
+  var component = mount(React.createElement(Cascader, { options: options }));
 
   clickShowPopper(component);
   expect(component.find('.el-cascader-menu').first().childAt(0).hasClass('is-disabled')).toBeTruthy();
@@ -105,7 +84,7 @@ test('disabled', function () {
 });
 
 test('value', function () {
-  var component = (0, _enzyme.mount)(_react2.default.createElement(_2.default, { options: options, value: ['zhinan', 'shejiyuanze', 'yizhi'] }));
+  var component = mount(React.createElement(Cascader, { options: options, value: ['zhinan', 'shejiyuanze', 'yizhi'] }));
 
   clickShowPopper(component);
   expect(component.find('.el-cascader-menu').at(0).childAt(0).hasClass('is-active')).toBeTruthy();
@@ -115,7 +94,7 @@ test('value', function () {
 });
 
 test('not show all levels', function () {
-  var component = (0, _enzyme.mount)(_react2.default.createElement(_2.default, { options: options, value: ['zhinan', 'shejiyuanze', 'yizhi'], showAllLevels: false }));
+  var component = mount(React.createElement(Cascader, { options: options, value: ['zhinan', 'shejiyuanze', 'yizhi'], showAllLevels: false }));
 
   clickShowPopper(component);
   component.find('.el-cascader-menu').at(0).childAt(0).simulate('click');
@@ -125,8 +104,8 @@ test('not show all levels', function () {
 });
 
 test('clearable', function () {
-  var cb = _sinon2.default.spy();
-  var component = (0, _enzyme.mount)(_react2.default.createElement(_2.default, { options: options, value: ['zhinan', 'shejiyuanze', 'yizhi'], clearable: true, onChange: cb }));
+  var cb = sinon.spy();
+  var component = mount(React.createElement(Cascader, { options: options, value: ['zhinan', 'shejiyuanze', 'yizhi'], clearable: true, onChange: cb }));
 
   component.children().children().childAt(0).simulate('mouseEnter');
   component.find('.el-cascader__clearIcon').first().simulate('click');
@@ -135,8 +114,8 @@ test('clearable', function () {
 });
 
 test('change', function () {
-  var cb = _sinon2.default.spy();
-  var component = (0, _enzyme.mount)(_react2.default.createElement(_2.default, { options: options, onChange: cb }));
+  var cb = sinon.spy();
+  var component = mount(React.createElement(Cascader, { options: options, onChange: cb }));
 
   clickShowPopper(component);
   component.find('.el-cascader-menu').at(0).childAt(0).simulate('click');
@@ -147,8 +126,8 @@ test('change', function () {
 });
 
 test('change on select', function () {
-  var cb = _sinon2.default.spy();
-  var component = (0, _enzyme.mount)(_react2.default.createElement(_2.default, { options: options, onChange: cb, changeOnSelect: true }));
+  var cb = sinon.spy();
+  var component = mount(React.createElement(Cascader, { options: options, onChange: cb, changeOnSelect: true }));
 
   clickShowPopper(component);
   component.find('.el-cascader-menu').at(0).childAt(0).simulate('click');
@@ -159,30 +138,11 @@ test('change on select', function () {
 });
 
 test('active item change', function () {
-  var cb = _sinon2.default.spy();
-  var component = (0, _enzyme.mount)(_react2.default.createElement(_2.default, { options: options, activeItemChange: cb }));
+  var cb = sinon.spy();
+  var component = mount(React.createElement(Cascader, { options: options, activeItemChange: cb }));
 
   clickShowPopper(component);
   component.find('.el-cascader-menu').at(0).childAt(0).simulate('click');
 
   expect(cb.callCount).toBe(1);
 });
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(options, 'options', 'src/cascader/__test__/Cascader_test.jsx');
-  reactHotLoader.register(clickShowPopper, 'clickShowPopper', 'src/cascader/__test__/Cascader_test.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

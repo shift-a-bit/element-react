@@ -156,6 +156,14 @@ export default class Upload extends Component {
     });
   }
 
+  isFileSelected(): boolean {
+    if(this.state.fileList && this.state.fileList.length){
+      return true;
+    } else {
+      return false;
+    }      
+  }
+
   submit(): void {
     this.state.fileList
       .filter(file => file.status === 'ready')

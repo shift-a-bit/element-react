@@ -1,61 +1,20 @@
-'use strict';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ClickOutside from 'react-click-outside';
+import { Component, PropTypes } from '../../libs';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactClickOutside = require('react-click-outside');
-
-var _reactClickOutside2 = _interopRequireDefault(_reactClickOutside);
-
-var _libs = require('../../libs');
-
-var _button = require('../button');
-
-var _button2 = _interopRequireDefault(_button);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import Button from '../button';
 
 var Dropdown = function (_Component) {
-  (0, _inherits3.default)(Dropdown, _Component);
+  _inherits(Dropdown, _Component);
 
   function Dropdown(props) {
-    (0, _classCallCheck3.default)(this, Dropdown);
+    _classCallCheck(this, Dropdown);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Dropdown.__proto__ || Object.getPrototypeOf(Dropdown)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.state = {
       visible: false
@@ -63,157 +22,139 @@ var Dropdown = function (_Component) {
     return _this;
   }
 
-  (0, _createClass3.default)(Dropdown, [{
-    key: 'getChildContext',
-    value: function getChildContext() {
-      return {
-        component: this
-      };
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.initEvent();
-    }
-  }, {
-    key: 'componentWillUpdate',
-    value: function componentWillUpdate(props, state) {
-      if (state.visible != this.state.visible) {
-        this.refs.dropdown.onVisibleChange(state.visible);
+  Dropdown.prototype.getChildContext = function getChildContext() {
+    return {
+      component: this
+    };
+  };
 
-        if (this.props.onVisibleChange) {
-          this.props.onVisibleChange(state.visible);
-        }
+  Dropdown.prototype.componentDidMount = function componentDidMount() {
+    this.initEvent();
+  };
+
+  Dropdown.prototype.componentWillUpdate = function componentWillUpdate(props, state) {
+    if (state.visible != this.state.visible) {
+      this.refs.dropdown.onVisibleChange(state.visible);
+
+      if (this.props.onVisibleChange) {
+        this.props.onVisibleChange(state.visible);
       }
     }
-  }, {
-    key: 'handleClickOutside',
-    value: function handleClickOutside() {
-      if (this.state.visible) {
-        this.setState({ visible: false });
-      }
+  };
+
+  Dropdown.prototype.handleClickOutside = function handleClickOutside() {
+    if (this.state.visible) {
+      this.setState({ visible: false });
     }
-  }, {
-    key: 'show',
-    value: function show() {
-      var _this2 = this;
+  };
 
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(function () {
-        return _this2.setState({ visible: true });
-      }, 250);
+  Dropdown.prototype.show = function show() {
+    var _this2 = this;
+
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(function () {
+      return _this2.setState({ visible: true });
+    }, 250);
+  };
+
+  Dropdown.prototype.hide = function hide() {
+    var _this3 = this;
+
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(function () {
+      return _this3.setState({ visible: false });
+    }, 150);
+  };
+
+  Dropdown.prototype.handleClick = function handleClick() {
+    this.setState({ visible: !this.state.visible });
+  };
+
+  Dropdown.prototype.initEvent = function initEvent() {
+    var _props = this.props,
+        trigger = _props.trigger,
+        splitButton = _props.splitButton;
+
+    var triggerElm = ReactDOM.findDOMNode(splitButton ? this.refs.trigger : this.refs.default);
+
+    if (trigger === 'hover') {
+      triggerElm.addEventListener('mouseenter', this.show.bind(this));
+      triggerElm.addEventListener('mouseleave', this.hide.bind(this));
+
+      var dropdownElm = ReactDOM.findDOMNode(this.refs.dropdown);
+
+      dropdownElm.addEventListener('mouseenter', this.show.bind(this));
+      dropdownElm.addEventListener('mouseleave', this.hide.bind(this));
+    } else if (trigger === 'click') {
+      triggerElm.addEventListener('click', this.handleClick.bind(this));
     }
-  }, {
-    key: 'hide',
-    value: function hide() {
-      var _this3 = this;
+  };
 
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(function () {
-        return _this3.setState({ visible: false });
-      }, 150);
+  Dropdown.prototype.handleMenuItemClick = function handleMenuItemClick(command, instance) {
+    var _this4 = this;
+
+    if (this.props.hideOnClick) {
+      this.setState({
+        visible: false
+      });
     }
-  }, {
-    key: 'handleClick',
-    value: function handleClick() {
-      this.setState({ visible: !this.state.visible });
+
+    if (this.props.onCommand) {
+      setTimeout(function () {
+        _this4.props.onCommand(command, instance);
+      });
     }
-  }, {
-    key: 'initEvent',
-    value: function initEvent() {
-      var _props = this.props,
-          trigger = _props.trigger,
-          splitButton = _props.splitButton;
+  };
 
-      var triggerElm = _reactDom2.default.findDOMNode(splitButton ? this.refs.trigger : this.refs.default);
-
-      if (trigger === 'hover') {
-        triggerElm.addEventListener('mouseenter', this.show.bind(this));
-        triggerElm.addEventListener('mouseleave', this.hide.bind(this));
-
-        var dropdownElm = _reactDom2.default.findDOMNode(this.refs.dropdown);
-
-        dropdownElm.addEventListener('mouseenter', this.show.bind(this));
-        dropdownElm.addEventListener('mouseleave', this.hide.bind(this));
-      } else if (trigger === 'click') {
-        triggerElm.addEventListener('click', this.handleClick.bind(this));
-      }
-    }
-  }, {
-    key: 'handleMenuItemClick',
-    value: function handleMenuItemClick(command, instance) {
-      var _this4 = this;
-
-      if (this.props.hideOnClick) {
-        this.setState({
-          visible: false
-        });
-      }
-
-      if (this.props.onCommand) {
-        setTimeout(function () {
-          _this4.props.onCommand(command, instance);
-        });
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props2 = this.props,
-          splitButton = _props2.splitButton,
-          type = _props2.type,
-          size = _props2.size,
-          menu = _props2.menu;
+  Dropdown.prototype.render = function render() {
+    var _props2 = this.props,
+        splitButton = _props2.splitButton,
+        type = _props2.type,
+        size = _props2.size,
+        menu = _props2.menu;
 
 
-      return _react2.default.createElement(
-        'div',
-        { style: this.style(), className: this.className('el-dropdown') },
-        splitButton ? _react2.default.createElement(
-          _button2.default.Group,
-          null,
-          _react2.default.createElement(
-            _button2.default,
-            { type: type, size: size, onClick: this.props.onClick.bind(this) },
-            this.props.children
-          ),
-          _react2.default.createElement(
-            _button2.default,
-            { ref: 'trigger', type: type, size: size, className: 'el-dropdown__caret-button' },
-            _react2.default.createElement('i', { className: 'el-dropdown__icon el-icon-caret-bottom' })
-          )
-        ) : _react2.default.cloneElement(this.props.children, { ref: 'default' }),
-        _react2.default.cloneElement(menu, {
-          ref: 'dropdown'
-        })
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
+    return React.createElement(
+      'div',
+      { style: this.style(), className: this.className('el-dropdown') },
+      splitButton ? React.createElement(
+        Button.Group,
+        null,
+        React.createElement(
+          Button,
+          { type: type, size: size, onClick: this.props.onClick.bind(this) },
+          this.props.children
+        ),
+        React.createElement(
+          Button,
+          { ref: 'trigger', type: type, size: size, className: 'el-dropdown__caret-button' },
+          React.createElement('i', { className: 'el-dropdown__icon el-icon-caret-bottom' })
+        )
+      ) : React.cloneElement(this.props.children, { ref: 'default' }),
+      React.cloneElement(menu, {
+        ref: 'dropdown'
+      })
+    );
+  };
+
   return Dropdown;
-}(_libs.Component);
+}(Component);
 
 Dropdown.childContextTypes = {
-  component: _libs.PropTypes.any
+  component: PropTypes.any
 };
 
 Dropdown.propTypes = {
-  menu: _libs.PropTypes.node.isRequired,
-  type: _libs.PropTypes.string,
-  size: _libs.PropTypes.string,
-  trigger: _libs.PropTypes.oneOf(['hover', 'click']),
-  menuAlign: _libs.PropTypes.oneOf(['start', 'end']),
-  splitButton: _libs.PropTypes.bool,
-  hideOnClick: _libs.PropTypes.bool,
-  onClick: _libs.PropTypes.func,
-  onCommand: _libs.PropTypes.func,
-  onVisibleChange: _libs.PropTypes.func
+  menu: PropTypes.node.isRequired,
+  type: PropTypes.string,
+  size: PropTypes.string,
+  trigger: PropTypes.oneOf(['hover', 'click']),
+  menuAlign: PropTypes.oneOf(['start', 'end']),
+  splitButton: PropTypes.bool,
+  hideOnClick: PropTypes.bool,
+  onClick: PropTypes.func,
+  onCommand: PropTypes.func,
+  onVisibleChange: PropTypes.func
 };
 
 Dropdown.defaultProps = {
@@ -222,25 +163,4 @@ Dropdown.defaultProps = {
   menuAlign: 'end'
 };
 
-var _default = (0, _reactClickOutside2.default)(Dropdown);
-
-exports.default = _default;
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Dropdown, 'Dropdown', 'src/dropdown/Dropdown.jsx');
-  reactHotLoader.register(_default, 'default', 'src/dropdown/Dropdown.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();
+export default ClickOutside(Dropdown);

@@ -1,57 +1,13 @@
-'use strict';
+import _extends from 'babel-runtime/helpers/extends';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { debounce } from 'throttle-debounce';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _throttleDebounce = require('throttle-debounce');
-
-var _libs = require('../../libs');
-
-var _utils = require('../../libs/utils');
-
-var _checkbox = require('../checkbox');
-
-var _checkbox2 = _interopRequireDefault(_checkbox);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import { PropTypes, Component, CollapseTransition } from '../../libs';
+import { watchPropertyChange, IDGenerator } from '../../libs/utils';
+import Checkbox from '../checkbox';
 
 function NodeContent(_ref) {
   var context = _ref.context,
@@ -64,7 +20,7 @@ function NodeContent(_ref) {
   if (typeof renderContent === 'function') {
     return renderContent(nodeModel, nodeModel.data, treeNode.store);
   } else {
-    return _react2.default.createElement(
+    return React.createElement(
       'span',
       { className: 'el-tree-node__label' },
       nodeModel.label
@@ -73,17 +29,17 @@ function NodeContent(_ref) {
 }
 
 NodeContent.propTypes = {
-  renderContent: _libs.PropTypes.func,
-  context: _libs.PropTypes.object.isRequired
+  renderContent: PropTypes.func,
+  context: PropTypes.object.isRequired
 };
 
 var Node = function (_Component) {
-  (0, _inherits3.default)(Node, _Component);
+  _inherits(Node, _Component);
 
   function Node(props) {
-    (0, _classCallCheck3.default)(this, Node);
+    _classCallCheck(this, Node);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Node.__proto__ || Object.getPrototypeOf(Node)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.state = {
       childNodeRendered: false,
@@ -93,274 +49,253 @@ var Node = function (_Component) {
 
     _this.oldChecked = false;
     _this.oldIndeterminate = false;
-    _this.idGen = new _utils.IDGenerator();
+    _this.idGen = new IDGenerator();
     return _this;
   }
 
-  (0, _createClass3.default)(Node, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this,
-          _watchers;
+  Node.prototype.componentDidMount = function componentDidMount() {
+    var _this2 = this,
+        _watchers;
 
-      var nodeModel = this.props.nodeModel;
-      var childrenKey = this.props.options.children || 'children';
+    var nodeModel = this.props.nodeModel;
+    var childrenKey = this.props.options.children || 'children';
 
-      var triggerChange = (0, _throttleDebounce.debounce)(20, function () {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
+    var triggerChange = debounce(20, function () {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
 
-        if (_this2.isDeconstructed) return;
-        _this2.handleSelectChange.apply(_this2, args);
+      if (_this2.isDeconstructed) return;
+      _this2.handleSelectChange.apply(_this2, args);
+    });
+
+    this.loadHandler = this.enhanceLoad(nodeModel);
+    this.watchers = (_watchers = {}, _watchers[this.idGen.next()] = watchPropertyChange(nodeModel, 'indeterminate', function (value) {
+      triggerChange(nodeModel.checked, value);
+    }), _watchers[this.idGen.next()] = watchPropertyChange(nodeModel, 'checked', function (value) {
+      triggerChange(value, nodeModel.indeterminate);
+    }), _watchers[this.idGen.next()] = watchPropertyChange(nodeModel, 'loading', function () {
+      _this2.setState({});
+    }), _watchers);
+
+    if (nodeModel.data != null) {
+      this.watchers[this.idGen.next()] = watchPropertyChange(nodeModel.data, childrenKey, function () {
+        nodeModel.updateChildren();
+        _this2.setState({}); //force update view
       });
+    }
+  };
 
-      this.loadHandler = this.enhanceLoad(nodeModel);
-      this.watchers = (_watchers = {}, (0, _defineProperty3.default)(_watchers, this.idGen.next(), (0, _utils.watchPropertyChange)(nodeModel, 'indeterminate', function (value) {
-        triggerChange(nodeModel.checked, value);
-      })), (0, _defineProperty3.default)(_watchers, this.idGen.next(), (0, _utils.watchPropertyChange)(nodeModel, 'checked', function (value) {
-        triggerChange(value, nodeModel.indeterminate);
-      })), (0, _defineProperty3.default)(_watchers, this.idGen.next(), (0, _utils.watchPropertyChange)(nodeModel, 'loading', function () {
-        _this2.setState({});
-      })), _watchers);
-
-      if (nodeModel.data != null) {
-        this.watchers[this.idGen.next()] = (0, _utils.watchPropertyChange)(nodeModel.data, childrenKey, function () {
-          nodeModel.updateChildren();
-          _this2.setState({}); //force update view
-        });
+  Node.prototype.componentWillUnmount = function componentWillUnmount() {
+    this.loadHandler();
+    // clear watchs
+    for (var w in this.watchers) {
+      if (this.watchers[w]) {
+        this.watchers[w]();
       }
     }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.loadHandler();
-      // clear watchs
-      for (var w in this.watchers) {
-        if (this.watchers[w]) {
-          this.watchers[w]();
-        }
-      }
-      this.isDeconstructed = true;
-    }
-  }, {
-    key: 'enhanceLoad',
-    value: function enhanceLoad(nodeModel) {
-      var _this3 = this;
+    this.isDeconstructed = true;
+  };
 
-      var load = nodeModel.load;
-      var enhanced = function enhanced() {
-        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-          args[_key2] = arguments[_key2];
-        }
+  Node.prototype.enhanceLoad = function enhanceLoad(nodeModel) {
+    var _this3 = this;
 
-        load.apply(null, args);
-        _this3.setState({});
-      };
-      nodeModel.load = enhanced;
-      return function () {
-        nodeModel.load = load;
-      };
-    }
-  }, {
-    key: 'handleSelectChange',
-    value: function handleSelectChange(checked, indeterminate) {
-      var _props = this.props,
-          onCheckChange = _props.onCheckChange,
-          nodeModel = _props.nodeModel;
-
-      // !NOTE: 原码是 && 的关系，感觉有bug
-
-      if (this.oldChecked !== checked || this.oldIndeterminate !== indeterminate) {
-        onCheckChange(nodeModel.data, checked, indeterminate);
-        this.setState({}); //force update
+    var load = nodeModel.load;
+    var enhanced = function enhanced() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
       }
 
-      this.oldChecked = checked;
-      this.oldIndeterminate = indeterminate;
+      load.apply(null, args);
+      _this3.setState({});
+    };
+    nodeModel.load = enhanced;
+    return function () {
+      nodeModel.load = load;
+    };
+  };
+
+  Node.prototype.handleSelectChange = function handleSelectChange(checked, indeterminate) {
+    var _props = this.props,
+        onCheckChange = _props.onCheckChange,
+        nodeModel = _props.nodeModel;
+
+    // !NOTE: 原码是 && 的关系，感觉有bug
+
+    if (this.oldChecked !== checked || this.oldIndeterminate !== indeterminate) {
+      onCheckChange(nodeModel.data, checked, indeterminate);
+      this.setState({}); //force update
     }
-  }, {
-    key: 'getNodeKey',
-    value: function getNodeKey(node, otherwise) {
-      var nodeKey = this.props.nodeKey;
-      if (nodeKey && node) {
-        return node.data[nodeKey];
-      }
-      return otherwise;
+
+    this.oldChecked = checked;
+    this.oldIndeterminate = indeterminate;
+  };
+
+  Node.prototype.getNodeKey = function getNodeKey(node, otherwise) {
+    var nodeKey = this.props.nodeKey;
+    if (nodeKey && node) {
+      return node.data[nodeKey];
     }
-  }, {
-    key: 'handleClick',
-    value: function handleClick(evt) {
-      if (evt) evt.stopPropagation();
-      var _props2 = this.props,
-          nodeModel = _props2.nodeModel,
-          treeNode = _props2.treeNode;
+    return otherwise;
+  };
+
+  Node.prototype.handleClick = function handleClick(evt) {
+    if (evt) evt.stopPropagation();
+    var _props2 = this.props,
+        nodeModel = _props2.nodeModel,
+        treeNode = _props2.treeNode;
 
 
-      treeNode.setCurrentNode(this);
-      if (treeNode.props.expandOnClickNode) {
-        this.handleExpandIconClick();
-      }
+    treeNode.setCurrentNode(this);
+    if (treeNode.props.expandOnClickNode) {
+      this.handleExpandIconClick();
     }
-  }, {
-    key: 'handleExpandIconClick',
-    value: function handleExpandIconClick(evt) {
-      var _this4 = this;
+  };
 
-      if (evt) evt.stopPropagation();
+  Node.prototype.handleExpandIconClick = function handleExpandIconClick(evt) {
+    var _this4 = this;
 
-      var _props3 = this.props,
-          nodeModel = _props3.nodeModel,
-          parent = _props3.parent;
-      var _props$treeNode$props = this.props.treeNode.props,
-          onNodeCollapse = _props$treeNode$props.onNodeCollapse,
-          onNodeExpand = _props$treeNode$props.onNodeExpand;
+    if (evt) evt.stopPropagation();
+
+    var _props3 = this.props,
+        nodeModel = _props3.nodeModel,
+        parent = _props3.parent;
+    var _props$treeNode$props = this.props.treeNode.props,
+        onNodeCollapse = _props$treeNode$props.onNodeCollapse,
+        onNodeExpand = _props$treeNode$props.onNodeExpand;
 
 
-      if (nodeModel.isLeaf) return;
+    if (nodeModel.isLeaf) return;
 
-      if (nodeModel.expanded) {
-        nodeModel.collapse();
-        this.refresh();
-        onNodeCollapse(nodeModel.data, nodeModel, this);
-      } else {
-        nodeModel.expand(function () {
-          _this4.setState({ childNodeRendered: true }, function () {
-            onNodeExpand(nodeModel.data, nodeModel, _this4);
-          });
-          parent.closeSiblings(nodeModel);
-        });
-      }
-    }
-  }, {
-    key: 'closeSiblings',
-    value: function closeSiblings(exclude) {
-      var _props4 = this.props,
-          treeNode = _props4.treeNode,
-          nodeModel = _props4.nodeModel;
-
-      if (!treeNode.props.accordion) return;
-      if (nodeModel.isLeaf || !nodeModel.childNodes || !nodeModel.childNodes.length) return;
-
-      nodeModel.childNodes.filter(function (e) {
-        return e !== exclude;
-      }).forEach(function (e) {
-        return e.collapse();
-      });
+    if (nodeModel.expanded) {
+      nodeModel.collapse();
       this.refresh();
+      onNodeCollapse(nodeModel.data, nodeModel, this);
+    } else {
+      nodeModel.expand(function () {
+        _this4.setState({ childNodeRendered: true }, function () {
+          onNodeExpand(nodeModel.data, nodeModel, _this4);
+        });
+        parent.closeSiblings(nodeModel);
+      });
     }
-  }, {
-    key: 'refresh',
-    value: function refresh() {
-      this.setState({});
+  };
+
+  Node.prototype.closeSiblings = function closeSiblings(exclude) {
+    var _props4 = this.props,
+        treeNode = _props4.treeNode,
+        nodeModel = _props4.nodeModel;
+
+    if (!treeNode.props.accordion) return;
+    if (nodeModel.isLeaf || !nodeModel.childNodes || !nodeModel.childNodes.length) return;
+
+    nodeModel.childNodes.filter(function (e) {
+      return e !== exclude;
+    }).forEach(function (e) {
+      return e.collapse();
+    });
+    this.refresh();
+  };
+
+  Node.prototype.refresh = function refresh() {
+    this.setState({});
+  };
+
+  Node.prototype.handleUserClick = function handleUserClick() {
+    var _props$treeNode = this.props.treeNode,
+        nodeModel = _props$treeNode.nodeModel,
+        checkStrictly = _props$treeNode.checkStrictly;
+
+    if (nodeModel.indeterminate) {
+      nodeModel.setChecked(nodeModel.checked, !checkStrictly);
     }
-  }, {
-    key: 'handleUserClick',
-    value: function handleUserClick() {
-      var _props$treeNode = this.props.treeNode,
-          nodeModel = _props$treeNode.nodeModel,
-          checkStrictly = _props$treeNode.checkStrictly;
+  };
 
-      if (nodeModel.indeterminate) {
-        nodeModel.setChecked(nodeModel.checked, !checkStrictly);
-      }
-    }
-  }, {
-    key: 'handleCheckChange',
-    value: function handleCheckChange(checked) {
-      this.props.nodeModel.setChecked(checked, true);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this5 = this;
+  Node.prototype.handleCheckChange = function handleCheckChange(checked) {
+    this.props.nodeModel.setChecked(checked, true);
+  };
 
-      var childNodeRendered = this.state.childNodeRendered;
-      var _props5 = this.props,
-          treeNode = _props5.treeNode,
-          nodeModel = _props5.nodeModel,
-          renderContent = _props5.renderContent,
-          isShowCheckbox = _props5.isShowCheckbox;
+  Node.prototype.render = function render() {
+    var _this5 = this;
+
+    var childNodeRendered = this.state.childNodeRendered;
+    var _props5 = this.props,
+        treeNode = _props5.treeNode,
+        nodeModel = _props5.nodeModel,
+        renderContent = _props5.renderContent,
+        isShowCheckbox = _props5.isShowCheckbox;
 
 
-      var expanded = nodeModel.expanded;
+    var expanded = nodeModel.expanded;
 
-      return _react2.default.createElement(
+    return React.createElement(
+      'div',
+      {
+        onClick: this.handleClick.bind(this),
+        className: this.classNames('el-tree-node', {
+          expanded: childNodeRendered && expanded,
+          'is-current': treeNode.getCurrentNode() === this,
+          'is-hidden': !nodeModel.visible
+        }),
+        style: { display: nodeModel.visible ? '' : 'none' }
+      },
+      React.createElement(
         'div',
         {
-          onClick: this.handleClick.bind(this),
-          className: this.classNames('el-tree-node', {
-            expanded: childNodeRendered && expanded,
-            'is-current': treeNode.getCurrentNode() === this,
-            'is-hidden': !nodeModel.visible
-          }),
-          style: { display: nodeModel.visible ? '' : 'none' }
+          className: 'el-tree-node__content',
+          style: { paddingLeft: (nodeModel.level - 1) * treeNode.props.indent + 'px' }
         },
-        _react2.default.createElement(
-          'div',
-          {
-            className: 'el-tree-node__content',
-            style: { paddingLeft: (nodeModel.level - 1) * treeNode.props.indent + 'px' }
-          },
-          _react2.default.createElement('span', {
-            className: this.classNames('el-tree-node__expand-icon', {
-              'is-leaf': nodeModel.isLeaf,
-              expanded: !nodeModel.isLeaf && expanded
-            }),
-            onClick: this.handleExpandIconClick.bind(this)
+        React.createElement('span', {
+          className: this.classNames('el-tree-node__expand-icon', {
+            'is-leaf': nodeModel.isLeaf,
+            expanded: !nodeModel.isLeaf && expanded
           }),
-          isShowCheckbox && _react2.default.createElement(_checkbox2.default, {
-            checked: nodeModel.checked,
-            onChange: this.handleCheckChange.bind(this),
-            indeterminate: nodeModel.indeterminate,
-            onClick: this.handleUserClick.bind(this)
-          }),
-          nodeModel.loading && _react2.default.createElement(
-            'span',
-            { className: 'el-tree-node__loading-icon el-icon-loading' },
-            ' '
-          ),
-          _react2.default.createElement(NodeContent, {
-            nodeModel: nodeModel,
-            renderContent: treeNode.props.renderContent,
-            context: this
-          })
+          onClick: this.handleExpandIconClick.bind(this)
+        }),
+        isShowCheckbox && React.createElement(Checkbox, {
+          checked: nodeModel.checked,
+          onChange: this.handleCheckChange.bind(this),
+          indeterminate: nodeModel.indeterminate,
+          onClick: this.handleUserClick.bind(this)
+        }),
+        nodeModel.loading && React.createElement(
+          'span',
+          { className: 'el-tree-node__loading-icon el-icon-loading' },
+          ' '
         ),
-        _react2.default.createElement(
-          _libs.CollapseTransition,
-          { isShow: expanded, ref: 'collapse' },
-          _react2.default.createElement(
-            'div',
-            { className: 'el-tree-node__children' },
-            nodeModel.childNodes.map(function (e, idx) {
-              var props = Object.assign({}, _this5.props, { nodeModel: e, parent: _this5 });
-              return _react2.default.createElement(Node, (0, _extends3.default)({}, props, { key: _this5.getNodeKey(e, idx) }));
-            })
-          )
+        React.createElement(NodeContent, {
+          nodeModel: nodeModel,
+          renderContent: treeNode.props.renderContent,
+          context: this
+        })
+      ),
+      React.createElement(
+        CollapseTransition,
+        { isShow: expanded, ref: 'collapse' },
+        React.createElement(
+          'div',
+          { className: 'el-tree-node__children' },
+          nodeModel.childNodes.map(function (e, idx) {
+            var props = Object.assign({}, _this5.props, { nodeModel: e, parent: _this5 });
+            return React.createElement(Node, _extends({}, props, { key: _this5.getNodeKey(e, idx) }));
+          })
         )
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return Node;
-}(_libs.Component);
+      )
+    );
+  };
 
-var _default = Node;
-exports.default = _default;
+  return Node;
+}(Component);
+
+export default Node;
 
 
 Node.propTypes = {
-  nodeModel: _libs.PropTypes.object,
-  options: _libs.PropTypes.object,
-  treeNode: _libs.PropTypes.object.isRequired,
-  isShowCheckbox: _libs.PropTypes.bool,
-  onCheckChange: _libs.PropTypes.func
+  nodeModel: PropTypes.object,
+  options: PropTypes.object,
+  treeNode: PropTypes.object.isRequired,
+  isShowCheckbox: PropTypes.bool,
+  onCheckChange: PropTypes.func
 };
 
 Node.defaultProps = {
@@ -368,23 +303,3 @@ Node.defaultProps = {
   options: {},
   onCheckChange: function onCheckChange() {}
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(NodeContent, 'NodeContent', 'src/tree/Node.jsx');
-  reactHotLoader.register(Node, 'Node', 'src/tree/Node.jsx');
-  reactHotLoader.register(_default, 'default', 'src/tree/Node.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

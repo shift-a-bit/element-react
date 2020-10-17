@@ -1,33 +1,21 @@
-'use strict';
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _enzyme = require('enzyme');
-
-var _src = require('../../../src');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import React from 'react';
+import { mount, shallow } from 'enzyme';
+import { Button, Tooltip } from '../../../src';
 
 test('Basic Usage', function () {
-  var tooltip = (0, _enzyme.shallow)(_react2.default.createElement(
-    _src.Tooltip,
+  var tooltip = shallow(React.createElement(
+    Tooltip,
     { effect: 'dark', content: 'Top Left prompts info', placement: 'top-start' },
-    _react2.default.createElement(
-      _src.Button,
+    React.createElement(
+      Button,
       null,
       'top-start'
     )
   ));
 
   expect(tooltip.find('.el-tooltip__rel').exists()).toEqual(true);
-  expect(tooltip.find('.el-tooltip__rel').contains(_react2.default.createElement(
-    _src.Button,
+  expect(tooltip.find('.el-tooltip__rel').contains(React.createElement(
+    Button,
     null,
     'top-start'
   ))).toEqual(true);
@@ -38,11 +26,11 @@ test('Basic Usage', function () {
 });
 
 test('Theme', function () {
-  var tooltip1 = (0, _enzyme.shallow)(_react2.default.createElement(
-    _src.Tooltip,
+  var tooltip1 = shallow(React.createElement(
+    Tooltip,
     { content: 'Top center', placement: 'top' },
-    _react2.default.createElement(
-      _src.Button,
+    React.createElement(
+      Button,
       null,
       'Dark'
     )
@@ -50,14 +38,14 @@ test('Theme', function () {
 
   expect(tooltip1.find('div .el-tooltip__popper').at(0).hasClass('is-dark')).toEqual(true);
 
-  var tooltip2 = (0, _enzyme.mount)(_react2.default.createElement(
+  var tooltip2 = mount(React.createElement(
     'div',
     null,
-    _react2.default.createElement(
-      _src.Tooltip,
+    React.createElement(
+      Tooltip,
       { content: 'Bottom center', placement: 'bottom', effect: 'light' },
-      _react2.default.createElement(
-        _src.Button,
+      React.createElement(
+        Button,
         null,
         'Light'
       )
@@ -68,27 +56,27 @@ test('Theme', function () {
 });
 
 test('More Content', function () {
-  var tooltip = (0, _enzyme.mount)(_react2.default.createElement(
-    _src.Tooltip,
-    { placement: 'top', content: _react2.default.createElement(
+  var tooltip = mount(React.createElement(
+    Tooltip,
+    { placement: 'top', content: React.createElement(
         'div',
         null,
         'multiple lines',
-        _react2.default.createElement('br', null),
+        React.createElement('br', null),
         'second line'
       ) },
-    _react2.default.createElement(
-      _src.Button,
+    React.createElement(
+      Button,
       null,
       'Top center'
     )
   ));
 
-  expect(tooltip.contains(_react2.default.createElement(
+  expect(tooltip.contains(React.createElement(
     'div',
     null,
     'multiple lines',
-    _react2.default.createElement('br', null),
+    React.createElement('br', null),
     'second line'
   ))).toBe(true);
 });
@@ -98,11 +86,11 @@ test('Advanced usage', function () {
     disabled: false
   };
 
-  var tooltip = (0, _enzyme.mount)(_react2.default.createElement(
-    _src.Tooltip,
+  var tooltip = mount(React.createElement(
+    Tooltip,
     { disabled: state.disabled, content: 'click to close tooltip function', placement: 'bottom', effect: 'light' },
-    _react2.default.createElement(
-      _src.Button,
+    React.createElement(
+      Button,
       { onClick: function onClick() {
           state.disabled = true;
         } },

@@ -1,43 +1,9 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = require('react');
-
-var _utils = require('../utils');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import PropTypes from 'prop-types';
+import { Component } from 'react';
+import { require_condition } from '../utils';
 
 var windowKey = Symbol.for("er_register_map");
 var registerMap = window[windowKey] = window[windowKey] || {
@@ -82,83 +48,47 @@ var doRegister = function doRegister(props) {
  */
 
 var EventRegister = function (_Component) {
-  (0, _inherits3.default)(EventRegister, _Component);
+  _inherits(EventRegister, _Component);
 
   function EventRegister() {
-    (0, _classCallCheck3.default)(this, EventRegister);
-    return (0, _possibleConstructorReturn3.default)(this, (EventRegister.__proto__ || Object.getPrototypeOf(EventRegister)).apply(this, arguments));
+    _classCallCheck(this, EventRegister);
+
+    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
   }
 
-  (0, _createClass3.default)(EventRegister, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _props = this.props,
-          eventName = _props.eventName,
-          id = _props.id;
+  EventRegister.prototype.componentDidMount = function componentDidMount() {
+    var _props = this.props,
+        eventName = _props.eventName,
+        id = _props.id;
 
-      eventName = eventName.toLowerCase();
-      eventName = /^on/.test(eventName) ? eventName.substring(2) : eventName;
-      this.cached = Object.assign({}, this.props, { eventName: eventName });
+    eventName = eventName.toLowerCase();
+    eventName = /^on/.test(eventName) ? eventName.substring(2) : eventName;
+    this.cached = Object.assign({}, this.props, { eventName: eventName });
 
-      (0, _utils.require_condition)(typeof id === 'string', 'id prop is required');
-      (0, _utils.require_condition)(!hasRegistered(this.cached), 'id: ' + id + ' has been registered');
+    require_condition(typeof id === 'string', 'id prop is required');
+    require_condition(!hasRegistered(this.cached), 'id: ' + id + ' has been registered');
 
-      doRegister(this.cached);
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      cleanRegister(this.cached);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return null;
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
+    doRegister(this.cached);
+  };
+
+  EventRegister.prototype.componentWillUnmount = function componentWillUnmount() {
+    cleanRegister(this.cached);
+  };
+
+  EventRegister.prototype.render = function render() {
+    return null;
+  };
+
   return EventRegister;
-}(_react.Component);
+}(Component);
 
-var _default = EventRegister;
-exports.default = _default;
+export default EventRegister;
 
 
 EventRegister.propTypes = {
-  id: _propTypes2.default.string.isRequired,
-  target: _propTypes2.default.object.isRequired,
-  eventName: _propTypes2.default.string.isRequired,
-  func: _propTypes2.default.func.isRequired,
-  isUseCapture: _propTypes2.default.bool
+  id: PropTypes.string.isRequired,
+  target: PropTypes.object.isRequired,
+  eventName: PropTypes.string.isRequired,
+  func: PropTypes.func.isRequired,
+  isUseCapture: PropTypes.bool
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(windowKey, 'windowKey', 'libs/internal/EventRegister.jsx');
-  reactHotLoader.register(registerMap, 'registerMap', 'libs/internal/EventRegister.jsx');
-  reactHotLoader.register(not_null, 'not_null', 'libs/internal/EventRegister.jsx');
-  reactHotLoader.register(hasRegistered, 'hasRegistered', 'libs/internal/EventRegister.jsx');
-  reactHotLoader.register(cleanRegister, 'cleanRegister', 'libs/internal/EventRegister.jsx');
-  reactHotLoader.register(doRegister, 'doRegister', 'libs/internal/EventRegister.jsx');
-  reactHotLoader.register(EventRegister, 'EventRegister', 'libs/internal/EventRegister.jsx');
-  reactHotLoader.register(_default, 'default', 'libs/internal/EventRegister.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

@@ -1,67 +1,20 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../libs');
-
-var _UploadList = require('./UploadList');
-
-var _UploadList2 = _interopRequireDefault(_UploadList);
-
-var _iFrameUpload = require('./iFrameUpload');
-
-var _iFrameUpload2 = _interopRequireDefault(_iFrameUpload);
-
-var _AjaxUpload = require('./AjaxUpload');
-
-var _AjaxUpload2 = _interopRequireDefault(_AjaxUpload);
-
-var _nodeSass = require('node-sass');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _extends from 'babel-runtime/helpers/extends';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { Component, PropTypes } from '../../libs';
+import UploadList from './UploadList';
+import iFrameUpload from './iFrameUpload';
+import AjaxUpload from './AjaxUpload';
 
 var Upload = function (_Component) {
-  (0, _inherits3.default)(Upload, _Component);
+  _inherits(Upload, _Component);
 
   function Upload(props) {
-    (0, _classCallCheck3.default)(this, Upload);
+    _classCallCheck(this, Upload);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Upload.__proto__ || Object.getPrototypeOf(Upload)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.state = {
       fileList: [],
@@ -70,264 +23,241 @@ var Upload = function (_Component) {
     return _this;
   }
 
-  (0, _createClass3.default)(Upload, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.init(this.props);
-    }
-  }, {
-    key: 'init',
-    value: function init(props) {
-      var tempIndex = this.state.tempIndex;
-      var fileList = props.fileList;
+  Upload.prototype.componentWillMount = function componentWillMount() {
+    this.init(this.props);
+  };
 
-      var uploadFiles = fileList.map(function (file) {
-        file.uid = file.uid || Date.now() + tempIndex++;
-        file.status = 'success';
-        return file;
+  Upload.prototype.init = function init(props) {
+    var tempIndex = this.state.tempIndex;
+    var fileList = props.fileList;
+
+    var uploadFiles = fileList.map(function (file) {
+      file.uid = file.uid || Date.now() + tempIndex++;
+      file.status = 'success';
+      return file;
+    });
+    this.setState({ fileList: uploadFiles });
+  };
+
+  Upload.prototype.getChildContext = function getChildContext() {
+    return {
+      onPreview: this.handlePreview.bind(this),
+      onRemove: this.handleRemove.bind(this)
+    };
+  };
+
+  Upload.prototype.getFile = function getFile(file) {
+    if (file) {
+      return this.state.fileList.find(function (item) {
+        return item.uid === file.uid;
       });
-      this.setState({ fileList: uploadFiles });
     }
-  }, {
-    key: 'getChildContext',
-    value: function getChildContext() {
-      return {
-        onPreview: this.handlePreview.bind(this),
-        onRemove: this.handleRemove.bind(this)
-      };
+
+    return null;
+  };
+
+  Upload.prototype.handleStart = function handleStart(file) {
+    var _state = this.state,
+        tempIndex = _state.tempIndex,
+        fileList = _state.fileList;
+
+
+    file.uid = Date.now() + tempIndex++;
+
+    var _file = {
+      status: 'ready',
+      name: file.name,
+      size: file.size,
+      percentage: 0,
+      uid: file.uid,
+      raw: file
+    };
+
+    try {
+      _file.url = URL.createObjectURL(file);
+    } catch (err) {
+      return;
     }
-  }, {
-    key: 'getFile',
-    value: function getFile(file) {
-      if (file) {
-        return this.state.fileList.find(function (item) {
-          return item.uid === file.uid;
+
+    fileList.push(_file);
+    this.setState({
+      fileList: fileList,
+      tempIndex: tempIndex
+    });
+  };
+
+  Upload.prototype.handleProgress = function handleProgress(e, file) {
+    var fileList = this.state.fileList;
+
+    var _file = this.getFile(file);
+    if (_file) {
+      _file.percentage = e.percent || 0;
+      _file.status = 'uploading';
+      this.props.onProgress(e, _file, fileList);
+      this.setState({ fileList: fileList });
+    }
+  };
+
+  Upload.prototype.handleSuccess = function handleSuccess(res, file) {
+    var _this2 = this;
+
+    var fileList = this.state.fileList;
+
+    var _file = this.getFile(file);
+    if (_file) {
+      _file.status = 'success';
+      _file.response = res;
+
+      setTimeout(function () {
+        _this2.setState({ fileList: fileList }, function () {
+          _this2.props.onSuccess(res, _file, fileList);
+          _this2.props.onChange(_file, fileList);
         });
-      }
-
-      return null;
+      }, 1000);
     }
-  }, {
-    key: 'handleStart',
-    value: function handleStart(file) {
-      var _state = this.state,
-          tempIndex = _state.tempIndex,
-          fileList = _state.fileList;
+  };
 
+  Upload.prototype.handleError = function handleError(err, file) {
+    var _this3 = this;
 
-      file.uid = Date.now() + tempIndex++;
+    var fileList = this.state.fileList;
 
-      var _file = {
-        status: 'ready',
-        name: file.name,
-        size: file.size,
-        percentage: 0,
-        uid: file.uid,
-        raw: file
-      };
-
-      try {
-        _file.url = URL.createObjectURL(file);
-      } catch (err) {
-        return;
-      }
-
-      fileList.push(_file);
-      this.setState({
-        fileList: fileList,
-        tempIndex: tempIndex
+    var _file = this.getFile(file);
+    if (_file) {
+      _file.status = 'fail';
+      fileList.splice(fileList.indexOf(_file), 1);
+      this.setState({ fileList: fileList }, function () {
+        _this3.props.onError(err, _file, fileList);
+        _this3.props.onChange(_file, fileList);
       });
     }
-  }, {
-    key: 'handleProgress',
-    value: function handleProgress(e, file) {
-      var fileList = this.state.fileList;
+  };
 
-      var _file = this.getFile(file);
-      if (_file) {
-        _file.percentage = e.percent || 0;
-        _file.status = 'uploading';
-        this.props.onProgress(e, _file, fileList);
-        this.setState({ fileList: fileList });
-      }
-    }
-  }, {
-    key: 'handleSuccess',
-    value: function handleSuccess(res, file) {
-      var _this2 = this;
+  Upload.prototype.handleRemove = function handleRemove(file) {
+    var _this4 = this;
 
-      var fileList = this.state.fileList;
+    var fileList = this.state.fileList;
 
-      var _file = this.getFile(file);
-      if (_file) {
-        _file.status = 'success';
-        _file.response = res;
-
-        setTimeout(function () {
-          _this2.setState({ fileList: fileList }, function () {
-            _this2.props.onSuccess(res, _file, fileList);
-            _this2.props.onChange(_file, fileList);
-          });
-        }, 1000);
-      }
-    }
-  }, {
-    key: 'handleError',
-    value: function handleError(err, file) {
-      var _this3 = this;
-
-      var fileList = this.state.fileList;
-
-      var _file = this.getFile(file);
-      if (_file) {
-        _file.status = 'fail';
-        fileList.splice(fileList.indexOf(_file), 1);
-        this.setState({ fileList: fileList }, function () {
-          _this3.props.onError(err, _file, fileList);
-          _this3.props.onChange(_file, fileList);
-        });
-      }
-    }
-  }, {
-    key: 'handleRemove',
-    value: function handleRemove(file) {
-      var _this4 = this;
-
-      var fileList = this.state.fileList;
-
-      var _file = this.getFile(file);
-      if (_file) {
-        fileList.splice(fileList.indexOf(_file), 1);
-        this.setState({ fileList: fileList }, function () {
-          return _this4.props.onRemove(file, fileList);
-        });
-      }
-    }
-  }, {
-    key: 'handlePreview',
-    value: function handlePreview(file) {
-      if (file.status === 'success') {
-        this.props.onPreview(file);
-      }
-    }
-  }, {
-    key: 'clearFiles',
-    value: function clearFiles() {
-      this.setState({
-        fileList: []
+    var _file = this.getFile(file);
+    if (_file) {
+      fileList.splice(fileList.indexOf(_file), 1);
+      this.setState({ fileList: fileList }, function () {
+        return _this4.props.onRemove(file, fileList);
       });
     }
-  }, {
-    key: 'isFileSelected',
-    value: function isFileSelected() {
-      if (this.state.fileList && this.state.fileList.length) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }, {
-    key: 'submit',
-    value: function submit() {
-      var _this5 = this;
+  };
 
-      this.state.fileList.filter(function (file) {
-        return file.status === 'ready';
-      }).forEach(function (file) {
-        _this5.refs['upload-inner'].upload(file.raw, file);
-      });
+  Upload.prototype.handlePreview = function handlePreview(file) {
+    if (file.status === 'success') {
+      this.props.onPreview(file);
     }
-  }, {
-    key: 'showCover',
-    value: function showCover() {
-      var fileList = this.state.fileList;
+  };
 
-      var file = fileList[fileList.length - 1];
-      return file && file.status !== 'fail';
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var fileList = this.state.fileList;
-      var _props = this.props,
-          showFileList = _props.showFileList,
-          autoUpload = _props.autoUpload,
-          drag = _props.drag,
-          tip = _props.tip,
-          action = _props.action,
-          multiple = _props.multiple,
-          beforeUpload = _props.beforeUpload,
-          withCredentials = _props.withCredentials,
-          headers = _props.headers,
-          name = _props.name,
-          data = _props.data,
-          accept = _props.accept,
-          listType = _props.listType,
-          className = _props.className,
-          limit = _props.limit,
-          disabled = _props.disabled,
-          onExceed = _props.onExceed,
-          httpRequest = _props.httpRequest;
+  Upload.prototype.clearFiles = function clearFiles() {
+    this.setState({
+      fileList: []
+    });
+  };
 
-      var uploadList = void 0;
-      if (showFileList && fileList.length) {
-        uploadList = _react2.default.createElement(_UploadList2.default, { listType: listType, fileList: fileList });
-      }
-      var restProps = {
-        autoUpload: autoUpload,
-        drag: drag,
-        action: action,
-        multiple: multiple,
-        beforeUpload: beforeUpload,
-        withCredentials: withCredentials,
-        headers: headers,
-        name: name,
-        data: data,
-        accept: accept,
-        listType: listType,
-        fileList: fileList,
-        limit: limit,
-        disabled: disabled,
-        onExceed: onExceed,
-        httpRequest: httpRequest,
-        onStart: this.handleStart.bind(this),
-        onProgress: this.handleProgress.bind(this),
-        onSuccess: this.handleSuccess.bind(this),
-        onError: this.handleError.bind(this),
-        onPreview: this.handlePreview.bind(this),
-        onRemove: this.handleRemove.bind(this),
-        showCover: this.showCover(),
-        ref: 'upload-inner'
-      };
-      var trigger = this.props.trigger || this.props.children;
-      var uploadComponent = typeof FormData !== 'undefined' ? _react2.default.createElement(
-        _AjaxUpload2.default,
-        (0, _extends3.default)({ key: 'AjaxUpload' }, restProps),
-        trigger
-      ) : _react2.default.createElement(
-        'iFrameUpload',
-        (0, _extends3.default)({ key: 'iFrameUpload' }, restProps),
-        trigger
-      );
-      return _react2.default.createElement(
-        'div',
-        { className: className },
-        listType === 'picture-card' ? uploadList : '',
-        this.props.trigger ? [uploadComponent, this.props.children] : uploadComponent,
-        tip,
-        listType !== 'picture-card' ? uploadList : ''
-      );
+  Upload.prototype.isFileSelected = function isFileSelected() {
+    if (this.state.fileList && this.state.fileList.length) {
+      return true;
+    } else {
+      return false;
     }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
+  };
+
+  Upload.prototype.submit = function submit() {
+    var _this5 = this;
+
+    this.state.fileList.filter(function (file) {
+      return file.status === 'ready';
+    }).forEach(function (file) {
+      _this5.refs['upload-inner'].upload(file.raw, file);
+    });
+  };
+
+  Upload.prototype.showCover = function showCover() {
+    var fileList = this.state.fileList;
+
+    var file = fileList[fileList.length - 1];
+    return file && file.status !== 'fail';
+  };
+
+  Upload.prototype.render = function render() {
+    var fileList = this.state.fileList;
+    var _props = this.props,
+        showFileList = _props.showFileList,
+        autoUpload = _props.autoUpload,
+        drag = _props.drag,
+        tip = _props.tip,
+        action = _props.action,
+        multiple = _props.multiple,
+        beforeUpload = _props.beforeUpload,
+        withCredentials = _props.withCredentials,
+        headers = _props.headers,
+        name = _props.name,
+        data = _props.data,
+        accept = _props.accept,
+        listType = _props.listType,
+        className = _props.className,
+        limit = _props.limit,
+        disabled = _props.disabled,
+        onExceed = _props.onExceed,
+        httpRequest = _props.httpRequest;
+
+    var uploadList = void 0;
+    if (showFileList && fileList.length) {
+      uploadList = React.createElement(UploadList, { listType: listType, fileList: fileList });
     }
-  }]);
+    var restProps = {
+      autoUpload: autoUpload,
+      drag: drag,
+      action: action,
+      multiple: multiple,
+      beforeUpload: beforeUpload,
+      withCredentials: withCredentials,
+      headers: headers,
+      name: name,
+      data: data,
+      accept: accept,
+      listType: listType,
+      fileList: fileList,
+      limit: limit,
+      disabled: disabled,
+      onExceed: onExceed,
+      httpRequest: httpRequest,
+      onStart: this.handleStart.bind(this),
+      onProgress: this.handleProgress.bind(this),
+      onSuccess: this.handleSuccess.bind(this),
+      onError: this.handleError.bind(this),
+      onPreview: this.handlePreview.bind(this),
+      onRemove: this.handleRemove.bind(this),
+      showCover: this.showCover(),
+      ref: 'upload-inner'
+    };
+    var trigger = this.props.trigger || this.props.children;
+    var uploadComponent = typeof FormData !== 'undefined' ? React.createElement(
+      AjaxUpload,
+      _extends({ key: 'AjaxUpload' }, restProps),
+      trigger
+    ) : React.createElement(
+      'iFrameUpload',
+      _extends({ key: 'iFrameUpload' }, restProps),
+      trigger
+    );
+    return React.createElement(
+      'div',
+      { className: className },
+      listType === 'picture-card' ? uploadList : '',
+      this.props.trigger ? [uploadComponent, this.props.children] : uploadComponent,
+      tip,
+      listType !== 'picture-card' ? uploadList : ''
+    );
+  };
+
   return Upload;
-}(_libs.Component);
+}(Component);
 
 Upload.defaultProps = {
   headers: {},
@@ -345,59 +275,39 @@ Upload.defaultProps = {
   onError: function onError() {},
   onChange: function onChange() {}
 };
-var _default = Upload;
-exports.default = _default;
+export default Upload;
 
 
 Upload.childContextTypes = {
-  onPreview: _libs.PropTypes.func,
-  onRemove: _libs.PropTypes.func
+  onPreview: PropTypes.func,
+  onRemove: PropTypes.func
 };
 
 Upload.propTypes = {
-  action: _libs.PropTypes.string.isRequired,
-  headers: _libs.PropTypes.object,
-  data: _libs.PropTypes.object,
-  multiple: _libs.PropTypes.bool,
-  name: _libs.PropTypes.string,
-  withCredentials: _libs.PropTypes.bool,
-  showFileList: _libs.PropTypes.bool,
-  fileList: _libs.PropTypes.array,
-  autoUpload: _libs.PropTypes.bool,
-  accept: _libs.PropTypes.string,
-  drag: _libs.PropTypes.bool,
-  listType: _libs.PropTypes.oneOf(['text', 'picture', 'picture-card']),
-  tip: _libs.PropTypes.node,
-  trigger: _libs.PropTypes.node,
-  beforeUpload: _libs.PropTypes.func,
-  onRemove: _libs.PropTypes.func,
-  onPreview: _libs.PropTypes.func,
-  onProgress: _libs.PropTypes.func,
-  onSuccess: _libs.PropTypes.func,
-  onError: _libs.PropTypes.func,
-  onChange: _libs.PropTypes.func,
-  className: _libs.PropTypes.string,
-  disabled: _libs.PropTypes.bool,
-  limit: _libs.PropTypes.number,
-  onExceed: _libs.PropTypes.func,
-  httpRequest: _libs.PropTypes.func
+  action: PropTypes.string.isRequired,
+  headers: PropTypes.object,
+  data: PropTypes.object,
+  multiple: PropTypes.bool,
+  name: PropTypes.string,
+  withCredentials: PropTypes.bool,
+  showFileList: PropTypes.bool,
+  fileList: PropTypes.array,
+  autoUpload: PropTypes.bool,
+  accept: PropTypes.string,
+  drag: PropTypes.bool,
+  listType: PropTypes.oneOf(['text', 'picture', 'picture-card']),
+  tip: PropTypes.node,
+  trigger: PropTypes.node,
+  beforeUpload: PropTypes.func,
+  onRemove: PropTypes.func,
+  onPreview: PropTypes.func,
+  onProgress: PropTypes.func,
+  onSuccess: PropTypes.func,
+  onError: PropTypes.func,
+  onChange: PropTypes.func,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  limit: PropTypes.number,
+  onExceed: PropTypes.func,
+  httpRequest: PropTypes.func
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Upload, 'Upload', 'src/upload/Upload.jsx');
-  reactHotLoader.register(_default, 'default', 'src/upload/Upload.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

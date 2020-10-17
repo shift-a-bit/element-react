@@ -1,30 +1,12 @@
-'use strict';
+import _extends from 'babel-runtime/helpers/extends';
+/* eslint react/prop-types: ["off"] */
 
-var _extends2 = require('babel-runtime/helpers/extends');
+import React from 'react';
+import { shallow, mount } from 'enzyme';
+import sinon from 'sinon';
 
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _enzyme = require('enzyme');
-
-var _sinon = require('sinon');
-
-var _sinon2 = _interopRequireDefault(_sinon);
-
-var _TimeSelect = require('../TimeSelect');
-
-var _TimeSelect2 = _interopRequireDefault(_TimeSelect);
-
-var _utils = require('./utils');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-}; /* eslint react/prop-types: ["off"] */
+import TimeSelect from '../TimeSelect';
+import { mockRAf } from './utils';
 
 // https://facebook.github.io/jest/docs/expect.html
 // http://airbnb.io/enzyme/docs/api/ShallowWrapper/exists.html
@@ -47,17 +29,17 @@ describe('TimePicker test', function () {
   function mountDefault() {
     var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    return (0, _enzyme.mount)(_react2.default.createElement(_TimeSelect2.default, (0, _extends3.default)({}, minProps, props)));
+    return mount(React.createElement(TimeSelect, _extends({}, minProps, props)));
   }
   it('should render without exploding', function () {
-    var w = (0, _enzyme.shallow)(_react2.default.createElement(_TimeSelect2.default, minProps));
+    var w = shallow(React.createElement(TimeSelect, minProps));
     expect(w.exists()).toBeTruthy();
   });
 
   it('should have valid state', function () {
-    (0, _utils.mockRAf)();
-    var onChange = _sinon2.default.spy();
-    var w = (0, _enzyme.mount)(_react2.default.createElement(_TimeSelect2.default, (0, _extends3.default)({}, minProps, {
+    mockRAf();
+    var onChange = sinon.spy();
+    var w = mount(React.createElement(TimeSelect, _extends({}, minProps, {
       onChange: onChange
     })));
 
@@ -81,22 +63,22 @@ describe('TimePicker test', function () {
   });
 
   it('isShowTrigger should work', function () {
-    var w = (0, _enzyme.mount)(_react2.default.createElement(_TimeSelect2.default, (0, _extends3.default)({}, minProps, {
+    var w = mount(React.createElement(TimeSelect, _extends({}, minProps, {
       isShowTrigger: false
     })));
     expect(w.find('i.el-input__icon').exists()).toBe(false);
   });
 
   it('isDisabled should work', function () {
-    var w = (0, _enzyme.mount)(_react2.default.createElement(_TimeSelect2.default, (0, _extends3.default)({}, minProps, {
+    var w = mount(React.createElement(TimeSelect, _extends({}, minProps, {
       isDisabled: true
     })));
     expect(w.find('input').props().disabled).toBe(true);
   });
 
   it('onFocus & onBlur should work', function () {
-    var onFocus = _sinon2.default.spy();
-    var onBlur = _sinon2.default.spy();
+    var onFocus = sinon.spy();
+    var onBlur = sinon.spy();
     var w = mountDefault({
       onFocus: onFocus,
       onBlur: onBlur
@@ -117,10 +99,10 @@ describe('TimePicker test', function () {
       var Ts = function Ts(_ref) {
         var startDate = _ref.startDate,
             onChange = _ref.onChange;
-        return _react2.default.createElement(
+        return React.createElement(
           'div',
           null,
-          _react2.default.createElement(_TimeSelect2.default, {
+          React.createElement(TimeSelect, {
             start: '08:30',
             step: '00:15',
             end: '18:30',
@@ -128,7 +110,7 @@ describe('TimePicker test', function () {
             value: startDate,
             placeholder: '\u9009\u62E9\u65F6\u95F4'
           }),
-          _react2.default.createElement(_TimeSelect2.default, {
+          React.createElement(TimeSelect, {
             start: '08:30',
             step: '00:15',
             end: '18:30',
@@ -140,7 +122,7 @@ describe('TimePicker test', function () {
         );
       };
 
-      var w = (0, _enzyme.mount)(_react2.default.createElement(Ts, { startDate: startDate, onChange: function onChange(d) {
+      var w = mount(React.createElement(Ts, { startDate: startDate, onChange: function onChange(d) {
           startDate = d;
         } }));
 

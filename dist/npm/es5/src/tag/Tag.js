@@ -1,49 +1,16 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../libs');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { Component, PropTypes, Transition, View } from '../../libs';
 
 var Tag = function (_Component) {
-  (0, _inherits3.default)(Tag, _Component);
+  _inherits(Tag, _Component);
 
   function Tag(props) {
-    (0, _classCallCheck3.default)(this, Tag);
+    _classCallCheck(this, Tag);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Tag.__proto__ || Object.getPrototypeOf(Tag)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.state = {
       visible: true
@@ -51,91 +18,61 @@ var Tag = function (_Component) {
     return _this;
   }
 
-  (0, _createClass3.default)(Tag, [{
-    key: 'handleClose',
-    value: function handleClose() {
-      var _this2 = this;
+  Tag.prototype.handleClose = function handleClose() {
+    var _this2 = this;
 
-      this.setState({
-        visible: false
-      }, function () {
-        if (_this2.props.onClose) {
-          _this2.props.onClose();
-        }
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          type = _props.type,
-          hit = _props.hit,
-          closable = _props.closable,
-          closeTransition = _props.closeTransition,
-          color = _props.color;
+    this.setState({
+      visible: false
+    }, function () {
+      if (_this2.props.onClose) {
+        _this2.props.onClose();
+      }
+    });
+  };
+
+  Tag.prototype.render = function render() {
+    var _props = this.props,
+        type = _props.type,
+        hit = _props.hit,
+        closable = _props.closable,
+        closeTransition = _props.closeTransition,
+        color = _props.color;
 
 
-      return _react2.default.createElement(
-        _libs.Transition,
-        { name: closeTransition ? '' : 'el-zoom-in-center' },
-        _react2.default.createElement(
-          _libs.View,
-          { key: this.state.visible, show: this.state.visible },
-          _react2.default.createElement(
-            'span',
-            {
-              style: this.style({
-                backgroundColor: color
-              }),
-              className: this.className('el-tag', type && 'el-tag--' + type, {
-                'is-hit': hit
-              })
-            },
-            this.props.children,
-            closable && _react2.default.createElement('i', { className: 'el-tag__close el-icon-close', onClick: this.handleClose.bind(this) })
-          )
+    return React.createElement(
+      Transition,
+      { name: closeTransition ? '' : 'el-zoom-in-center' },
+      React.createElement(
+        View,
+        { key: this.state.visible, show: this.state.visible },
+        React.createElement(
+          'span',
+          {
+            style: this.style({
+              backgroundColor: color
+            }),
+            className: this.className('el-tag', type && 'el-tag--' + type, {
+              'is-hit': hit
+            })
+          },
+          this.props.children,
+          closable && React.createElement('i', { className: 'el-tag__close el-icon-close', onClick: this.handleClose.bind(this) })
         )
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return Tag;
-}(_libs.Component);
+      )
+    );
+  };
 
-var _default = Tag;
-exports.default = _default;
+  return Tag;
+}(Component);
+
+export default Tag;
 
 
 Tag.propTypes = {
-  closable: _libs.PropTypes.bool,
-  type: _libs.PropTypes.string,
-  hit: _libs.PropTypes.bool,
-  color: _libs.PropTypes.string,
-  closeTransition: _libs.PropTypes.bool,
-  onClose: _libs.PropTypes.func
+  closable: PropTypes.bool,
+  type: PropTypes.string,
+  hit: PropTypes.bool,
+  color: PropTypes.string,
+  closeTransition: PropTypes.bool,
+  onClose: PropTypes.func
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Tag, 'Tag', 'src/tag/Tag.jsx');
-  reactHotLoader.register(_default, 'default', 'src/tag/Tag.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

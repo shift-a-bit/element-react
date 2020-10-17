@@ -1,130 +1,87 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../libs');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { Component, PropTypes } from '../../libs';
 
 var Steps = function (_Component) {
-  (0, _inherits3.default)(Steps, _Component);
+  _inherits(Steps, _Component);
 
   function Steps() {
-    (0, _classCallCheck3.default)(this, Steps);
-    return (0, _possibleConstructorReturn3.default)(this, (Steps.__proto__ || Object.getPrototypeOf(Steps)).apply(this, arguments));
+    _classCallCheck(this, Steps);
+
+    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
   }
 
-  (0, _createClass3.default)(Steps, [{
-    key: 'calcProgress',
-    value: function calcProgress(status, index) {
-      var step = 100;
-      var style = {};
-      style.transitionDelay = 150 * index + 'ms';
+  Steps.prototype.calcProgress = function calcProgress(status, index) {
+    var step = 100;
+    var style = {};
+    style.transitionDelay = 150 * index + 'ms';
 
-      var nextStatus = this.calStatus(index + 1);
-      // 前后状态不一致时，并且当前status为完成，statusLine的长度才为50%
-      if (nextStatus !== status) {
-        if (status === this.props.finishStatus) {
-          step = 50;
-        } else if (status === 'wait') {
-          step = 0;
-          style.transitionDelay = -150 * index + 'ms';
-        }
+    var nextStatus = this.calStatus(index + 1);
+    // 前后状态不一致时，并且当前status为完成，statusLine的长度才为50%
+    if (nextStatus !== status) {
+      if (status === this.props.finishStatus) {
+        step = 50;
+      } else if (status === 'wait') {
+        step = 0;
+        style.transitionDelay = -150 * index + 'ms';
       }
-
-      this.props.direction === 'vertical' ? style.height = step + '%' : style.width = step + '%';
-      return style;
     }
-  }, {
-    key: 'calStatus',
-    value: function calStatus(index) {
-      var _props = this.props,
-          active = _props.active,
-          finishStatus = _props.finishStatus,
-          processStatus = _props.processStatus;
 
-      var status = 'wait';
+    this.props.direction === 'vertical' ? style.height = step + '%' : style.width = step + '%';
+    return style;
+  };
 
-      if (active > index) {
-        status = finishStatus;
-      } else if (active === index) {
-        status = processStatus;
-      }
+  Steps.prototype.calStatus = function calStatus(index) {
+    var _props = this.props,
+        active = _props.active,
+        finishStatus = _props.finishStatus,
+        processStatus = _props.processStatus;
 
-      return status;
+    var status = 'wait';
+
+    if (active > index) {
+      status = finishStatus;
+    } else if (active === index) {
+      status = processStatus;
     }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
 
-      var _props2 = this.props,
-          children = _props2.children,
-          space = _props2.space,
-          direction = _props2.direction;
+    return status;
+  };
+
+  Steps.prototype.render = function render() {
+    var _this2 = this;
+
+    var _props2 = this.props,
+        children = _props2.children,
+        space = _props2.space,
+        direction = _props2.direction;
 
 
-      return _react2.default.createElement(
-        'div',
-        { style: this.style(), className: this.className('el-steps') },
-        _react2.default.Children.map(children, function (child, index) {
-          var computedSpace = space ? space + 'px' : 100 / children.length + '%';
-          var style = direction === 'horizontal' ? { width: computedSpace } : {
-            height: index === children.length - 1 ? 'auto' : computedSpace
-          };
-          var status = _this2.calStatus(index);
-          var lineStyle = _this2.calcProgress(status, index);
-          return _react2.default.cloneElement(child, {
-            style: style,
-            lineStyle: lineStyle,
-            direction: direction,
-            status: status,
-            stepNumber: index + 1
-          });
-        })
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
+    return React.createElement(
+      'div',
+      { style: this.style(), className: this.className('el-steps') },
+      React.Children.map(children, function (child, index) {
+        var computedSpace = space ? space + 'px' : 100 / children.length + '%';
+        var style = direction === 'horizontal' ? { width: computedSpace } : {
+          height: index === children.length - 1 ? 'auto' : computedSpace
+        };
+        var status = _this2.calStatus(index);
+        var lineStyle = _this2.calcProgress(status, index);
+        return React.cloneElement(child, {
+          style: style,
+          lineStyle: lineStyle,
+          direction: direction,
+          status: status,
+          stepNumber: index + 1
+        });
+      })
+    );
+  };
+
   return Steps;
-}(_libs.Component);
+}(Component);
 
 Steps.defaultProps = {
   direction: 'horizontal',
@@ -132,36 +89,15 @@ Steps.defaultProps = {
   processStatus: 'process',
   active: 0
 };
-var _default = Steps;
-exports.default = _default;
+export default Steps;
 
 
 var statusMap = ['wait', 'process', 'finish', 'error', 'success'];
 
 Steps.propTypes = {
-  space: _libs.PropTypes.number,
-  active: _libs.PropTypes.number,
-  direction: _libs.PropTypes.oneOf(['vertical', 'horizontal']),
-  finishStatus: _libs.PropTypes.oneOf(statusMap),
-  processStatus: _libs.PropTypes.oneOf(statusMap)
+  space: PropTypes.number,
+  active: PropTypes.number,
+  direction: PropTypes.oneOf(['vertical', 'horizontal']),
+  finishStatus: PropTypes.oneOf(statusMap),
+  processStatus: PropTypes.oneOf(statusMap)
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Steps, 'Steps', 'src/steps/Steps.jsx');
-  reactHotLoader.register(statusMap, 'statusMap', 'src/steps/Steps.jsx');
-  reactHotLoader.register(_default, 'default', 'src/steps/Steps.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

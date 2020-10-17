@@ -1,41 +1,8 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _libs = require('../../libs');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.enterModule : undefined;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import React from 'react';
+import { Component, PropTypes, Transition, View } from '../../libs';
 
 var TYPE_CLASSES_MAP = {
   'success': 'el-icon-circle-check',
@@ -44,12 +11,12 @@ var TYPE_CLASSES_MAP = {
 };
 
 var Alert = function (_Component) {
-  (0, _inherits3.default)(Alert, _Component);
+  _inherits(Alert, _Component);
 
   function Alert(props) {
-    (0, _classCallCheck3.default)(this, Alert);
+    _classCallCheck(this, Alert);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Alert.__proto__ || Object.getPrototypeOf(Alert)).call(this, props));
+    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
     _this.state = {
       visible: true
@@ -57,110 +24,78 @@ var Alert = function (_Component) {
     return _this;
   }
 
-  (0, _createClass3.default)(Alert, [{
-    key: 'close',
-    value: function close() {
-      this.setState({
-        visible: false
-      });
+  Alert.prototype.close = function close() {
+    this.setState({
+      visible: false
+    });
+  };
+
+  Alert.prototype.onAfterLeave = function onAfterLeave() {
+    if (this.props.onClose) {
+      this.props.onClose();
     }
-  }, {
-    key: 'onAfterLeave',
-    value: function onAfterLeave() {
-      if (this.props.onClose) {
-        this.props.onClose();
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        _libs.Transition,
-        { name: 'el-alert-fade', onAfterLeave: this.onAfterLeave.bind(this) },
-        _react2.default.createElement(
-          _libs.View,
-          { show: this.state.visible },
-          _react2.default.createElement(
+  };
+
+  Alert.prototype.render = function render() {
+    return React.createElement(
+      Transition,
+      { name: 'el-alert-fade', onAfterLeave: this.onAfterLeave.bind(this) },
+      React.createElement(
+        View,
+        { show: this.state.visible },
+        React.createElement(
+          'div',
+          { style: this.style(), className: this.className('el-alert', 'el-alert--' + this.props.type) },
+          this.props.showIcon && React.createElement('i', { className: this.classNames('el-alert__icon', TYPE_CLASSES_MAP[this.props.type] || 'el-icon-information', {
+              'is-big': this.props.description
+            }) }),
+          React.createElement(
             'div',
-            { style: this.style(), className: this.className('el-alert', 'el-alert--' + this.props.type) },
-            this.props.showIcon && _react2.default.createElement('i', { className: this.classNames('el-alert__icon', TYPE_CLASSES_MAP[this.props.type] || 'el-icon-information', {
-                'is-big': this.props.description
-              }) }),
-            _react2.default.createElement(
-              'div',
-              { className: 'el-alert__content' },
-              this.props.title && _react2.default.createElement(
-                'span',
-                { className: this.classNames('el-alert__title', {
-                    'is-bold': this.props.description
-                  }) },
-                this.props.title
-              ),
-              this.props.description && _react2.default.createElement(
-                'p',
-                { className: 'el-alert__description' },
-                this.props.description
-              ),
-              _react2.default.createElement(
-                _libs.View,
-                { show: this.props.closable },
-                _react2.default.createElement(
-                  'i',
-                  { className: this.classNames('el-alert__closebtn', this.props.closeText ? 'is-customed' : 'el-icon-close'), onClick: this.close.bind(this) },
-                  this.props.closeText
-                )
+            { className: 'el-alert__content' },
+            this.props.title && React.createElement(
+              'span',
+              { className: this.classNames('el-alert__title', {
+                  'is-bold': this.props.description
+                }) },
+              this.props.title
+            ),
+            this.props.description && React.createElement(
+              'p',
+              { className: 'el-alert__description' },
+              this.props.description
+            ),
+            React.createElement(
+              View,
+              { show: this.props.closable },
+              React.createElement(
+                'i',
+                { className: this.classNames('el-alert__closebtn', this.props.closeText ? 'is-customed' : 'el-icon-close'), onClick: this.close.bind(this) },
+                this.props.closeText
               )
             )
           )
         )
-      );
-    }
-  }, {
-    key: '__reactstandin__regenerateByEval',
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return Alert;
-}(_libs.Component);
+      )
+    );
+  };
 
-var _default = Alert;
-exports.default = _default;
+  return Alert;
+}(Component);
+
+export default Alert;
 
 
 Alert.propTypes = {
-  onClose: _libs.PropTypes.func,
-  title: _libs.PropTypes.string.isRequired,
-  description: _libs.PropTypes.string,
-  type: _libs.PropTypes.string,
-  closable: _libs.PropTypes.bool,
-  closeText: _libs.PropTypes.string,
-  showIcon: _libs.PropTypes.bool
+  onClose: PropTypes.func,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  type: PropTypes.string,
+  closable: PropTypes.bool,
+  closeText: PropTypes.string,
+  showIcon: PropTypes.bool
 };
 
 Alert.defaultProps = {
   type: 'info',
   closable: true
 };
-;
-
-(function () {
-  var reactHotLoader = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default : undefined;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(TYPE_CLASSES_MAP, 'TYPE_CLASSES_MAP', 'src/alert/Alert.jsx');
-  reactHotLoader.register(Alert, 'Alert', 'src/alert/Alert.jsx');
-  reactHotLoader.register(_default, 'default', 'src/alert/Alert.jsx');
-})();
-
-;
-
-(function () {
-  var leaveModule = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.leaveModule : undefined;
-  leaveModule && leaveModule(module);
-})();

@@ -1,130 +1,117 @@
-'use strict';
+import React from 'react';
+import { mount, render } from 'enzyme';
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _enzyme = require('enzyme');
-
-var _ = require('../');
-
-var _2 = _interopRequireDefault(_);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
+import Layout from '../';
 
 describe('Layout test', function () {
   it('Basic layout', function () {
-    var w1 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w1 = mount(React.createElement(
+      Layout.Row,
       null,
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '24' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-dark' })
+        React.createElement('div', { className: 'grid-content bg-purple-dark' })
       )
     ));
-    var w2 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w2 = mount(React.createElement(
+      Layout.Row,
       null,
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '12' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '12' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       )
     ));
-    var w3 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w3 = mount(React.createElement(
+      Layout.Row,
       null,
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '8' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '8' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '8' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w4 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w4 = mount(React.createElement(
+      Layout.Row,
       null,
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       )
     ));
-    var w5 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w5 = mount(React.createElement(
+      Layout.Row,
       null,
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       )
     ));
-    var w6 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w6 = mount(React.createElement(
+      Layout.Row,
       null,
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '0' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
     expect(w1.find('.el-row .el-col-24 .grid-content').exists()).toBeTruthy();
@@ -137,28 +124,28 @@ describe('Layout test', function () {
   });
 
   it('Column spacing', function () {
-    var w = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w = mount(React.createElement(
+      Layout.Row,
       { gutter: '20' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
     expect(w.find('.el-row .el-col-6').length).toBe(4);
@@ -167,61 +154,61 @@ describe('Layout test', function () {
   });
 
   it('Hybrid layout', function () {
-    var w1 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w1 = mount(React.createElement(
+      Layout.Row,
       { gutter: '20' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '16' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '8' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w2 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w2 = mount(React.createElement(
+      Layout.Row,
       { gutter: '20' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '8' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '8' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w3 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w3 = mount(React.createElement(
+      Layout.Row,
       { gutter: '20' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '16' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '4' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
     expect(w1.find('.el-row .el-col-16').length).toBe(1);
@@ -235,41 +222,41 @@ describe('Layout test', function () {
   });
 
   it('Column offset', function () {
-    var w1 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w1 = mount(React.createElement(
+      Layout.Row,
       { gutter: '20' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6', offset: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w2 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w2 = mount(React.createElement(
+      Layout.Row,
       { gutter: '20' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6', offset: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6', offset: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w3 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w3 = mount(React.createElement(
+      Layout.Row,
       { gutter: '20' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '12', offset: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
     expect(w1.find('.el-row .el-col-6').length).toBe(2);
@@ -279,99 +266,99 @@ describe('Layout test', function () {
   });
 
   it('Alignment', function () {
-    var w1 = (0, _enzyme.render)(_react2.default.createElement(
-      _2.default.Row,
+    var w1 = render(React.createElement(
+      Layout.Row,
       { type: 'flex', className: 'row-bg' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w2 = (0, _enzyme.render)(_react2.default.createElement(
-      _2.default.Row,
+    var w2 = render(React.createElement(
+      Layout.Row,
       { type: 'flex', className: 'row-bg', justify: 'center' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w3 = (0, _enzyme.render)(_react2.default.createElement(
-      _2.default.Row,
+    var w3 = render(React.createElement(
+      Layout.Row,
       { type: 'flex', className: 'row-bg', justify: 'end' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w4 = (0, _enzyme.render)(_react2.default.createElement(
-      _2.default.Row,
+    var w4 = render(React.createElement(
+      Layout.Row,
       { type: 'flex', className: 'row-bg', justify: 'space-between' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w5 = (0, _enzyme.render)(_react2.default.createElement(
-      _2.default.Row,
+    var w5 = render(React.createElement(
+      Layout.Row,
       { type: 'flex', className: 'row-bg', justify: 'space-around' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: 6 },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
     expect(w1.hasClass('el-row--flex')).toBeTruthy();
@@ -382,37 +369,37 @@ describe('Layout test', function () {
   });
 
   it('Responsive Layout', function () {
-    var w = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w = mount(React.createElement(
+      Layout.Row,
       { gutter: '10' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { xs: '8', sm: '6', md: '4', lg: '3' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { xs: '4', sm: '6', md: '8', lg: '9' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { xs: '4', sm: '6', md: '8', lg: '9' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { xs: '8', sm: '6', md: '4', lg: '3' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       )
     ));
-    var w1 = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w1 = mount(React.createElement(
+      Layout.Row,
       { gutter: '10' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { xs: '0', sm: '6', md: '4', lg: '3' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
     expect(w.find('.el-col-24.el-col-xs-8.el-col-sm-6.el-col-md-4.el-col-lg-3').length).toBe(2);
@@ -421,68 +408,68 @@ describe('Layout test', function () {
   });
 
   it('Row custom tag', function () {
-    var w = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w = mount(React.createElement(
+      Layout.Row,
       { tag: 'section' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '24' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-dark' })
+        React.createElement('div', { className: 'grid-content bg-purple-dark' })
       )
     ));
     expect(w.find('section').length).toBe(1);
   });
 
   it('Column custom tag', function () {
-    var w = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w = mount(React.createElement(
+      Layout.Row,
       null,
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { tag: 'section', span: '24' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-dark' })
+        React.createElement('div', { className: 'grid-content bg-purple-dark' })
       )
     ));
     expect(w.find('.el-row section.el-col-24').length).toBe(1);
   });
 
   it('Row with align', function () {
-    var w1 = (0, _enzyme.render)(_react2.default.createElement(
-      _2.default.Row,
+    var w1 = render(React.createElement(
+      Layout.Row,
       { type: 'flex', align: 'middle', className: 'row-bg' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
-    var w2 = (0, _enzyme.render)(_react2.default.createElement(
-      _2.default.Row,
+    var w2 = render(React.createElement(
+      Layout.Row,
       { type: 'flex', align: 'bottom', className: 'row-bg' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple-light' })
+        React.createElement('div', { className: 'grid-content bg-purple-light' })
       ),
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '6' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
     expect(w1.hasClass('is-align-middle')).toBeTruthy();
@@ -490,26 +477,26 @@ describe('Layout test', function () {
   });
 
   it('Column with push', function () {
-    var w = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w = mount(React.createElement(
+      Layout.Row,
       { gutter: '20' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '12', push: '12' },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
     expect(w.find('.el-col-12').hasClass('el-col-push-12')).toBeTruthy();
   });
 
   it('Column with pull', function () {
-    var w = (0, _enzyme.mount)(_react2.default.createElement(
-      _2.default.Row,
+    var w = mount(React.createElement(
+      Layout.Row,
       { gutter: '20' },
-      _react2.default.createElement(
-        _2.default.Col,
+      React.createElement(
+        Layout.Col,
         { span: '12', pull: 12 },
-        _react2.default.createElement('div', { className: 'grid-content bg-purple' })
+        React.createElement('div', { className: 'grid-content bg-purple' })
       )
     ));
     expect(w.find('.el-col-12').hasClass('el-col-pull-12')).toBeTruthy();
